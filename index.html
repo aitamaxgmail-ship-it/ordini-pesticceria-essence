@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Essence Pasticceria - Gestione Ordini</title>
   
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
   
   <!-- Firebase SDK (Compat) -->
@@ -51,17 +50,13 @@
       font-weight: 700;
       font-size: 0.85rem;
     }
-    .tab-btn.active {
-      background-color: var(--primary-rose);
-      color: #fff;
-      border-color: var(--primary-rose);
-    }
+    .tab-btn.active { background-color: var(--primary-rose); color: #fff; border-color: var(--primary-rose); }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
     .container {
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
       background-color: var(--card-bg);
       padding: 15px;
@@ -106,7 +101,6 @@
 
     .allergeni-box { border: 1px solid #e57373; background-color: #fdf2f2; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
 
-    /* Blocco Password e Menu Riservato */
     .lock-box {
       background: var(--accent-soft);
       border: 2px dashed var(--primary-rose);
@@ -131,88 +125,55 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .btn-submit:disabled { background-color: #ccc; cursor: not-allowed; }
 
-    /* CALENDARIO COMPATTO */
+    /* CALENDARIO */
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 15px; }
-    .cal-day-name { text-align: center; font-weight: 700; font-size: 0.7rem; color: var(--primary-rose); padding: 2px 0; }
+    .cal-day-name { text-align: center; font-weight: 700; font-size: 0.7rem; color: var(--primary-rose); }
     .cal-day {
       min-height: 38px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.8rem;
-      border: 1px solid var(--border-color);
-      background-color: #f9f0f3;
-      color: var(--primary-dark);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;
+      border: 1px solid var(--border-color); background-color: #f9f0f3;
     }
-    .cal-day.empty { background: transparent; border: none; cursor: default; }
-    .cal-day.has-orders { background-color: var(--status-rosso) !important; color: white !important; border-color: #b71c1c; }
+    .cal-day.empty { background: transparent; border: none; }
+    .cal-day.has-orders { background-color: var(--status-rosso) !important; color: white !important; }
     .cal-day.selected { border: 2px solid var(--primary-dark); font-weight: 900; }
-    .cal-day .badge-count { font-size: 0.6rem; margin-top: 1px; background: rgba(0,0,0,0.25); padding: 1px 3px; border-radius: 3px; }
 
-    /* SCHEDE ORDINI E STATI COLORE */
+    /* SCHEDE ORDINI */
     .order-card {
-      background-color: #fff;
-      border: 1px solid var(--border-color);
-      border-left: 8px solid var(--status-rosso);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 12px;
+      background-color: #fff; border: 1px solid var(--border-color);
+      border-left: 8px solid var(--status-rosso); border-radius: 8px; padding: 12px; margin-bottom: 12px;
     }
     .order-card.stato-pronto { border-left-color: var(--status-arancio); }
     .order-card.stato-consegnato { border-left-color: var(--status-verde); opacity: 0.85; }
 
     .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .order-badge { padding: 3px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: white; }
-    .badge-consegna { background-color: #1976d2; }
-    .badge-ritiro { background-color: #e65100; }
-
-    .badge-status-text {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-    .bg-rosso { background-color: var(--status-rosso); }
-    .bg-arancio { background-color: var(--status-arancio); }
-    .bg-verde { background-color: var(--status-verde); }
-
     .action-btns { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
     .btn-status { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: white; }
 
-    /* BOX STORICO & TORNACONTO CONTABILE */
-    .sales-box {
-      background: #e8f5e9;
-      border: 1px solid #c8e6c9;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
+    .sales-box { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
 
-    /* GESTIONE STAMPA DIFFERENZIATA E REPORT CONTABILE */
+    /* TABELLE REPORT */
+    table.report-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+    table.report-table th, table.report-table td { border: 1px solid #ccc; padding: 6px; text-align: left; }
+    table.report-table th { background: #eee; }
+
+    /* REGOLE DI STAMPA SEPARATE */
     @media print {
       body * { visibility: hidden; }
-      .printable-active, .printable-active *, .printable-report, .printable-report * { visibility: visible; }
-      .printable-active { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; }
-      .printable-report { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; }
+      .printable-contabile, .printable-contabile *, .printable-dipendenti, .printable-dipendenti * { visibility: visible; }
+      .printable-contabile { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; }
+      .printable-dipendenti { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; }
       .no-print { display: none !important; }
-      .hide-on-laboratorio-print { display: none !important; }
+      .no-print-prezzi { display: none !important; }
     }
   </style>
 </head>
 <body>
 
   <header id="headerBar">
-    <h1 id="headerTitle">Essence</h1>
+    <h1>Essence</h1>
     <p class="tagline">Lasciati coccolare dal gusto</p>
     <p class="sub">Pasticceria • Gelateria • Rosticceria</p>
   </header>
@@ -224,31 +185,19 @@
 
   <div class="container">
     
-    <!-- TAB 1: MODULO NUOVO ORDINE -->
+    <!-- TAB 1: MODULO ORDINE -->
     <div id="nuovo-ordine" class="tab-content active no-print">
       <form id="orderForm">
         
-        <div class="section-title">1. Dati Cliente e Consegna / Ritiro</div>
+        <div class="section-title">1. Dati Cliente e Consegna</div>
         <div class="grid-2">
-          <div class="form-group">
-            <label>Nome e Cognome *</label>
-            <input type="text" id="nomeCliente" required placeholder="Es. Mario Rossi">
-          </div>
-          <div class="form-group">
-            <label>Telefono / WhatsApp *</label>
-            <input type="tel" id="telefonoCliente" required placeholder="Es. 3331234567">
-          </div>
+          <div class="form-group"><label>Nome e Cognome *</label><input type="text" id="nomeCliente" required placeholder="Es. Mario Rossi"></div>
+          <div class="form-group"><label>Telefono / WhatsApp *</label><input type="tel" id="telefonoCliente" required placeholder="Es. 3331234567"></div>
         </div>
 
         <div class="grid-3">
-          <div class="form-group">
-            <label>Data Ritiro/Consegna *</label>
-            <input type="date" id="dataEvento" required>
-          </div>
-          <div class="form-group">
-            <label>Ora Ritiro/Consegna *</label>
-            <input type="time" id="oraEvento" required>
-          </div>
+          <div class="form-group"><label>Data Evento *</label><input type="date" id="dataEvento" required></div>
+          <div class="form-group"><label>Ora Evento *</label><input type="time" id="oraEvento" required></div>
           <div class="form-group">
             <label>Modalità *</label>
             <select id="modalita" onchange="toggleIndirizzo()">
@@ -263,7 +212,6 @@
           <input type="text" id="indirizzoConsegna" placeholder="Via, Civico, Città">
         </div>
 
-        <!-- 2. SPECIFICHE PRODOTTI -->
         <div class="section-title" style="margin-top: 15px;">2. Specifiche Prodotti</div>
         <div class="form-group">
           <label>Tipologia Generale</label>
@@ -276,9 +224,8 @@
           </div>
         </div>
 
-        <!-- PASTICCINI E VARIETÀ AMPLIATE -->
-        <div class="form-group" style="background:#fcf0f4; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
-          <label style="color:var(--primary-rose); font-size:0.85rem;">🧁 Assortimento Pasticcini & Paste Specifiche:</label>
+        <div class="form-group" style="background:#fcf0f4; padding:10px; border-radius:8px;">
+          <label style="color:var(--primary-rose);">🧁 Assortimento Pasticcini:</label>
           <div class="checkbox-group">
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Pesche"> Pesche</label>
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Pasta Frolla"> Pasta Frolla</label>
@@ -287,171 +234,142 @@
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Paste di Mandorla"> Paste di Mandorla</label>
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Bignè Pasta Choux"> Bignè Pasta Choux</label>
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Tartellette Frolla"> Tartellette Frolla</label>
-            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Cannolini di Sfoglia"> Cannolini Sfoglia</label>
-            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Pasticcini Pan di Spagna"> Pan di Spagna</label>
-            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Paste Regionali (Babà, Baci)"> Paste Regionali</label>
+            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Cannolini Sfoglia"> Cannolini Sfoglia</label>
           </div>
         </div>
 
-        <!-- DETTAGLI TORTE -->
         <div class="grid-2">
-          <div class="form-group"><label>Pan di Spagna / Base</label><input type="text" id="baseTorta" placeholder="Es. Classico, Cioccolato"></div>
-          <div class="form-group"><label>Crema / Farcitura</label><input type="text" id="cremaTorta" placeholder="Es. Chantilly, Nocciola"></div>
+          <div class="form-group"><label>Base Torta</label><input type="text" id="baseTorta" placeholder="Pan di spagna, ecc."></div>
+          <div class="form-group"><label>Crema / Farcitura</label><input type="text" id="cremaTorta" placeholder="Chantilly, Nocciola, ecc."></div>
         </div>
 
-        <div class="grid-2">
-          <div class="form-group"><label>Bagnatura</label><input type="text" id="bagnatura" placeholder="Es. Analcolica, Rum"></div>
-          <div class="form-group"><label>Inserti / Frutta</label><input type="text" id="inserti" placeholder="Es. Fragole, Gocce Choco"></div>
-        </div>
-
-        <!-- PESO E PREZZI (INSERIBILI NELL'ORDINE) -->
+        <!-- QUANTITÀ E PREZZI VISIBILI DURANTE LA COMPILAZIONE -->
         <div class="grid-4">
           <div class="form-group"><label>Quantità (Kg)</label><input type="number" step="0.01" id="quantitaKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
           <div class="form-group"><label>Prezzo al Kg (€)</label><input type="number" step="0.01" id="prezzoAlKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
-          <div class="form-group"><label>Persone / Porzioni</label><input type="number" id="porzioni"></div>
+          <div class="form-group"><label>Porzioni</label><input type="number" id="porzioni"></div>
           <div class="form-group"><label>Pezzi Totali</label><input type="number" id="pezzi"></div>
         </div>
 
         <div class="grid-2">
-          <div class="form-group">
-            <label>Forma Torta</label>
-            <select id="formaTorta">
-              <option value="Non Specificata">Non Specificata</option>
-              <option value="Tonda">Tonda</option>
-              <option value="Quadrata">Quadrata</option>
-              <option value="Rettangolare">Rettangolare</option>
-              <option value="Più Piani">Più Piani</option>
-              <option value="Sagomata">Sagomata</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Scritta sulla Torta</label>
-            <input type="text" id="scrittaTorta" placeholder="Es. Buon Compleanno Marco!">
-          </div>
+          <div class="form-group"><label>Forma Torta</label><input type="text" id="formaTorta" placeholder="Tonda, Rettangolare, ecc."></div>
+          <div class="form-group"><label>Scritta Torta</label><input type="text" id="scrittaTorta" placeholder="Auguri..."></div>
         </div>
 
-        <div class="form-group">
-          <label>Decorazioni / Tema / Dettagli</label>
-          <textarea id="decorazioni" rows="2" placeholder="Dettagli estetici, colori, personalizzazioni..."></textarea>
-        </div>
+        <div class="form-group"><label>Decorazioni / Note</label><textarea id="decorazioni" rows="2"></textarea></div>
 
-        <!-- 3. ALLERGENI -->
-        <div class="section-title" style="margin-top: 15px;">⚠️ 3. Allergeni e Intolleranze</div>
+        <div class="section-title">⚠️ 3. Allergeni</div>
         <div class="allergeni-box">
           <div class="checkbox-group">
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Glutine"> Senza Glutine</label>
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Lattosio"> Senza Lattosio</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Frutta a Guscio"> Senza Frutta a Guscio</label>
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Uova"> Senza Uova</label>
           </div>
-          <div class="form-group" style="margin-top: 8px; margin-bottom: 0;">
-            <input type="text" id="noteAllergeni" placeholder="Note specifiche allergie...">
-          </div>
         </div>
 
-        <!-- 4. CONTABILITÀ ORDINE (INSERIBILE ORA, POI SOTTOCHIAVE DOPO SALVATO) -->
-        <div class="section-title">💰 4. Contabilità & Pagamento Ordine</div>
-        <div class="grid-2" style="margin-bottom:10px;">
-          <div class="form-group">
-            <label>Stato Pagamento *</label>
-            <select id="statoPagamento" onchange="aggiornaStatoPagamento()">
-              <option value="Solo Acconto">Solo Acconto Versato</option>
-              <option value="Interamente Pagato">Interamente Pagato</option>
-              <option value="Non Pagato">Da Pagare al Ritiro</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Metodo Pagamento</label>
-            <select id="metodoPagamento">
-              <option value="Contanti">Contanti</option>
-              <option value="POS / Carta">POS / Carta</option>
-              <option value="Satispay / Bonifico">Satispay / Bonifico</option>
-            </select>
-          </div>
-        </div>
-
+        <div class="section-title">💰 4. Prezzi e Pagamento (Spariranno al salvataggio)</div>
         <div class="grid-3">
           <div class="form-group"><label>Prezzo Totale (€)</label><input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00"></div>
           <div class="form-group"><label>Acconto Versato (€)</label><input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00"></div>
           <div class="form-group"><label>Saldo Rimanente (€)</label><input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background:#e8f5e9; font-weight:bold; color:#2e7d32;"></div>
         </div>
 
-        <button type="submit" class="btn-submit" id="btnSalva">Salva Ordine Pasticceria</button>
+        <button type="submit" class="btn-submit" id="btnSalva">Conferma e Salva Ordine</button>
       </form>
     </div>
 
-    <!-- TAB 2: CALENDARIO E TORNACONTO CONTABILE -->
+    <!-- TAB 2: CALENDARIO E TORNACONTO STAMPE -->
     <div id="calendario" class="tab-content">
       
-      <!-- SBLOCCO RISERVATO MASTER -->
-      <div id="lockBoxMaster" class="lock-box no-print" style="margin-bottom:15px;">
+      <div id="lockBoxMaster" class="lock-box no-print">
         <p><strong>🔒 Area Riservata Master (Password 1234)</strong></p>
-        <p style="font-size:0.75rem; color:#666;">Sblocca per vedere i prezzi memorizzati e il Tornaconto Contabile Stampabile.</p>
-        <input type="password" id="passMaster" placeholder="Password Master (1234)">
+        <p style="font-size:0.75rem; color:#666;">Sblocca per vedere i prezzi memorizzati e i Report di Stampa.</p>
+        <input type="password" id="passMaster" placeholder="Password (1234)">
         <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Menu Master</button>
       </div>
 
-      <!-- TORNACONTO CONTABILE E REPORT STAMPABILE (SOLO MASTER) -->
+      <!-- AREA TORNACONTO & DOPPIA STAMPA -->
       <div id="boxStoricoMaster" class="sales-box" style="display:none;">
-        <div class="section-title" style="margin-bottom:8px; border-bottom-color:#2e7d32; color:#2e7d32;">
-          📊 Tornaconto Contabile & Report Vendite
-        </div>
+        <div class="section-title" style="border-bottom-color:#2e7d32; color:#2e7d32;">📊 Tornaconto & Report di Stampa</div>
         
-        <div class="grid-3 no-print" style="margin-bottom: 12px; background:#fff; padding:10px; border-radius:6px; border:1px solid #c8e6c9;">
-          <div class="form-group" style="margin:0;"><label>Data Inizio:</label><input type="date" id="repDataInizio" onchange="caricaReportContabile()"></div>
-          <div class="form-group" style="margin:0;"><label>Data Fine:</label><input type="date" id="repDataFine" onchange="caricaReportContabile()"></div>
-          <div class="form-group" style="margin:0; display:flex; align-items:flex-end;">
-            <button type="button" class="btn-submit" style="background:#2e7d32; padding:9px; font-size:0.85rem;" onclick="stampaReportContabile()">🖨️ Stampa Report Contabile</button>
+        <div class="grid-3 no-print" style="margin-bottom: 12px; background:#fff; padding:10px; border-radius:6px;">
+          <div class="form-group" style="margin:0;"><label>Data Inizio:</label><input type="date" id="repDataInizio" onchange="caricaReport()"></div>
+          <div class="form-group" style="margin:0;"><label>Data Fine:</label><input type="date" id="repDataFine" onchange="caricaReport()"></div>
+          <div class="form-group" style="margin:0; display:flex; flex-direction:column; gap:4px;">
+            <button type="button" class="btn-submit" style="background:#2e7d32; padding:6px; font-size:0.75rem;" onclick="stampaReport('contabile')">🖨️ Stampa Contabile (Con Prezzi)</button>
+            <button type="button" class="btn-submit" style="background:#00838f; padding:6px; font-size:0.75rem;" onclick="stampaReport('dipendenti')">🖨️ Stampa Dipendenti (Solo Quantità)</button>
           </div>
         </div>
 
-        <div id="reportPrintArea" class="printable-report">
-          <h3 id="reportTitolo" style="text-align:center; margin-bottom:10px; font-style:italic;">Report Contabile Pasticceria Essence</h3>
-          <p id="reportPeriodo" style="text-align:center; font-size:0.8rem; margin-bottom:10px; font-weight:bold;"></p>
-          
-          <div class="grid-3" style="margin-bottom:15px; background:#f9f9f9; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            <div>Totale Ordini: <strong id="stTotaleOrdini">0</strong></div>
-            <div>Totale Incassato: <strong id="stTotaleIncassato" style="color:#2e7d32;">€ 0.00</strong></div>
-            <div>Da Saldare: <strong id="stTotaleRimanente" style="color:#d32f2f;">€ 0.00</strong></div>
-          </div>
-
-          <div style="background:#fff; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            <strong>📋 Resoconto Tipi & Pasticcini Venduti:</strong>
-            <ul id="listaProdottiVenduti" style="margin-left:20px; font-size:0.85rem; margin-top:8px;"></ul>
+        <!-- STAMPA CONTABILE (PREZZI INCLUSI) -->
+        <div id="printContabileArea" class="printable-contabile" style="display:none;">
+          <h3 style="text-align:center;">Essence Pasticceria - Report Contabile Mensile</h3>
+          <p id="periodoTestoContabile" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
+          <br>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Cliente</th>
+                <th>Torta / Prodotto</th>
+                <th>Kg / Pezzi</th>
+                <th>Totale (€)</th>
+                <th>Acconto (€)</th>
+                <th>Saldo (€)</th>
+              </tr>
+            </thead>
+            <tbody id="tbReportContabile"></tbody>
+          </table>
+          <br>
+          <div style="text-align:right; font-weight:bold;">
+            <p>Totale Incassato (Acconti): <span id="stIncassato" style="color:#2e7d32;">€ 0.00</span></p>
+            <p>Totale da Riscuotere: <span id="stRimanente" style="color:#d32f2f;">€ 0.00</span></p>
           </div>
         </div>
+
+        <!-- STAMPA DIPENDENTI (SOLO QUANTITÀ - ZERO EURO) -->
+        <div id="printDipendentiArea" class="printable-dipendenti" style="display:none;">
+          <h3 style="text-align:center;">Essence Pasticceria - Ordini Laboratorio Dipendenti</h3>
+          <p id="periodoTestoDipendenti" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
+          <br>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Data e Ora</th>
+                <th>Cliente</th>
+                <th>Prodotto / Torta / Dettagli</th>
+                <th>Quantità (Kg / Pezzi)</th>
+                <th>Note / Allergeni</th>
+              </tr>
+            </thead>
+            <tbody id="tbReportDipendenti"></tbody>
+          </table>
+        </div>
+
       </div>
 
       <div class="section-title no-print">Calendario Prenotazioni</div>
       
       <div class="cal-header no-print">
         <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(-1)">❮ Prev</button>
-        <h3 id="calMeseAnno" style="font-size:1rem; text-transform:uppercase;">-- ----</h3>
+        <h3 id="calMeseAnno" style="font-size:1rem;">-- ----</h3>
         <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(1)">Next ❯</button>
       </div>
 
       <div class="cal-grid no-print">
-        <div class="cal-day-name">Lun</div>
-        <div class="cal-day-name">Mar</div>
-        <div class="cal-day-name">Mer</div>
-        <div class="cal-day-name">Gio</div>
-        <div class="cal-day-name">Ven</div>
-        <div class="cal-day-name">Sab</div>
-        <div class="cal-day-name">Dom</div>
+        <div class="cal-day-name">Lun</div><div class="cal-day-name">Mar</div><div class="cal-day-name">Mer</div>
+        <div class="cal-day-name">Gio</div><div class="cal-day-name">Ven</div><div class="cal-day-name">Sab</div><div class="cal-day-name">Dom</div>
       </div>
       <div id="gridGiorni" class="cal-grid no-print"></div>
 
-      <div class="section-title" style="margin-top:20px;">
-        <span>Ordini del <span id="dataSelezionataTesto">--/--/----</span></span>
-      </div>
-
+      <div class="section-title">Ordini del <span id="dataSelezionataTesto">--/--/----</span></div>
       <div id="listaOrdiniGiorno"></div>
-    </div>
 
+    </div>
   </div>
 
   <script>
-    // --- CONFIGURAZIONE FIREBASE ---
+    // Configurazione Firebase
     const firebaseConfig = {
       apiKey: "INSERISCI_LA_TUA_API_KEY",
       authDomain: "INSERISCI_IL_TUO_PROJECT_ID.firebaseapp.com",
@@ -467,6 +385,7 @@
     let isUnlocked = false;
     let currentDateObj = new Date();
     let selectedDateStr = new Date().toISOString().split('T')[0];
+    let reportDataCache = [];
 
     document.getElementById('dataEvento').value = selectedDateStr;
     document.getElementById('repDataInizio').value = selectedDateStr.substring(0, 8) + '01';
@@ -478,9 +397,7 @@
       document.getElementById(tabId).classList.add('active');
       event.target.classList.add('active');
 
-      if(tabId === 'calendario') {
-        renderCalendario();
-      }
+      if(tabId === 'calendario') renderCalendario();
     }
 
     function toggleIndirizzo() {
@@ -488,16 +405,15 @@
       document.getElementById('groupIndirizzo').style.display = (modalita === 'Consegna') ? 'block' : 'none';
     }
 
-    // PASSWORD MASTER "1234" PER SBLOCCARE PREZZI E TORNACONTO CONTABILE
     function sbloccaContabilita() {
       const pass = document.getElementById('passMaster').value;
       if (pass === '1234') {
         isUnlocked = true;
         document.getElementById('lockBoxMaster').style.display = 'none';
         document.getElementById('boxStoricoMaster').style.display = 'block';
-        caricaReportContabile();
+        caricaReport();
         caricaOrdiniDelGiorno();
-        alert('🔓 Menu Master e Prezzi Sbloccati!');
+        alert('🔓 Menu Master Sbloccato!');
       } else {
         alert('⚠️ Password Errata!');
       }
@@ -506,20 +422,7 @@
     function calcolaAutomatico() {
       const kg = parseFloat(document.getElementById('quantitaKg').value) || 0;
       const prezzoKg = parseFloat(document.getElementById('prezzoAlKg').value) || 0;
-      if (kg > 0 && prezzoKg > 0) {
-        document.getElementById('prezzoTotale').value = (kg * prezzoKg).toFixed(2);
-      }
-      calcolaSaldo();
-    }
-
-    function aggiornaStatoPagamento() {
-      const st = document.getElementById('statoPagamento').value;
-      const totale = parseFloat(document.getElementById('prezzoTotale').value) || 0;
-      if (st === 'Interamente Pagato') {
-        document.getElementById('acconto').value = totale.toFixed(2);
-      } else if (st === 'Non Pagato') {
-        document.getElementById('acconto').value = "0.00";
-      }
+      if (kg > 0 && prezzoKg > 0) document.getElementById('prezzoTotale').value = (kg * prezzoKg).toFixed(2);
       calcolaSaldo();
     }
 
@@ -529,7 +432,7 @@
       document.getElementById('saldo').value = (totale - acconto).toFixed(2);
     }
 
-    // SALVATAGGIO ORDINE CON RESET TOTALE E SCROLL IN ALTO
+    // SALVATAGGIO CON RESET GARANTITO SBLOCCATO
     document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -552,8 +455,6 @@
         pasticciniOpzioni: pasticciniSelezionati,
         base: document.getElementById('baseTorta').value,
         crema: document.getElementById('cremaTorta').value,
-        bagnatura: document.getElementById('bagnatura').value,
-        inserti: document.getElementById('inserti').value,
         quantitaKg: document.getElementById('quantitaKg').value,
         prezzoAlKg: document.getElementById('prezzoAlKg').value,
         porzioni: document.getElementById('porzioni').value,
@@ -562,36 +463,29 @@
         scritta: document.getElementById('scrittaTorta').value,
         decorazioni: document.getElementById('decorazioni').value,
         allergeni: allergeniSelezionati,
-        noteAllergeni: document.getElementById('noteAllergeni').value,
-        statoPagamento: document.getElementById('statoPagamento').value,
         prezzoTotale: document.getElementById('prezzoTotale').value || "0.00",
         acconto: document.getElementById('acconto').value || "0.00",
         saldo: document.getElementById('saldo').value || "0.00",
-        metodoPagamento: document.getElementById('metodoPagamento').value,
         stato: 'Da Preparare',
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
       try {
         await db.collection('ordini_essence').add(ordine);
-
-        // RIPORTA IN ALTO E MOSTRA MESSAGGIO DI CONFERMA
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        alert('✅ ORDINE SALVATO CON SUCCESSO!\n\nIl modulo è stato azzerato per un nuovo ordine.');
-
-        // RESET COMPLETO DEL FORM
+        alert('✅ ORDINE SALVATO CON SUCCESSO!\n\nI prezzi sono stati nascosti e il modulo è pronto per un nuovo ordine.');
         document.getElementById('orderForm').reset();
         document.getElementById('dataEvento').value = new Date().toISOString().split('T')[0];
-
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
-        alert('Errore nel salvataggio: ' + err.message);
+        alert('Attenzione: ' + err.message);
       } finally {
+        // SBLOCCO RIGOROSO DEL PULSANTE
         btnSalva.disabled = false;
-        btnSalva.innerText = "Salva Ordine Pasticceria";
+        btnSalva.innerText = "Conferma e Salva Ordine";
       }
     });
 
-    // CALENDARIO E CARICAMENTO
+    // CALENDARIO
     function cambiaMese(delta) {
       currentDateObj.setMonth(currentDateObj.getMonth() + delta);
       renderCalendario();
@@ -601,7 +495,6 @@
       const year = currentDateObj.getFullYear();
       const month = currentDateObj.getMonth();
       const mesi = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
-      
       document.getElementById('calMeseAnno').innerText = `${mesi[month]} ${year}`;
 
       const startMonth = `${year}-${String(month + 1).padStart(2, '0')}-01`;
@@ -623,7 +516,6 @@
     function disegnaGrigliaCalendario(year, month, countsByDate) {
       const grid = document.getElementById('gridGiorni');
       grid.innerHTML = '';
-
       const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
       const totalDays = new Date(year, month + 1, 0).getDate();
 
@@ -639,31 +531,19 @@
         dayDiv.className = 'cal-day';
         dayDiv.innerText = day;
 
-        const numOrdini = countsByDate[dayStr] || 0;
-        if (numOrdini > 0) {
-          dayDiv.classList.add('has-orders');
-          const badge = document.createElement('span');
-          badge.className = 'badge-count';
-          badge.innerText = `${numOrdini} ord.`;
-          dayDiv.appendChild(badge);
-        }
-
-        if (dayStr === selectedDateStr) {
-          dayDiv.classList.add('selected');
-        }
+        if (countsByDate[dayStr] > 0) dayDiv.classList.add('has-orders');
+        if (dayStr === selectedDateStr) dayDiv.classList.add('selected');
 
         dayDiv.onclick = () => {
           selectedDateStr = dayStr;
           renderCalendario();
           caricaOrdiniDelGiorno();
         };
-
         grid.appendChild(dayDiv);
       }
       caricaOrdiniDelGiorno();
     }
 
-    // CARICA E MOSTRA ORDINI DEL GIORNO
     function caricaOrdiniDelGiorno() {
       document.getElementById('dataSelezionataTesto').innerText = selectedDateStr.split('-').reverse().join('/');
       const container = document.getElementById('listaOrdiniGiorno');
@@ -673,62 +553,30 @@
         .onSnapshot(snapshot => {
           container.innerHTML = '';
           if (snapshot.empty) {
-            container.innerHTML = '<p style="text-align:center; padding: 15px; color:#888;">Nessun ordine per questo giorno.</p>';
+            container.innerHTML = '<p style="text-align:center; padding: 10px; color:#888;">Nessun ordine.</p>';
             return;
           }
 
           snapshot.forEach(doc => {
             const data = doc.data();
             const id = doc.id;
-            
-            let cardClass = '';
-            let badgeClass = 'bg-rosso';
-            let statoLabel = '🔴 DA PREPARARE';
-
-            if (data.stato === 'Pronto') {
-              cardClass = 'stato-pronto';
-              badgeClass = 'bg-arancio';
-              statoLabel = '🟡 PRONTO IN LABORATORIO';
-            } else if (data.stato === 'Consegnato') {
-              cardClass = 'stato-consegnato';
-              badgeClass = 'bg-verde';
-              statoLabel = '🟢 CONSEGNATO / RITIRATO';
-            }
-
             const card = document.createElement('div');
-            card.className = `order-card ${cardClass}`;
-            card.id = `card-${id}`;
+            card.className = `order-card ${data.stato === 'Pronto' ? 'stato-pronto' : data.stato === 'Consegnato' ? 'stato-consegnato' : ''}`;
             card.innerHTML = `
-              <div class="printable-area">
-                <div class="order-header">
-                  <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong>
-                  <span class="order-badge ${data.modalita === 'Consegna' ? 'badge-consegna' : 'badge-ritiro'}">${data.modalita}</span>
-                </div>
-                
-                <span class="badge-status-text ${badgeClass}">${statoLabel}</span>
-
-                ${data.tipologia ? `<p><strong>Tipologia:</strong> ${data.tipologia.join(', ')}</p>` : ''}
-                ${data.pasticciniOpzioni && data.pasticciniOpzioni.length > 0 ? `<p style="color:#d8829d;"><strong>🧁 Assortimento Mignon:</strong> ${data.pasticciniOpzioni.join(', ')}</p>` : ''}
-                ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
-                <p><strong>Dettagli:</strong> Base: ${data.base || '-'} | Crema: ${data.crema || '-'}</p>
-                ${data.quantitaKg ? `<p><strong>Peso:</strong> ${data.quantitaKg} Kg ${data.prezzoAlKg ? '(€'+data.prezzoAlKg+'/Kg)' : ''}</p>` : ''}
-                ${data.pezzi ? `<p><strong>Pezzi:</strong> ${data.pezzi}</p>` : ''}
-                ${data.allergeni && data.allergeni.length > 0 ? `<p style="color:#d32f2f;"><strong>⚠️ ALLERGENI:</strong> ${data.allergeni.join(', ')} ${data.noteAllergeni}</p>` : ''}
-                
-                <!-- PREZZI SOTTOCHIAVE DOPO IL SALVATAGGIO -->
-                <p class="hide-on-laboratorio-print" style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
-                  <strong>Pagamento:</strong> ${isUnlocked ? `${data.statoPagamento || 'Solo Acconto'} | Totale: €${data.prezzoTotale} | Acconto: €${data.acconto} | Saldo: €${data.saldo}` : '🔒 *** [Prezzi Sottochiave]'}
-                </p>
-              </div>
+              <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong> [${data.modalita}]
+              <p><strong>Prodotti:</strong> ${data.tipologia ? data.tipologia.join(', ') : ''} ${data.pasticciniOpzioni ? data.pasticciniOpzioni.join(', ') : ''}</p>
+              ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
+              <p><strong>Quantità:</strong> ${data.quantitaKg ? data.quantitaKg + ' Kg' : ''} ${data.pezzi ? data.pezzi + ' Pezzi' : ''}</p>
+              
+              <!-- PREZZI NASCOSTI DOPO LA CONFERMA -->
+              <p style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
+                <strong>Contabilità:</strong> ${isUnlocked ? `Totale: €${data.prezzoTotale} | Acconto: €${data.acconto} | Saldo: €${data.saldo}` : '🔒 *** [Prezzi Riservati]'}
+              </p>
 
               <div class="action-btns no-print">
-                <button class="btn-status" style="background:#f57c00;" onclick="cambiaStato('${id}', 'Pronto')">Segna Pronto 🟡</button>
-                <button class="btn-status" style="background:#2e7d32;" onclick="cambiaStato('${id}', 'Consegnato')">Segna Consegnato 🟢</button>
-                <button class="btn-status" style="background:#d32f2f;" onclick="cambiaStato('${id}', 'Da Preparare')">Da Preparare 🔴</button>
-                
-                <button class="btn-status" style="background:#00838f;" onclick="stampaLaboratorio('${id}')">🖨️ Stampa Lab (Senza Prezzi)</button>
-                ${isUnlocked ? `<button class="btn-status" style="background:#222;" onclick="stampaCompleta('${id}')">🖨️ Stampa Fiscale (Con Prezzi)</button>` : ''}
-                <button class="btn-status btn-delete" onclick="eliminaOrdine('${id}')">Elimina</button>
+                <button class="btn-status" style="background:#f57c00;" onclick="cambiaStato('${id}', 'Pronto')">Pronto 🟡</button>
+                <button class="btn-status" style="background:#2e7d32;" onclick="cambiaStato('${id}', 'Consegnato')">Consegnato 🟢</button>
+                <button class="btn-status" style="background:#d32f2f;" onclick="eliminaOrdine('${id}')">Elimina</button>
               </div>
             `;
             container.appendChild(card);
@@ -736,59 +584,76 @@
         });
     }
 
-    // TORNACONTO CONTABILE: ESTRAZIONE VENDITE E INCASSI
-    function caricaReportContabile() {
+    // GENERAZIONE TORNACONTO E REPORT CONTABILE / DIPENDENTI
+    function caricaReport() {
       if(!isUnlocked) return;
-
       const dInizio = document.getElementById('repDataInizio').value;
       const dFine = document.getElementById('repDataFine').value;
 
-      document.getElementById('reportPeriodo').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
+      document.getElementById('periodoTestoContabile').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
+      document.getElementById('periodoTestoDipendenti').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
 
       db.collection('ordini_essence')
         .where('dataEvento', '>=', dInizio)
         .where('dataEvento', '<=', dFine)
         .get().then(snapshot => {
-          let totOrdini = 0;
+          reportDataCache = [];
           let totIncassato = 0;
-          let totDaSaldare = 0;
-          const prodottiCount = {};
+          let totRimanente = 0;
+
+          const tbContabile = document.getElementById('tbReportContabile');
+          const tbDipendenti = document.getElementById('tbReportDipendenti');
+          tbContabile.innerHTML = '';
+          tbDipendenti.innerHTML = '';
 
           snapshot.forEach(doc => {
-            totOrdini++;
             const d = doc.data();
-            totIncassato += parseFloat(d.acconto) || 0;
-            totDaSaldare += parseFloat(d.saldo) || 0;
+            reportDataCache.push(d);
 
-            // Conteggio Tipologie
-            if(d.tipologia) {
-              d.tipologia.forEach(t => prodottiCount[t] = (prodottiCount[t] || 0) + 1);
-            }
-            // Conteggio Pasticcini Specifici
-            if(d.pasticciniOpzioni) {
-              d.pasticciniOpzioni.forEach(p => prodottiCount[`Mignon: ${p}`] = (prodottiCount[`Mignon: ${p}`] || 0) + 1);
-            }
+            totIncassato += parseFloat(d.acconto) || 0;
+            totRimanente += parseFloat(d.saldo) || 0;
+
+            const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni ? d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? 'Scritta: '+d.scritta : ''}`;
+            const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz' : ''}`;
+
+            // Riga Contabile (Con Euro)
+            tbContabile.innerHTML += `
+              <tr>
+                <td>${d.dataEvento}</td>
+                <td>${d.cliente}</td>
+                <td>${prodStr}</td>
+                <td>${qtaStr}</td>
+                <td>€ ${d.prezzoTotale}</td>
+                <td>€ ${d.acconto}</td>
+                <td>€ ${d.saldo}</td>
+              </tr>
+            `;
+
+            // Riga Dipendenti (Senza Euro)
+            tbDipendenti.innerHTML += `
+              <tr>
+                <td>${d.dataEvento} (h ${d.oraEvento})</td>
+                <td>${d.cliente}</td>
+                <td>${prodStr} - ${d.base || ''} ${d.crema || ''}</td>
+                <td><strong>${qtaStr}</strong></td>
+                <td>${d.allergeni ? d.allergeni.join(', ') : ''} ${d.decorazioni || ''}</td>
+              </tr>
+            `;
           });
 
-          document.getElementById('stTotaleOrdini').innerText = totOrdini;
-          document.getElementById('stTotaleIncassato').innerText = '€ ' + totIncassato.toFixed(2);
-          document.getElementById('stTotaleRimanente').innerText = '€ ' + totDaSaldare.toFixed(2);
-
-          const ul = document.getElementById('listaProdottiVenduti');
-          ul.innerHTML = '';
-          if(Object.keys(prodottiCount).length === 0) {
-            ul.innerHTML = '<li>Nessun prodotto registrato nell\'intervallo.</li>';
-          } else {
-            for(let [prod, count] of Object.entries(prodottiCount)) {
-              const li = document.createElement('li');
-              li.innerText = `${prod}: ${count} ordini/richieste`;
-              ul.appendChild(li);
-            }
-          }
+          document.getElementById('stIncassato').innerText = '€ ' + totIncassato.toFixed(2);
+          document.getElementById('stRimanente').innerText = '€ ' + totRimanente.toFixed(2);
         });
     }
 
-    function stampaReportContabile() {
+    function stampaReport(tipo) {
+      if (tipo === 'contabile') {
+        document.getElementById('printContabileArea').style.display = 'block';
+        document.getElementById('printDipendentiArea').style.display = 'none';
+      } else {
+        document.getElementById('printDipendentiArea').style.display = 'block';
+        document.getElementById('printContabileArea').style.display = 'none';
+      }
       window.print();
     }
 
@@ -797,24 +662,7 @@
     }
 
     async function eliminaOrdine(id) {
-      if (confirm('Sei sicuro di voler eliminare questo ordine?')) {
-        await db.collection('ordini_essence').doc(id).delete();
-      }
-    }
-
-    // FUNZIONI STAMPA
-    function stampaLaboratorio(id) {
-      const card = document.getElementById(`card-${id}`);
-      card.classList.add('printable-active', 'hide-on-laboratorio-print');
-      window.print();
-      card.classList.remove('printable-active', 'hide-on-laboratorio-print');
-    }
-
-    function stampaCompleta(id) {
-      const card = document.getElementById(`card-${id}`);
-      card.classList.add('printable-active');
-      window.print();
-      card.classList.remove('printable-active');
+      if (confirm('Eliminare questo ordine?')) await db.collection('ordini_essence').doc(id).delete();
     }
   </script>
 </body>
