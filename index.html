@@ -10,19 +10,6 @@
   <!-- Firebase SDK (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCT8qkUKGsd267G3xOpmw8nNwsq7yHo5iA",
-    authDomain: "essence-pasticceria.firebaseapp.com",
-    projectId: "essence-pasticceria",
-    storageBucket: "essence-pasticceria.firebasestorage.app",
-    messagingSenderId: "512310501879",
-    appId: "1:512310501879:web:ad62978974c90ca71e4ef2"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
   <style>
     :root {
       --bg-color: #faf2f4;
@@ -35,10 +22,8 @@
       --status-arancio: #f57c00;
       --status-verde: #2e7d32;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
     body { background-color: var(--bg-color); color: var(--primary-dark); padding: 10px; }
-
     header {
       text-align: center;
       margin-bottom: 15px;
@@ -50,7 +35,6 @@
     header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--primary-dark); }
     header p.tagline { font-size: 0.8rem; font-style: italic; color: #7a4353; margin-top: 2px; }
     header p.sub { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: var(--primary-rose); }
-
     .nav-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
     .tab-btn {
       background-color: var(--card-bg);
@@ -63,10 +47,8 @@
       font-size: 0.85rem;
     }
     .tab-btn.active { background-color: var(--primary-rose); color: #fff; border-color: var(--primary-rose); }
-
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-
     .container {
       max-width: 850px;
       margin: 0 auto;
@@ -75,7 +57,6 @@
       border-radius: 12px;
       border: 1px solid var(--border-color);
     }
-
     .section-title {
       font-size: 0.95rem;
       text-transform: uppercase;
@@ -89,12 +70,10 @@
       align-items: center;
       justify-content: space-between;
     }
-
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
     .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
     @media (max-width: 600px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
-
     .form-group { margin-bottom: 12px; }
     label { font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; display: block; color: #4a363c; }
     input, select, textarea {
@@ -106,13 +85,10 @@
       color: var(--primary-dark);
       font-size: 0.9rem;
     }
-
     .checkbox-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
     .checkbox-item { display: flex; align-items: center; gap: 4px; font-size: 0.8rem; background: var(--accent-soft); padding: 5px 9px; border-radius: 5px; font-weight: 600; }
     .checkbox-item input { width: auto; }
-
     .allergeni-box { border: 1px solid #e57373; background-color: #fdf2f2; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
-
     .lock-box {
       background: #f5f5f5;
       border: 1px dashed #bbb;
@@ -131,7 +107,6 @@
       font-size: 1rem;
     }
     .btn-unlock { background-color: var(--primary-dark); color: white; border: none; padding: 6px 14px; border-radius: 5px; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
-
     .btn-submit {
       width: 100%;
       background-color: var(--primary-rose);
@@ -145,7 +120,6 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-
     /* CALENDARIO */
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 15px; }
@@ -160,10 +134,8 @@
     .cal-day.has-orders { background-color: var(--status-rosso) !important; color: white !important; }
     .cal-day.selected { border: 2px solid var(--primary-dark); font-weight: 900; }
     .cal-badge { font-size: 0.65rem; background: rgba(255,255,255,0.3); border-radius: 3px; padding: 1px 3px; margin-top: 2px; }
-
     /* SEZIONE PRODUZIONE LABORATORIO */
     .pub-print-box { background: #e0f7fa; border: 1px solid #b2ebf2; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
-
     .prep-summary-box {
       background-color: #fff3e0;
       border: 1px solid #ffe0b2;
@@ -173,7 +145,6 @@
       margin-bottom: 12px;
       font-size: 0.85rem;
     }
-
     /* SCHEDE ORDINI DETTAGLIATE */
     .order-card {
       background-color: #fff; border: 1px solid var(--border-color);
@@ -192,17 +163,13 @@
       border-radius: 6px;
       margin-top: 6px;
     }
-
     .action-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
     .btn-status { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: white; }
-
     .sales-box { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 12px; border-radius: 8px; margin-bottom: 15px; margin-top: 15px; }
-
     /* TABELLE REPORT */
     table.report-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; background:#fff; }
     table.report-table th, table.report-table td { border: 1px solid #ccc; padding: 6px; text-align: left; }
     table.report-table th { background: #eee; }
-
     .allergeni-badge {
       color: #d32f2f;
       font-weight: bold;
@@ -211,7 +178,6 @@
       border-radius: 4px;
       display: inline-block;
     }
-
     /* REGOLE DI STAMPA */
     @media print {
       body * { visibility: hidden; }
@@ -223,18 +189,15 @@
   </style>
 </head>
 <body>
-
   <header id="headerBar">
     <h1>Essence</h1>
     <p class="tagline">Lasciati coccolare dal gusto</p>
     <p class="sub">Pasticceria • Gelateria • Rosticceria</p>
   </header>
-
   <div class="nav-tabs no-print">
     <button class="tab-btn active" onclick="switchTab('nuovo-ordine')">+ Nuovo Ordine</button>
     <button class="tab-btn" onclick="switchTab('calendario')">📅 Calendario & Ordini</button>
   </div>
-
   <div class="container">
     
     <!-- TAB 1: MODULO ORDINE -->
@@ -246,7 +209,6 @@
           <div class="form-group"><label>Nome e Cognome *</label><input type="text" id="nomeCliente" required placeholder="Es. Mario Rossi"></div>
           <div class="form-group"><label>Telefono / WhatsApp *</label><input type="tel" id="telefonoCliente" required placeholder="Es. 3331234567"></div>
         </div>
-
         <div class="grid-3">
           <div class="form-group"><label>Data Evento *</label><input type="date" id="dataEvento" required></div>
           <div class="form-group"><label>Ora Evento *</label><input type="time" id="oraEvento" required></div>
@@ -258,12 +220,10 @@
             </select>
           </div>
         </div>
-
         <div class="form-group" id="groupIndirizzo" style="display: none;">
           <label>Indirizzo Consegna</label>
           <input type="text" id="indirizzoConsegna" placeholder="Via, Civico, Città">
         </div>
-
         <div class="section-title" style="margin-top: 15px;">2. Specifiche Prodotti</div>
         <div class="form-group">
           <label>Tipologia Generale</label>
@@ -276,7 +236,6 @@
             <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Gelateria / Torte Gelato"> Gelateria / Torte Gelato</label>
           </div>
         </div>
-
         <div class="form-group" style="background:#fcf0f4; padding:10px; border-radius:8px;">
           <label style="color:var(--primary-rose);">🧁 Assortimento Pasticcini / Dolci:</label>
           <div class="checkbox-group">
@@ -290,26 +249,21 @@
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Cannolini Sfoglia"> Cannolini Sfoglia</label>
           </div>
         </div>
-
         <div class="grid-2">
           <div class="form-group"><label>Base Torta</label><input type="text" id="baseTorta" placeholder="Pan di spagna, sfoglia, ecc."></div>
           <div class="form-group"><label>Crema / Farcitura</label><input type="text" id="cremaTorta" placeholder="Chantilly, Nocciola, Cioccolato..."></div>
         </div>
-
         <div class="grid-4">
           <div class="form-group"><label>Quantità (Kg)</label><input type="number" step="0.01" id="quantitaKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
           <div class="form-group"><label>Prezzo al Kg (€)</label><input type="number" step="0.01" id="prezzoAlKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
           <div class="form-group"><label>Porzioni</label><input type="number" id="porzioni" placeholder="Es. 12"></div>
           <div class="form-group"><label>Pezzi Totali</label><input type="number" id="pezzi" placeholder="Es. 30"></div>
         </div>
-
         <div class="grid-2">
           <div class="form-group"><label>Forma Torta</label><input type="text" id="formaTorta" placeholder="Tonda, Cuore, Rettangolare..."></div>
           <div class="form-group"><label>Scritta Torta</label><input type="text" id="scrittaTorta" placeholder="Auguri Mario!"></div>
         </div>
-
         <div class="form-group"><label>Decorazioni / Note di Lavoro</label><textarea id="decorazioni" rows="2" placeholder="Dettagli decori, ostie, colori, candeline..."></textarea></div>
-
         <div class="section-title">⚠️ 3. Allergeni e Intolleranze</div>
         <div class="allergeni-box">
           <div class="checkbox-group">
@@ -329,18 +283,15 @@
             <input type="text" id="altreAllergie" placeholder="Es. Favismo, fragole, cacao, o specifiche intolleranze...">
           </div>
         </div>
-
         <div class="section-title">💰 4. Prezzi e Pagamento</div>
         <div class="grid-3">
           <div class="form-group"><label>Prezzo Totale (€)</label><input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00"></div>
           <div class="form-group"><label>Acconto Versato (€)</label><input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00"></div>
           <div class="form-group"><label>Saldo Rimanente (€)</label><input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background:#e8f5e9; font-weight:bold; color:#2e7d32;"></div>
         </div>
-
         <button type="submit" class="btn-submit" id="btnSalva">Conferma e Salva Ordine</button>
       </form>
     </div>
-
     <!-- TAB 2: CALENDARIO E PRODUZIONE LABORATORIO -->
     <div id="calendario" class="tab-content">
       
@@ -352,13 +303,11 @@
         <h3 id="calMeseAnno" style="font-size:1rem;">-- ----</h3>
         <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(1)">Next ❯</button>
       </div>
-
       <div class="cal-grid no-print">
         <div class="cal-day-name">Lun</div><div class="cal-day-name">Mar</div><div class="cal-day-name">Mer</div>
         <div class="cal-day-name">Gio</div><div class="cal-day-name">Ven</div><div class="cal-day-name">Sab</div><div class="cal-day-name">Dom</div>
       </div>
       <div id="gridGiorni" class="cal-grid no-print"></div>
-
       <!-- SELEZIONE DATE PER PRODUZIONE LABORATORIO -->
       <div class="pub-print-box no-print">
         <div class="section-title" style="border-bottom-color:#00838f; color:#00838f; margin-bottom:8px;">📦 Produzione Laboratorio (Seleziona Periodo)</div>
@@ -376,7 +325,6 @@
           </div>
         </div>
       </div>
-
       <!-- VISUALIZZAZIONE IMMEDIATA DEGLI ORDINI DA PREPARARE SULLO SCHERMO -->
       <div class="section-title">Ordini da Preparare dal <span id="labDataInizioTesto">--/--/----</span> al <span id="labDataFineTesto">--/--/----</span></div>
       
@@ -385,17 +333,14 @@
         <strong>🍰 RIEPILOGO DOLCI E TORTE DA PREPARARE:</strong>
         <div id="prepSummaryContent" style="margin-top:5px;">Nessun ordine presente per queste date.</div>
       </div>
-
       <!-- SCHEDE DETTAGLIATE DEI PRODOTTI DA FARE -->
       <div id="listaOrdiniGiorno"></div>
-
       <!-- AREA RISERVATA MASTER CONTABILITÀ -->
       <div id="lockBoxMaster" class="lock-box no-print">
         <p style="font-size:0.8rem; color:#777;">🔐 <em>Area Riservata Master (Gestione Incassi e Report)</em></p>
         <input type="password" id="passMaster" placeholder="••••" autocomplete="off">
         <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Report Contabile</button>
       </div>
-
       <div id="boxStoricoMaster" class="sales-box" style="display:none;">
         <div style="display:flex; justify-content:space-between; align-items:center;" class="no-print">
           <div class="section-title" style="border-bottom-color:#2e7d32; color:#2e7d32; margin-bottom:0; width:100%;">📊 Report Contabile e Incassi (Riservato Master)</div>
@@ -409,7 +354,6 @@
             <button type="button" class="btn-submit" style="background:#2e7d32;" onclick="stampaReportContabile()">🖨️ Stampa Report Contabile</button>
           </div>
         </div>
-
         <!-- VISUALIZZAZIONE COMPLETA A VIDEO DEL REPORT CONTABILE (UGUALE ALLA STAMPA) -->
         <div style="background:#fff; padding:15px; border-radius:8px; border:1px solid #c8e6c9; margin-top:10px;" class="no-print">
           <h3 style="text-align:center; color:var(--primary-dark); font-size:1.1rem; margin-bottom:4px;">Essence Pasticceria - Report Contabile Mensile</h3>
@@ -431,7 +375,6 @@
               <tbody id="tbReportContabileVideo"></tbody>
             </table>
           </div>
-
           <h4 style="margin-top:18px; margin-bottom:6px; color:var(--primary-dark); font-size:0.9rem;">Riepilogo Vendite per Tipologia:</h4>
           <div style="overflow-x:auto;">
             <table class="report-table">
@@ -445,14 +388,12 @@
               <tbody id="tbRiepilogoCategorieVideo"></tbody>
             </table>
           </div>
-
           <div style="text-align:right; font-weight:bold; margin-top:15px; font-size:0.9rem; border-top:1px dashed #ccc; padding-top:10px;">
             <p>Totale Incassato (Acconti): <span id="stIncassatoVideo" style="color:#2e7d32;">€ 0.00</span></p>
             <p>Totale da Riscuotere: <span id="stRimanenteVideo" style="color:#d32f2f;">€ 0.00</span></p>
           </div>
         </div>
       </div>
-
       <!-- AREA STAMPA CONTABILE (SOLO IN STAMPA) -->
       <div id="printContabileArea" class="printable-contabile" style="display:none;">
         <h3 style="text-align:center;">Essence Pasticceria - Report Contabile Mensile</h3>
@@ -490,7 +431,6 @@
           <p>Totale da Riscuotere: <span id="stRimanentePrint" style="color:#d32f2f;">€ 0.00</span></p>
         </div>
       </div>
-
       <!-- AREA STAMPA DIPENDENTI / LABORATORIO (SOLO IN STAMPA) -->
       <div id="printDipendentiArea" class="printable-dipendenti" style="display:none;">
         <h3 style="text-align:center;">Essence Pasticceria - Ordini Laboratorio Dipendenti</h3>
@@ -509,33 +449,45 @@
           <tbody id="tbReportDipendenti"></tbody>
         </table>
       </div>
-
     </div>
   </div>
-
   <script>
-    // Configurazione Firebase
+    // Configurazione Firebase Reale
     const firebaseConfig = {
-      apiKey: "INSERISCI_LA_TUA_API_KEY",
-      authDomain: "INSERISCI_IL_TUO_PROJECT_ID.firebaseapp.com",
-      projectId: "INSERISCI_IL_TUO_PROJECT_ID",
-      storageBucket: "INSERISCI_IL_TUO_PROJECT_ID.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef"
+      apiKey: "AIzaSyCT8qkUKGsd267G3xOpmw8nNwsq7yHo5iA",
+      authDomain: "essence-pasticceria.firebaseapp.com",
+      projectId: "essence-pasticceria",
+      storageBucket: "essence-pasticceria.firebasestorage.app",
+      messagingSenderId: "512310501879",
+      appId: "1:512310501879:web:ad62978974c90ca71e4ef2"
     };
 
     let db = null;
     try {
-      firebase.initializeApp(firebaseConfig);
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
       db = firebase.firestore();
+
+      // Sincronizzazione in TEMPO REALE H24 con Firebase Cloud
+      db.collection('ordini_essence').onSnapshot((snapshot) => {
+        const ordiniCloud = [];
+        snapshot.forEach(doc => ordiniCloud.push(doc.data()));
+        localStorage.setItem('essence_ordini', JSON.stringify(ordiniCloud));
+        renderCalendario();
+        if (typeof isUnlocked !== 'undefined' && isUnlocked) {
+          caricaReportContabile();
+        }
+      }, (err) => {
+        console.warn("Errore sincronizzazione Cloud:", err);
+      });
     } catch(e) {
-      console.warn("Firebase non ancora configurato. Utilizzo della memoria locale.");
+      console.warn("Firebase non disponibile. Utilizzo memoria locale.", e);
     }
 
     let isUnlocked = false;
     let currentDateObj = new Date();
     let selectedDateStr = new Date().toISOString().split('T')[0];
-
     document.getElementById('dataEvento').value = selectedDateStr;
     document.getElementById('dipDataInizio').value = selectedDateStr;
     document.getElementById('dipDataFine').value = selectedDateStr;
@@ -551,17 +503,14 @@
       }
       return dateStr;
     }
-
     function getOrdiniLocali() {
       return JSON.parse(localStorage.getItem('essence_ordini') || '[]');
     }
-
     function salvaOrdineLocale(ordine) {
       const ordini = getOrdiniLocali();
       ordini.push(ordine);
       localStorage.setItem('essence_ordini', JSON.stringify(ordini));
     }
-
     function gestisciBloccoMaster() {
       isUnlocked = false;
       document.getElementById('passMaster').value = '';
@@ -574,25 +523,20 @@
       document.getElementById('stIncassatoVideo').innerText = '€ 0.00';
       document.getElementById('stRimanenteVideo').innerText = '€ 0.00';
     }
-
     function switchTab(tabId) {
       gestisciBloccoMaster();
-
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       event.target.classList.add('active');
-
       if(tabId === 'calendario') {
         renderCalendario();
       }
     }
-
     function toggleIndirizzo() {
       const modalita = document.getElementById('modalita').value;
       document.getElementById('groupIndirizzo').style.display = (modalita === 'Consegna') ? 'block' : 'none';
     }
-
     function sbloccaContabilita() {
       const pass = document.getElementById('passMaster').value;
       if (pass === 'mariat93') {
@@ -606,27 +550,22 @@
         document.getElementById('passMaster').value = '';
       }
     }
-
     function calcolaAutomatico() {
       const kg = parseFloat(document.getElementById('quantitaKg').value) || 0;
       const prezzoKg = parseFloat(document.getElementById('prezzoAlKg').value) || 0;
       if (kg > 0 && prezzoKg > 0) document.getElementById('prezzoTotale').value = (kg * prezzoKg).toFixed(2);
       calcolaSaldo();
     }
-
     function calcolaSaldo() {
       const totale = parseFloat(document.getElementById('prezzoTotale').value) || 0;
       const acconto = parseFloat(document.getElementById('acconto').value) || 0;
       document.getElementById('saldo').value = (totale - acconto).toFixed(2);
     }
-
     document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const btnSalva = document.getElementById('btnSalva');
       btnSalva.disabled = true;
       btnSalva.innerText = "Salvataggio in corso...";
-
       const tipiSelezionati = Array.from(document.querySelectorAll('input[name="tipoProdotto"]:checked')).map(cb => cb.value);
       const pasticciniSelezionati = Array.from(document.querySelectorAll('input[name="pasticciniOpzioni"]:checked')).map(cb => cb.value);
       const allergeniSelezionati = Array.from(document.querySelectorAll('input[name="allergeni"]:checked')).map(cb => cb.value);
@@ -635,7 +574,6 @@
       if (altreAllergie) {
         allergeniSelezionati.push('Specifica: ' + altreAllergie);
       }
-
       const idUnico = 'ord_' + Date.now();
       const ordine = {
         id: idUnico,
@@ -662,18 +600,14 @@
         saldo: document.getElementById('saldo').value || "0.00",
         stato: 'Da Preparare'
       };
-
       salvaOrdineLocale(ordine);
-
       if (db) {
         try {
-          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 3000));
-          await Promise.race([db.collection('ordini_essence').doc(idUnico).set(ordine), timeoutPromise]);
+          await db.collection('ordini_essence').doc(idUnico).set(ordine);
         } catch (err) {
           console.warn("Salvato in locale:", err.message);
         }
       }
-
       alert('✅ ORDINE SALVATO CON SUCCESSO!');
       document.getElementById('orderForm').reset();
       document.getElementById('dataEvento').value = new Date().toISOString().split('T')[0];
@@ -682,43 +616,35 @@
       btnSalva.innerText = "Conferma e Salva Ordine";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
     function ottieniTuttiGliOrdini() {
       return getOrdiniLocali();
     }
-
     function cambiaMese(delta) {
       currentDateObj.setMonth(currentDateObj.getMonth() + delta);
       renderCalendario();
     }
-
     function renderCalendario() {
       const year = currentDateObj.getFullYear();
       const month = currentDateObj.getMonth();
       const mesi = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
       document.getElementById('calMeseAnno').innerText = `${mesi[month]} ${year}`;
-
       const ordini = ottieniTuttiGliOrdini();
       const countsByDate = {};
       ordini.forEach(o => {
         countsByDate[o.dataEvento] = (countsByDate[o.dataEvento] || 0) + 1;
       });
-
       disegnaGrigliaCalendario(year, month, countsByDate);
     }
-
     function disegnaGrigliaCalendario(year, month, countsByDate) {
       const grid = document.getElementById('gridGiorni');
       grid.innerHTML = '';
       const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
       const totalDays = new Date(year, month + 1, 0).getDate();
-
       for (let i = 0; i < firstDayIndex; i++) {
         const emptyDiv = document.createElement('div');
         emptyDiv.className = 'cal-day empty';
         grid.appendChild(emptyDiv);
       }
-
       for (let day = 1; day <= totalDays; day++) {
         const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const dayDiv = document.createElement('div');
@@ -726,10 +652,8 @@
         
         const count = countsByDate[dayStr] || 0;
         dayDiv.innerHTML = `<span>${day}</span>${count > 0 ? `<span class="cal-badge">${count} ord.</span>` : ''}`;
-
         if (count > 0) dayDiv.classList.add('has-orders');
         if (dayStr === selectedDateStr) dayDiv.classList.add('selected');
-
         dayDiv.onclick = () => {
           selectedDateStr = dayStr;
           document.getElementById('dipDataInizio').value = dayStr;
@@ -741,34 +665,28 @@
       }
       aggiornaVistaLaboratorio();
     }
-
     // CARICA GLI ORDINI DEL PERIODO E VISUALIZZA IMMEDIATAMENTE SULLO SCHERMO
     function aggiornaVistaLaboratorio() {
       const dInizio = document.getElementById('dipDataInizio').value;
       const dFine = document.getElementById('dipDataFine').value;
-
       document.getElementById('labDataInizioTesto').innerText = formattaData(dInizio);
       document.getElementById('labDataFineTesto').innerText = formattaData(dFine);
-
       const container = document.getElementById('listaOrdiniGiorno');
       const prepBox = document.getElementById('prepSummaryContent');
       
       const ordini = ottieniTuttiGliOrdini()
         .filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine)
         .sort((a,b) => (a.dataEvento + a.oraEvento).localeCompare(b.dataEvento + b.oraEvento));
-
       container.innerHTML = '';
       if (ordini.length === 0) {
         prepBox.innerHTML = '<em>Nessun dolce o torta da preparare per queste date.</em>';
         container.innerHTML = '<p style="text-align:center; padding: 15px; color:#888;">Nessuna prenotazione presente per il periodo selezionato.</p>';
         return;
       }
-
       // Riepilogo sintetico a schermo
       let summaryHtml = '<ul style="padding-left:18px; margin-top:4px;">';
       let totKg = 0;
       let totPezzi = 0;
-
       ordini.forEach(o => {
         const prod = o.tipologia ? o.tipologia.join(', ') : 'Prodotto Generico';
         const dettagli = [
@@ -779,19 +697,15 @@
           o.pezzi ? `${o.pezzi} pz` : null,
           o.porzioni ? `${o.porzioni} porz.` : null
         ].filter(Boolean).join(' | ');
-
         if (o.quantitaKg) totKg += parseFloat(o.quantitaKg) || 0;
         if (o.pezzi) totPezzi += parseInt(o.pezzi) || 0;
-
         summaryHtml += `<li style="margin-bottom:4px;"><strong>[${formattaData(o.dataEvento)} ore ${o.oraEvento}] ${o.cliente}:</strong> ${prod} (${dettagli}) ${o.scritta ? `[Scritta: "${o.scritta}"]` : ''}</li>`;
       });
-
       summaryHtml += '</ul>';
       if (totKg > 0 || totPezzi > 0) {
         summaryHtml += `<div style="margin-top:8px; font-weight:bold; color:#d8829d;">TOTALE PRODUZIONE PERIODO: ${totKg > 0 ? totKg.toFixed(2) + ' Kg ' : ''}${totPezzi > 0 ? totPezzi + ' Pezzi' : ''}</div>`;
       }
       prepBox.innerHTML = summaryHtml;
-
       // Generazione schede visive per il laboratorio
       ordini.forEach(data => {
         const card = document.createElement('div');
@@ -800,7 +714,6 @@
         const allergeniHtml = (data.allergeni && data.allergeni.length > 0) 
           ? `<span class="allergeni-badge">⚠️ Allergeni: ${data.allergeni.join(', ')}</span>` 
           : '<span style="color:#2e7d32; font-weight:600;">Nessun allergene segnalato</span>';
-
         card.innerHTML = `
           <div style="font-size:0.95rem; margin-bottom:4px;">
             <strong>📅 ${formattaData(data.dataEvento)} - Ore ${data.oraEvento}</strong> | <strong>${data.cliente}</strong> (${data.telefono})
@@ -808,7 +721,6 @@
           <div style="font-size:0.8rem; color:#555; margin-bottom:6px;">
             <strong>Modalità:</strong> ${data.modalita} ${data.indirizzoConsegna ? `(${data.indirizzoConsegna})` : ''}
           </div>
-
           <div class="order-detail-grid">
             <div><strong>Tipologia:</strong> ${data.tipologia ? data.tipologia.join(', ') : 'N/D'}</div>
             <div><strong>Assortimento Dolci:</strong> ${data.pasticciniOpzioni && data.pasticciniOpzioni.length ? data.pasticciniOpzioni.join(', ') : 'Nessuno'}</div>
@@ -817,12 +729,10 @@
             <div><strong>Forma:</strong> ${data.forma || 'Standard'}</div>
             <div><strong>Quantità:</strong> ${data.quantitaKg ? data.quantitaKg + ' Kg' : ''} ${data.pezzi ? data.pezzi + ' Pezzi' : ''} ${data.porzioni ? '(' + data.porzioni + ' porzioni)' : ''}</div>
           </div>
-
           ${data.scritta ? `<div style="margin-top:6px; font-size:0.85rem;"><strong>✍️ Scritta:</strong> "${data.scritta}"</div>` : ''}
           ${data.decorazioni ? `<div style="margin-top:4px; font-size:0.85rem;"><strong>🎨 Decorazioni/Note:</strong> ${data.decorazioni}</div>` : ''}
           
           <div style="margin-top:8px;">${allergeniHtml}</div>
-
           <div class="action-btns no-print">
             <button class="btn-status" style="background:#f57c00;" onclick="cambiaStato('${data.id}', 'Pronto')">Pronto 🟡</button>
             <button class="btn-status" style="background:#2e7d32;" onclick="cambiaStato('${data.id}', 'Consegnato')">Consegnato 🟢</button>
@@ -832,23 +742,18 @@
         container.appendChild(card);
       });
     }
-
     function stampaOrdiniDipendenti() {
       const dInizio = document.getElementById('dipDataInizio').value;
       const dFine = document.getElementById('dipDataFine').value;
-
       document.getElementById('periodoTestoDipendenti').innerText = `Dal ${formattaData(dInizio)} al ${formattaData(dFine)}`;
       const tbDipendenti = document.getElementById('tbReportDipendenti');
       tbDipendenti.innerHTML = '';
-
       const ordini = ottieniTuttiGliOrdini()
         .filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine)
         .sort((a,b) => (a.dataEvento + a.oraEvento).localeCompare(b.dataEvento + b.oraEvento));
-
       ordini.forEach(d => {
         const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni && d.pasticciniOpzioni.length ? ' - Assortimento: '+d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? ' - Scritta: "'+d.scritta+'"' : ''}`;
         const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz ' : ''}${d.porzioni ? '('+d.porzioni+' porz.)' : ''}`;
-
         tbDipendenti.innerHTML += `
           <tr>
             <td>${formattaData(d.dataEvento)} (h ${d.oraEvento})</td>
@@ -859,44 +764,34 @@
           </tr>
         `;
       });
-
       document.getElementById('printDipendentiArea').style.display = 'block';
       document.getElementById('printContabileArea').style.display = 'none';
       
       window.print();
-
-      // Pulizia immediata dopo la chiusura della finestra di stampa
       setTimeout(() => {
         document.getElementById('printDipendentiArea').style.display = 'none';
       }, 100);
     }
-
     function caricaReportContabile() {
       if (!isUnlocked) return;
       const dInizio = document.getElementById('repDataInizio').value;
       const dFine = document.getElementById('repDataFine').value;
-
       const periodoStr = `Dal ${formattaData(dInizio)} al ${formattaData(dFine)}`;
       document.getElementById('periodoTestoContabile').innerText = periodoStr;
       document.getElementById('repPeriodoVideo').innerText = periodoStr;
-
       let totIncassato = 0;
       let totRimanente = 0;
       const categorieCounter = {};
-
       const tbContabilePrint = document.getElementById('tbReportContabile');
       const tbContabileVideo = document.getElementById('tbReportContabileVideo');
       tbContabilePrint.innerHTML = '';
       tbContabileVideo.innerHTML = '';
-
       const ordini = ottieniTuttiGliOrdini()
         .filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine)
         .sort((a,b) => a.dataEvento.localeCompare(b.dataEvento));
-
       ordini.forEach(d => {
         totIncassato += parseFloat(d.acconto) || 0;
         totRimanente += parseFloat(d.saldo) || 0;
-
         if (d.tipologia && d.tipologia.length > 0) {
           d.tipologia.forEach(cat => {
             if (!categorieCounter[cat]) categorieCounter[cat] = { ordini: 0, totale: 0 };
@@ -908,10 +803,8 @@
           categorieCounter['Altro/Non specificato'].ordini += 1;
           categorieCounter['Altro/Non specificato'].totale += parseFloat(d.prezzoTotale) || 0;
         }
-
         const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni && d.pasticciniOpzioni.length ? d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? 'Scritta: '+d.scritta : ''}`.trim();
         const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz' : ''}`.trim();
-
         const rowHtml = `
           <tr>
             <td>${formattaData(d.dataEvento)}</td>
@@ -923,11 +816,9 @@
             <td>€ ${parseFloat(d.saldo || 0).toFixed(2)}</td>
           </tr>
         `;
-
         tbContabilePrint.innerHTML += rowHtml;
         tbContabileVideo.innerHTML += rowHtml;
       });
-
       let catHtml = '';
       for (const [cat, data] of Object.entries(categorieCounter)) {
         catHtml += `
@@ -938,19 +829,15 @@
           </tr>
         `;
       }
-
       document.getElementById('tbRiepilogoCategorieVideo').innerHTML = catHtml || '<tr><td colspan="3">Nessun dato</td></tr>';
       document.getElementById('tbRiepilogoCategoriePrint').innerHTML = catHtml || '<tr><td colspan="3">Nessun dato</td></tr>';
-
       const incassatoStr = '€ ' + totIncassato.toFixed(2);
       const rimanenteStr = '€ ' + totRimanente.toFixed(2);
-
       document.getElementById('stIncassatoVideo').innerText = incassatoStr;
       document.getElementById('stRimanenteVideo').innerText = rimanenteStr;
       document.getElementById('stIncassatoPrint').innerText = incassatoStr;
       document.getElementById('stRimanentePrint').innerText = rimanenteStr;
     }
-
     function stampaReportContabile() {
       if(!isUnlocked) return;
       caricaReportContabile();
@@ -958,13 +845,10 @@
       document.getElementById('printDipendentiArea').style.display = 'none';
       
       window.print();
-
-      // Pulizia immediata dopo la chiusura della finestra di stampa
       setTimeout(() => {
         document.getElementById('printContabileArea').style.display = 'none';
       }, 100);
     }
-
     function cambiaStato(id, nuovoStato) {
       const ordini = getOrdiniLocali();
       const idx = ordini.findIndex(o => o.id === id);
@@ -975,7 +859,6 @@
         aggiornaVistaLaboratorio();
       }
     }
-
     function eliminaOrdine(id) {
       if (confirm('Eliminare questo ordine?')) {
         let ordini = getOrdiniLocali();
