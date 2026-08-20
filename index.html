@@ -125,10 +125,10 @@
       background-color: var(--primary-rose);
       color: #fff;
       border: none;
-      padding: 14px;
+      padding: 12px;
       border-radius: 8px;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -149,12 +149,14 @@
     .cal-day.selected { border: 2px solid var(--primary-dark); font-weight: 900; }
     .cal-badge { font-size: 0.65rem; background: rgba(255,255,255,0.3); border-radius: 3px; padding: 1px 3px; margin-top: 2px; }
 
-    /* RIEPILOGO PRODUZIONE DEL GIORNO */
+    /* SEZIONE PRODUZIONE LABORATORIO */
+    .pub-print-box { background: #e0f7fa; border: 1px solid #b2ebf2; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+
     .prep-summary-box {
       background-color: #fff3e0;
       border: 1px solid #ffe0b2;
       border-left: 5px solid var(--status-arancio);
-      padding: 10px;
+      padding: 12px;
       border-radius: 6px;
       margin-bottom: 12px;
       font-size: 0.85rem;
@@ -183,7 +185,6 @@
     .btn-status { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: white; }
 
     .sales-box { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 12px; border-radius: 8px; margin-bottom: 15px; margin-top: 15px; }
-    .pub-print-box { background: #e0f7fa; border: 1px solid #b2ebf2; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
 
     /* TABELLE REPORT */
     table.report-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; background:#fff; }
@@ -199,7 +200,7 @@
       display: inline-block;
     }
 
-    /* REGOLE DI STAMPA SEPARATE */
+    /* REGOLE DI STAMPA */
     @media print {
       body * { visibility: hidden; }
       .printable-contabile, .printable-contabile *, .printable-dipendenti, .printable-dipendenti * { visibility: visible; }
@@ -328,21 +329,9 @@
       </form>
     </div>
 
-    <!-- TAB 2: CALENDARIO E STAMPE -->
+    <!-- TAB 2: CALENDARIO E PRODUZIONE LABORATORIO -->
     <div id="calendario" class="tab-content">
       
-      <!-- MENU STAMPA DIPENDENTI (PUBBLICO - SOLO QUANTITÀ) -->
-      <div class="pub-print-box no-print">
-        <div class="section-title" style="border-bottom-color:#00838f; color:#00838f; margin-bottom:8px;">🖨️ Stampa Ordini Laboratorio / Dipendenti (Solo Quantità)</div>
-        <div class="grid-3">
-          <div class="form-group" style="margin:0;"><label>Dal:</label><input type="date" id="dipDataInizio"></div>
-          <div class="form-group" style="margin:0;"><label>Al:</label><input type="date" id="dipDataFine"></div>
-          <div class="form-group" style="margin:0; display:flex; align-items:flex-end;">
-            <button type="button" class="btn-submit" style="background:#00838f; padding:8px; font-size:0.8rem;" onclick="stampaOrdiniDipendenti()">Stampa Laboratorio</button>
-          </div>
-        </div>
-      </div>
-
       <!-- CALENDARIO PRENOTAZIONI -->
       <div class="section-title no-print">Calendario Prenotazioni</div>
       
@@ -358,16 +347,34 @@
       </div>
       <div id="gridGiorni" class="cal-grid no-print"></div>
 
-      <!-- SEZIONE PRODUZIONE DEL GIORNO SELEZIONATO -->
-      <div class="section-title">Ordini e Produzione del <span id="dataSelezionataTesto">--/--/----</span></div>
-      
-      <!-- RIEPILOGO SINTETICO SULLA SCHERMATA PER VEDERE COSA PREPARARE -->
-      <div id="prepSummary" class="prep-summary-box">
-        <strong>🍰 RIEPILOGO DOLCI E TORTE DA PREPARARE PER QUESTA DATA:</strong>
-        <div id="prepSummaryContent" style="margin-top:5px;">Nessun ordine selezionato.</div>
+      <!-- SELEZIONE DATE PER PRODUZIONE LABORATORIO -->
+      <div class="pub-print-box no-print">
+        <div class="section-title" style="border-bottom-color:#00838f; color:#00838f; margin-bottom:8px;">📦 Produzione Laboratorio (Seleziona Periodo)</div>
+        <div class="grid-3">
+          <div class="form-group" style="margin:0;">
+            <label>Dal (GG/MM/AAAA):</label>
+            <input type="date" id="dipDataInizio" onchange="aggiornaVistaLaboratorio()">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label>Al (GG/MM/AAAA):</label>
+            <input type="date" id="dipDataFine" onchange="aggiornaVistaLaboratorio()">
+          </div>
+          <div class="form-group" style="margin:0; display:flex; align-items:flex-end;">
+            <button type="button" class="btn-submit" style="background:#00838f;" onclick="stampaOrdiniDipendenti()">🖨️ Stampa Ordine di Produzione</button>
+          </div>
+        </div>
       </div>
 
-      <!-- SCHEDE DETTAGLIATE -->
+      <!-- VISUALIZZAZIONE IMMEDIATA DEGLI ORDINI DA PREPARARE SULLO SCHERMO -->
+      <div class="section-title">Ordini da Preparare dal <span id="labDataInizioTesto">--/--/----</span> al <span id="labDataFineTesto">--/--/----</span></div>
+      
+      <!-- RIEPILOGO SINTETICO SULLA SCHERMATA -->
+      <div id="prepSummary" class="prep-summary-box">
+        <strong>🍰 RIEPILOGO DOLCI E TORTE DA PREPARARE:</strong>
+        <div id="prepSummaryContent" style="margin-top:5px;">Nessun ordine presente per queste date.</div>
+      </div>
+
+      <!-- SCHEDE DETTAGLIATE DEI PRODOTTI DA FARE -->
       <div id="listaOrdiniGiorno"></div>
 
       <!-- AREA RISERVATA MASTER CONTABILITÀ (SPOSTATA IN FONDO IN MODO DISCRETO) -->
@@ -387,7 +394,7 @@
           <div class="form-group" style="margin:0;"><label>Data Inizio:</label><input type="date" id="repDataInizio" onchange="caricaReportContabile()"></div>
           <div class="form-group" style="margin:0;"><label>Data Fine:</label><input type="date" id="repDataFine" onchange="caricaReportContabile()"></div>
           <div class="form-group" style="margin:0; display:flex; align-items:flex-end;">
-            <button type="button" class="btn-submit" style="background:#2e7d32; padding:8px; font-size:0.8rem;" onclick="stampaReportContabile()">🖨️ Stampa Report Contabile</button>
+            <button type="button" class="btn-submit" style="background:#2e7d32;" onclick="stampaReportContabile()">🖨️ Stampa Report Contabile</button>
           </div>
         </div>
 
@@ -411,7 +418,7 @@
         </div>
       </div>
 
-      <!-- AREA STAMPA CONTABILE (HIDDEN IN SCREEN, SHOWN IN PRINT) -->
+      <!-- AREA STAMPA CONTABILE -->
       <div id="printContabileArea" class="printable-contabile" style="display:none;">
         <h3 style="text-align:center;">Essence Pasticceria - Report Contabile Mensile</h3>
         <p id="periodoTestoContabile" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
@@ -449,7 +456,7 @@
         </div>
       </div>
 
-      <!-- AREA STAMPA DIPENDENTI (HIDDEN IN SCREEN, SHOWN IN PRINT) -->
+      <!-- AREA STAMPA DIPENDENTI / LABORATORIO -->
       <div id="printDipendentiArea" class="printable-dipendenti" style="display:none;">
         <h3 style="text-align:center;">Essence Pasticceria - Ordini Laboratorio Dipendenti</h3>
         <p id="periodoTestoDipendenti" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
@@ -499,6 +506,16 @@
     document.getElementById('dipDataFine').value = selectedDateStr;
     document.getElementById('repDataInizio').value = selectedDateStr.substring(0, 8) + '01';
     document.getElementById('repDataFine').value = selectedDateStr;
+
+    // Helper per formattare le date sempre in GG/MM/AAAA
+    function formattaData(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[0]}`;
+      }
+      return dateStr;
+    }
 
     function getOrdiniLocali() {
       return JSON.parse(localStorage.getItem('essence_ordini') || '[]');
@@ -679,30 +696,39 @@
 
         dayDiv.onclick = () => {
           selectedDateStr = dayStr;
+          document.getElementById('dipDataInizio').value = dayStr;
+          document.getElementById('dipDataFine').value = dayStr;
           renderCalendario();
-          caricaOrdiniDelGiorno();
+          aggiornaVistaLaboratorio();
         };
         grid.appendChild(dayDiv);
       }
-      caricaOrdiniDelGiorno();
+      aggiornaVistaLaboratorio();
     }
 
-    // CARICA GLI ORDINI E VISUALIZZA IL RIEPILOGO IMMEDIATO DEI DOLCI DA PREPARARE
-    function caricaOrdiniDelGiorno() {
-      document.getElementById('dataSelezionataTesto').innerText = selectedDateStr.split('-').reverse().join('/');
+    // CARICA GLI ORDINI DEL PERIODO E VISUALIZZA IMMEDIATAMENTE SULLO SCHERMO
+    function aggiornaVistaLaboratorio() {
+      const dInizio = document.getElementById('dipDataInizio').value;
+      const dFine = document.getElementById('dipDataFine').value;
+
+      document.getElementById('labDataInizioTesto').innerText = formattaData(dInizio);
+      document.getElementById('labDataFineTesto').innerText = formattaData(dFine);
+
       const container = document.getElementById('listaOrdiniGiorno');
       const prepBox = document.getElementById('prepSummaryContent');
       
-      const ordini = ottieniTuttiGliOrdini().filter(o => o.dataEvento === selectedDateStr);
+      const ordini = ottieniTuttiGliOrdini()
+        .filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine)
+        .sort((a,b) => (a.dataEvento + a.oraEvento).localeCompare(b.dataEvento + b.oraEvento));
 
       container.innerHTML = '';
       if (ordini.length === 0) {
-        prepBox.innerHTML = '<em>Nessun dolce o torta da preparare per questa data.</em>';
-        container.innerHTML = '<p style="text-align:center; padding: 10px; color:#888;">Nessuna prenotazione presente.</p>';
+        prepBox.innerHTML = '<em>Nessun dolce o torta da preparare per queste date.</em>';
+        container.innerHTML = '<p style="text-align:center; padding: 15px; color:#888;">Nessuna prenotazione presente per il periodo selezionato.</p>';
         return;
       }
 
-      // Generazione riepilogo dolci/torte per il laboratorio a schermo
+      // Riepilogo sintetico a schermo
       let summaryHtml = '<ul style="padding-left:18px; margin-top:4px;">';
       let totKg = 0;
       let totPezzi = 0;
@@ -721,16 +747,16 @@
         if (o.quantitaKg) totKg += parseFloat(o.quantitaKg) || 0;
         if (o.pezzi) totPezzi += parseInt(o.pezzi) || 0;
 
-        summaryHtml += `<li style="margin-bottom:3px;"><strong>h ${o.oraEvento} - ${o.cliente}:</strong> ${prod} (${dettagli}) ${o.scritta ? `[Scritta: "${o.scritta}"]` : ''}</li>`;
+        summaryHtml += `<li style="margin-bottom:4px;"><strong>[${formattaData(o.dataEvento)} ore ${o.oraEvento}] ${o.cliente}:</strong> ${prod} (${dettagli}) ${o.scritta ? `[Scritta: "${o.scritta}"]` : ''}</li>`;
       });
 
       summaryHtml += '</ul>';
       if (totKg > 0 || totPezzi > 0) {
-        summaryHtml += `<div style="margin-top:6px; font-weight:bold; color:#d8829d;">TOTALE PRODUZIONE GIORNO: ${totKg > 0 ? totKg.toFixed(2) + ' Kg ' : ''}${totPezzi > 0 ? totPezzi + ' Pezzi' : ''}</div>`;
+        summaryHtml += `<div style="margin-top:8px; font-weight:bold; color:#d8829d;">TOTALE PRODUZIONE PERIODO: ${totKg > 0 ? totKg.toFixed(2) + ' Kg ' : ''}${totPezzi > 0 ? totPezzi + ' Pezzi' : ''}</div>`;
       }
       prepBox.innerHTML = summaryHtml;
 
-      // Render delle schede ordini singole (senza euro)
+      // Generazione schede visive per il laboratorio
       ordini.forEach(data => {
         const card = document.createElement('div');
         card.className = `order-card ${data.stato === 'Pronto' ? 'stato-pronto' : data.stato === 'Consegnato' ? 'stato-consegnato' : ''}`;
@@ -741,7 +767,7 @@
 
         card.innerHTML = `
           <div style="font-size:0.95rem; margin-bottom:4px;">
-            <strong>⏰ Ore ${data.oraEvento}</strong> - <strong>${data.cliente}</strong> (${data.telefono})
+            <strong>📅 ${formattaData(data.dataEvento)} - Ore ${data.oraEvento}</strong> | <strong>${data.cliente}</strong> (${data.telefono})
           </div>
           <div style="font-size:0.8rem; color:#555; margin-bottom:6px;">
             <strong>Modalità:</strong> ${data.modalita} ${data.indirizzoConsegna ? `(${data.indirizzoConsegna})` : ''}
@@ -775,19 +801,21 @@
       const dInizio = document.getElementById('dipDataInizio').value;
       const dFine = document.getElementById('dipDataFine').value;
 
-      document.getElementById('periodoTestoDipendenti').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
+      document.getElementById('periodoTestoDipendenti').innerText = `Dal ${formattaData(dInizio)} al ${formattaData(dFine)}`;
       const tbDipendenti = document.getElementById('tbReportDipendenti');
       tbDipendenti.innerHTML = '';
 
-      const ordini = ottieniTuttiGliOrdini().filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine);
+      const ordini = ottieniTuttiGliOrdini()
+        .filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine)
+        .sort((a,b) => (a.dataEvento + a.oraEvento).localeCompare(b.dataEvento + b.oraEvento));
 
       ordini.forEach(d => {
-        const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni ? ' - Assortimento: '+d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? ' - Scritta: "'+d.scritta+'"' : ''}`;
+        const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni && d.pasticciniOpzioni.length ? ' - Assortimento: '+d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? ' - Scritta: "'+d.scritta+'"' : ''}`;
         const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz ' : ''}${d.porzioni ? '('+d.porzioni+' porz.)' : ''}`;
 
         tbDipendenti.innerHTML += `
           <tr>
-            <td>${d.dataEvento} (h ${d.oraEvento})</td>
+            <td>${formattaData(d.dataEvento)} (h ${d.oraEvento})</td>
             <td>${d.cliente} (${d.telefono})<br><small>${d.modalita} ${d.indirizzoConsegna || ''}</small></td>
             <td>${prodStr}<br><small>Base: ${d.base || 'N/D'} | Crema: ${d.crema || 'N/D'} | Forma: ${d.forma || 'N/D'}</small></td>
             <td><strong>${qtaStr}</strong></td>
@@ -806,7 +834,7 @@
       const dInizio = document.getElementById('repDataInizio').value;
       const dFine = document.getElementById('repDataFine').value;
 
-      document.getElementById('periodoTestoContabile').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
+      document.getElementById('periodoTestoContabile').innerText = `Dal ${formattaData(dInizio)} al ${formattaData(dFine)}`;
 
       let totIncassato = 0;
       let totRimanente = 0;
@@ -815,7 +843,9 @@
       const tbContabile = document.getElementById('tbReportContabile');
       tbContabile.innerHTML = '';
 
-      const ordini = ottieniTuttiGliOrdini().filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine);
+      const ordini = ottieniTuttiGliOrdini()
+        .filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine)
+        .sort((a,b) => a.dataEvento.localeCompare(b.dataEvento));
 
       ordini.forEach(d => {
         totIncassato += parseFloat(d.acconto) || 0;
@@ -838,7 +868,7 @@
 
         tbContabile.innerHTML += `
           <tr>
-            <td>${d.dataEvento}</td>
+            <td>${formattaData(d.dataEvento)}</td>
             <td>${d.cliente}</td>
             <td>${prodStr}</td>
             <td>${qtaStr}</td>
@@ -883,7 +913,7 @@
         ordini[idx].stato = nuovoStato;
         localStorage.setItem('essence_ordini', JSON.stringify(ordini));
         if (db) db.collection('ordini_essence').doc(id).update({ stato: nuovoStato }).catch(()=>{});
-        caricaOrdiniDelGiorno();
+        aggiornaVistaLaboratorio();
       }
     }
 
