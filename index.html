@@ -10,7 +10,19 @@
   <!-- Firebase SDK (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCT8qkUKGsd267G3xOpmw8nNwsq7yHo5iA",
+    authDomain: "essence-pasticceria.firebaseapp.com",
+    projectId: "essence-pasticceria",
+    storageBucket: "essence-pasticceria.firebasestorage.app",
+    messagingSenderId: "512310501879",
+    appId: "1:512310501879:web:ad62978974c90ca71e4ef2"
+  };
 
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
   <style>
     :root {
       --bg-color: #faf2f4;
