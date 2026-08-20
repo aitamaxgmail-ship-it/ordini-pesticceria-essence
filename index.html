@@ -102,20 +102,21 @@
     .allergeni-box { border: 1px solid #e57373; background-color: #fdf2f2; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
 
     .lock-box {
-      background: var(--accent-soft);
-      border: 2px dashed var(--primary-rose);
-      padding: 12px;
+      background: #f5f5f5;
+      border: 1px dashed #bbb;
+      padding: 10px;
       border-radius: 8px;
       text-align: center;
-      margin-bottom: 15px;
+      margin-top: 30px;
+      margin-bottom: 10px;
     }
     .lock-box input[type="password"] {
-      max-width: 200px;
+      max-width: 180px;
       text-align: center;
-      margin: 8px auto;
+      margin: 6px auto;
       display: block;
       letter-spacing: 3px;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     .btn-unlock { background-color: var(--primary-dark); color: white; border: none; padding: 6px 14px; border-radius: 5px; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
 
@@ -138,14 +139,26 @@
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 15px; }
     .cal-day-name { text-align: center; font-weight: 700; font-size: 0.7rem; color: var(--primary-rose); }
     .cal-day {
-      min-height: 38px;
+      min-height: 42px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem;
-      border: 1px solid var(--border-color); background-color: #f9f0f3;
+      border: 1px solid var(--border-color); background-color: #f9f0f3; position: relative;
     }
     .cal-day.empty { background: transparent; border: none; }
     .cal-day.has-orders { background-color: var(--status-rosso) !important; color: white !important; }
     .cal-day.selected { border: 2px solid var(--primary-dark); font-weight: 900; }
+    .cal-badge { font-size: 0.65rem; background: rgba(255,255,255,0.3); border-radius: 3px; padding: 1px 3px; margin-top: 2px; }
+
+    /* RIEPILOGO PRODUZIONE DEL GIORNO */
+    .prep-summary-box {
+      background-color: #fff3e0;
+      border: 1px solid #ffe0b2;
+      border-left: 5px solid var(--status-arancio);
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
 
     /* SCHEDE ORDINI DETTAGLIATE */
     .order-card {
@@ -169,7 +182,7 @@
     .action-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
     .btn-status { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: white; }
 
-    .sales-box { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+    .sales-box { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 12px; border-radius: 8px; margin-bottom: 15px; margin-top: 15px; }
     .pub-print-box { background: #e0f7fa; border: 1px solid #b2ebf2; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
 
     /* TABELLE REPORT */
@@ -252,7 +265,7 @@
         </div>
 
         <div class="form-group" style="background:#fcf0f4; padding:10px; border-radius:8px;">
-          <label style="color:var(--primary-rose);">🧁 Assortimento Pasticcini:</label>
+          <label style="color:var(--primary-rose);">🧁 Assortimento Pasticcini / Dolci:</label>
           <div class="checkbox-group">
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Pesche"> Pesche</label>
             <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Pasta Frolla"> Pasta Frolla</label>
@@ -294,9 +307,13 @@
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Arachidi"> Arachidi</label>
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Soia"> Soia</label>
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Semi di Sesamo"> Semi di Sesamo</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Solfiti / Anidride Solforosa"> Solfiti</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Solfiti"> Solfiti</label>
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senape"> Senape</label>
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Nichel"> Nichel</label>
+          </div>
+          <div class="form-group" style="margin-top:10px; margin-bottom:0;">
+            <label>Specificare Altre Allergie / Intolleranze Particolari:</label>
+            <input type="text" id="altreAllergie" placeholder="Es. Favismo, fragole, cacao, o specifiche intolleranze...">
           </div>
         </div>
 
@@ -326,12 +343,38 @@
         </div>
       </div>
 
-      <!-- AREA RISERVATA MASTER CONTABILITÀ -->
+      <!-- CALENDARIO PRENOTAZIONI -->
+      <div class="section-title no-print">Calendario Prenotazioni</div>
+      
+      <div class="cal-header no-print">
+        <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(-1)">❮ Prev</button>
+        <h3 id="calMeseAnno" style="font-size:1rem;">-- ----</h3>
+        <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(1)">Next ❯</button>
+      </div>
+
+      <div class="cal-grid no-print">
+        <div class="cal-day-name">Lun</div><div class="cal-day-name">Mar</div><div class="cal-day-name">Mer</div>
+        <div class="cal-day-name">Gio</div><div class="cal-day-name">Ven</div><div class="cal-day-name">Sab</div><div class="cal-day-name">Dom</div>
+      </div>
+      <div id="gridGiorni" class="cal-grid no-print"></div>
+
+      <!-- SEZIONE PRODUZIONE DEL GIORNO SELEZIONATO -->
+      <div class="section-title">Ordini e Produzione del <span id="dataSelezionataTesto">--/--/----</span></div>
+      
+      <!-- RIEPILOGO SINTETICO SULLA SCHERMATA PER VEDERE COSA PREPARARE -->
+      <div id="prepSummary" class="prep-summary-box">
+        <strong>🍰 RIEPILOGO DOLCI E TORTE DA PREPARARE PER QUESTA DATA:</strong>
+        <div id="prepSummaryContent" style="margin-top:5px;">Nessun ordine selezionato.</div>
+      </div>
+
+      <!-- SCHEDE DETTAGLIATE -->
+      <div id="listaOrdiniGiorno"></div>
+
+      <!-- AREA RISERVATA MASTER CONTABILITÀ (SPOSTATA IN FONDO IN MODO DISCRETO) -->
       <div id="lockBoxMaster" class="lock-box no-print">
-        <p><strong>🔒 Area Riservata Master</strong></p>
-        <p style="font-size:0.75rem; color:#666;">Inserisci la password per accedere al Report Contabile con i prezzi e incassi.</p>
+        <p style="font-size:0.8rem; color:#777;">🔐 <em>Area Riservata Master (Gestione Incassi e Report)</em></p>
         <input type="password" id="passMaster" placeholder="••••" autocomplete="off">
-        <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Contabilità</button>
+        <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Report Contabile</button>
       </div>
 
       <div id="boxStoricoMaster" class="sales-box" style="display:none;">
@@ -353,7 +396,6 @@
           <span>Totale Rimanente: <strong id="stRimanente" style="color:#d32f2f;">€ 0.00</strong></span>
         </div>
 
-        <!-- RIEPILOGO TIPOLOGIE VENDITE -->
         <div class="no-print" style="margin-top:15px; background:#fff; padding:10px; border-radius:6px;">
           <strong>📈 Analisi Categorie (Cosa si vende di più):</strong>
           <table class="report-table">
@@ -361,7 +403,7 @@
               <tr>
                 <th>Tipologia Prodotto</th>
                 <th>N° Ordini</th>
-                <th>Totale Incassato (€)</th>
+                <th>Totale Inserito (€)</th>
               </tr>
             </thead>
             <tbody id="tbRiepilogoCategorie"></tbody>
@@ -426,23 +468,6 @@
         </table>
       </div>
 
-      <div class="section-title no-print">Calendario Prenotazioni</div>
-      
-      <div class="cal-header no-print">
-        <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(-1)">❮ Prev</button>
-        <h3 id="calMeseAnno" style="font-size:1rem;">-- ----</h3>
-        <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(1)">Next ❯</button>
-      </div>
-
-      <div class="cal-grid no-print">
-        <div class="cal-day-name">Lun</div><div class="cal-day-name">Mar</div><div class="cal-day-name">Mer</div>
-        <div class="cal-day-name">Gio</div><div class="cal-day-name">Ven</div><div class="cal-day-name">Sab</div><div class="cal-day-name">Dom</div>
-      </div>
-      <div id="gridGiorni" class="cal-grid no-print"></div>
-
-      <div class="section-title">Ordini del <span id="dataSelezionataTesto">--/--/----</span></div>
-      <div id="listaOrdiniGiorno"></div>
-
     </div>
   </div>
 
@@ -485,7 +510,6 @@
       localStorage.setItem('essence_ordini', JSON.stringify(ordini));
     }
 
-    // CHIUDE E BLOCCA COMPLETAMENTE L'AREA MASTER AZZERANDO I DATI SENSIBILI
     function gestisciBloccoMaster() {
       isUnlocked = false;
       document.getElementById('passMaster').value = '';
@@ -499,7 +523,6 @@
     }
 
     function switchTab(tabId) {
-      // Ogni volta che si esce o cambia scheda, si blocca l'accesso Master e si nascondono gli incassi
       gestisciBloccoMaster();
 
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -554,6 +577,11 @@
       const tipiSelezionati = Array.from(document.querySelectorAll('input[name="tipoProdotto"]:checked')).map(cb => cb.value);
       const pasticciniSelezionati = Array.from(document.querySelectorAll('input[name="pasticciniOpzioni"]:checked')).map(cb => cb.value);
       const allergeniSelezionati = Array.from(document.querySelectorAll('input[name="allergeni"]:checked')).map(cb => cb.value);
+      
+      const altreAllergie = document.getElementById('altreAllergie').value.trim();
+      if (altreAllergie) {
+        allergeniSelezionati.push('Specifica: ' + altreAllergie);
+      }
 
       const idUnico = 'ord_' + Date.now();
       const ordine = {
@@ -642,9 +670,11 @@
         const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const dayDiv = document.createElement('div');
         dayDiv.className = 'cal-day';
-        dayDiv.innerText = day;
+        
+        const count = countsByDate[dayStr] || 0;
+        dayDiv.innerHTML = `<span>${day}</span>${count > 0 ? `<span class="cal-badge">${count} ord.</span>` : ''}`;
 
-        if (countsByDate[dayStr] > 0) dayDiv.classList.add('has-orders');
+        if (count > 0) dayDiv.classList.add('has-orders');
         if (dayStr === selectedDateStr) dayDiv.classList.add('selected');
 
         dayDiv.onclick = () => {
@@ -657,18 +687,50 @@
       caricaOrdiniDelGiorno();
     }
 
-    // MOSTRA TUTTE LE CARATTERISTICHE DELL'ORDINE SUL SCHERMO SENZA I PREZZI
+    // CARICA GLI ORDINI E VISUALIZZA IL RIEPILOGO IMMEDIATO DEI DOLCI DA PREPARARE
     function caricaOrdiniDelGiorno() {
       document.getElementById('dataSelezionataTesto').innerText = selectedDateStr.split('-').reverse().join('/');
       const container = document.getElementById('listaOrdiniGiorno');
+      const prepBox = document.getElementById('prepSummaryContent');
+      
       const ordini = ottieniTuttiGliOrdini().filter(o => o.dataEvento === selectedDateStr);
 
       container.innerHTML = '';
       if (ordini.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding: 10px; color:#888;">Nessun ordine presente per questa data.</p>';
+        prepBox.innerHTML = '<em>Nessun dolce o torta da preparare per questa data.</em>';
+        container.innerHTML = '<p style="text-align:center; padding: 10px; color:#888;">Nessuna prenotazione presente.</p>';
         return;
       }
 
+      // Generazione riepilogo dolci/torte per il laboratorio a schermo
+      let summaryHtml = '<ul style="padding-left:18px; margin-top:4px;">';
+      let totKg = 0;
+      let totPezzi = 0;
+
+      ordini.forEach(o => {
+        const prod = o.tipologia ? o.tipologia.join(', ') : 'Prodotto Generico';
+        const dettagli = [
+          o.base ? `Base: ${o.base}` : null,
+          o.crema ? `Crema: ${o.crema}` : null,
+          o.pasticciniOpzioni && o.pasticciniOpzioni.length ? `Assortimento: ${o.pasticciniOpzioni.join(', ')}` : null,
+          o.quantitaKg ? `${o.quantitaKg} Kg` : null,
+          o.pezzi ? `${o.pezzi} pz` : null,
+          o.porzioni ? `${o.porzioni} porz.` : null
+        ].filter(Boolean).join(' | ');
+
+        if (o.quantitaKg) totKg += parseFloat(o.quantitaKg) || 0;
+        if (o.pezzi) totPezzi += parseInt(o.pezzi) || 0;
+
+        summaryHtml += `<li style="margin-bottom:3px;"><strong>h ${o.oraEvento} - ${o.cliente}:</strong> ${prod} (${dettagli}) ${o.scritta ? `[Scritta: "${o.scritta}"]` : ''}</li>`;
+      });
+
+      summaryHtml += '</ul>';
+      if (totKg > 0 || totPezzi > 0) {
+        summaryHtml += `<div style="margin-top:6px; font-weight:bold; color:#d8829d;">TOTALE PRODUZIONE GIORNO: ${totKg > 0 ? totKg.toFixed(2) + ' Kg ' : ''}${totPezzi > 0 ? totPezzi + ' Pezzi' : ''}</div>`;
+      }
+      prepBox.innerHTML = summaryHtml;
+
+      // Render delle schede ordini singole (senza euro)
       ordini.forEach(data => {
         const card = document.createElement('div');
         card.className = `order-card ${data.stato === 'Pronto' ? 'stato-pronto' : data.stato === 'Consegnato' ? 'stato-consegnato' : ''}`;
@@ -687,7 +749,7 @@
 
           <div class="order-detail-grid">
             <div><strong>Tipologia:</strong> ${data.tipologia ? data.tipologia.join(', ') : 'N/D'}</div>
-            <div><strong>Pasticcini:</strong> ${data.pasticciniOpzioni && data.pasticciniOpzioni.length ? data.pasticciniOpzioni.join(', ') : 'Nessuno'}</div>
+            <div><strong>Assortimento Dolci:</strong> ${data.pasticciniOpzioni && data.pasticciniOpzioni.length ? data.pasticciniOpzioni.join(', ') : 'Nessuno'}</div>
             <div><strong>Base:</strong> ${data.base || 'N/D'}</div>
             <div><strong>Crema:</strong> ${data.crema || 'N/D'}</div>
             <div><strong>Forma:</strong> ${data.forma || 'Standard'}</div>
@@ -709,7 +771,6 @@
       });
     }
 
-    // STAMPA SOLO QUANTITÀ PER DIPENDENTI
     function stampaOrdiniDipendenti() {
       const dInizio = document.getElementById('dipDataInizio').value;
       const dFine = document.getElementById('dipDataFine').value;
@@ -740,7 +801,6 @@
       window.print();
     }
 
-    // STAMPA CONTABILE CON PREZZI E ANALISI CATEGORIE (SOLO MASTER)
     function caricaReportContabile() {
       if (!isUnlocked) return;
       const dInizio = document.getElementById('repDataInizio').value;
@@ -761,7 +821,6 @@
         totIncassato += parseFloat(d.acconto) || 0;
         totRimanente += parseFloat(d.saldo) || 0;
 
-        // Conteggio per Tipologia Prodotto (Cosa si vende di più)
         if (d.tipologia && d.tipologia.length > 0) {
           d.tipologia.forEach(cat => {
             if (!categorieCounter[cat]) categorieCounter[cat] = { ordini: 0, totale: 0 };
@@ -790,7 +849,6 @@
         `;
       });
 
-      // Rende il riepilogo categorie
       let catHtml = '';
       for (const [cat, data] of Object.entries(categorieCounter)) {
         catHtml += `
