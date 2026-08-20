@@ -204,8 +204,8 @@
     @media print {
       body * { visibility: hidden; }
       .printable-contabile, .printable-contabile *, .printable-dipendenti, .printable-dipendenti * { visibility: visible; }
-      .printable-contabile { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; }
-      .printable-dipendenti { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; }
+      .printable-contabile { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; display: block !important; }
+      .printable-dipendenti { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; display: block !important; }
       .no-print { display: none !important; }
     }
   </style>
@@ -377,7 +377,7 @@
       <!-- SCHEDE DETTAGLIATE DEI PRODOTTI DA FARE -->
       <div id="listaOrdiniGiorno"></div>
 
-      <!-- AREA RISERVATA MASTER CONTABILITÀ (SPOSTATA IN FONDO IN MODO DISCRETO) -->
+      <!-- AREA RISERVATA MASTER CONTABILITÀ -->
       <div id="lockBoxMaster" class="lock-box no-print">
         <p style="font-size:0.8rem; color:#777;">🔐 <em>Area Riservata Master (Gestione Incassi e Report)</em></p>
         <input type="password" id="passMaster" placeholder="••••" autocomplete="off">
@@ -398,27 +398,50 @@
           </div>
         </div>
 
-        <div style="text-align:right; font-weight:bold; margin-bottom:10px;" class="no-print">
-          <span>Totale Incassato (Acconti): <strong id="stIncassato" style="color:#2e7d32;">€ 0.00</strong></span> | 
-          <span>Totale Rimanente: <strong id="stRimanente" style="color:#d32f2f;">€ 0.00</strong></span>
-        </div>
+        <!-- VISUALIZZAZIONE COMPLETA A VIDEO DEL REPORT CONTABILE (UGUALE ALLA STAMPA) -->
+        <div style="background:#fff; padding:15px; border-radius:8px; border:1px solid #c8e6c9; margin-top:10px;" class="no-print">
+          <h3 style="text-align:center; color:var(--primary-dark); font-size:1.1rem; margin-bottom:4px;">Essence Pasticceria - Report Contabile Mensile</h3>
+          <p id="repPeriodoVideo" style="text-align:center; font-size:0.85rem; font-weight:bold; margin-bottom:12px; color:#555;">Dal --/--/---- al --/--/----</p>
+          
+          <div style="overflow-x:auto;">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Cliente</th>
+                  <th>Torta / Prodotto</th>
+                  <th>Kg / Pezzi</th>
+                  <th>Totale (€)</th>
+                  <th>Acconto (€)</th>
+                  <th>Saldo (€)</th>
+                </tr>
+              </thead>
+              <tbody id="tbReportContabileVideo"></tbody>
+            </table>
+          </div>
 
-        <div class="no-print" style="margin-top:15px; background:#fff; padding:10px; border-radius:6px;">
-          <strong>📈 Analisi Categorie (Cosa si vende di più):</strong>
-          <table class="report-table">
-            <thead>
-              <tr>
-                <th>Tipologia Prodotto</th>
-                <th>N° Ordini</th>
-                <th>Totale Inserito (€)</th>
-              </tr>
-            </thead>
-            <tbody id="tbRiepilogoCategorie"></tbody>
-          </table>
+          <h4 style="margin-top:18px; margin-bottom:6px; color:var(--primary-dark); font-size:0.9rem;">Riepilogo Vendite per Tipologia:</h4>
+          <div style="overflow-x:auto;">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Tipologia Prodotto</th>
+                  <th>N° Ordini</th>
+                  <th>Totale Prodotto (€)</th>
+                </tr>
+              </thead>
+              <tbody id="tbRiepilogoCategorieVideo"></tbody>
+            </table>
+          </div>
+
+          <div style="text-align:right; font-weight:bold; margin-top:15px; font-size:0.9rem; border-top:1px dashed #ccc; padding-top:10px;">
+            <p>Totale Incassato (Acconti): <span id="stIncassatoVideo" style="color:#2e7d32;">€ 0.00</span></p>
+            <p>Totale da Riscuotere: <span id="stRimanenteVideo" style="color:#d32f2f;">€ 0.00</span></p>
+          </div>
         </div>
       </div>
 
-      <!-- AREA STAMPA CONTABILE -->
+      <!-- AREA STAMPA CONTABILE (SOLO IN STAMPA) -->
       <div id="printContabileArea" class="printable-contabile" style="display:none;">
         <h3 style="text-align:center;">Essence Pasticceria - Report Contabile Mensile</h3>
         <p id="periodoTestoContabile" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
@@ -456,7 +479,7 @@
         </div>
       </div>
 
-      <!-- AREA STAMPA DIPENDENTI / LABORATORIO -->
+      <!-- AREA STAMPA DIPENDENTI / LABORATORIO (SOLO IN STAMPA) -->
       <div id="printDipendentiArea" class="printable-dipendenti" style="display:none;">
         <h3 style="text-align:center;">Essence Pasticceria - Ordini Laboratorio Dipendenti</h3>
         <p id="periodoTestoDipendenti" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
@@ -534,9 +557,10 @@
       document.getElementById('boxStoricoMaster').style.display = 'none';
       document.getElementById('printContabileArea').style.display = 'none';
       document.getElementById('tbReportContabile').innerHTML = '';
-      document.getElementById('tbRiepilogoCategorie').innerHTML = '';
-      document.getElementById('stIncassato').innerText = '€ 0.00';
-      document.getElementById('stRimanente').innerText = '€ 0.00';
+      document.getElementById('tbReportContabileVideo').innerHTML = '';
+      document.getElementById('tbRiepilogoCategorieVideo').innerHTML = '';
+      document.getElementById('stIncassatoVideo').innerText = '€ 0.00';
+      document.getElementById('stRimanenteVideo').innerText = '€ 0.00';
     }
 
     function switchTab(tabId) {
@@ -559,7 +583,7 @@
 
     function sbloccaContabilita() {
       const pass = document.getElementById('passMaster').value;
-      if (pass === '1234') {
+      if (pass === 'mariat93') {
         isUnlocked = true;
         document.getElementById('lockBoxMaster').style.display = 'none';
         document.getElementById('boxStoricoMaster').style.display = 'block';
@@ -826,7 +850,13 @@
 
       document.getElementById('printDipendentiArea').style.display = 'block';
       document.getElementById('printContabileArea').style.display = 'none';
+      
       window.print();
+
+      // Pulizia immediata dopo la chiusura della finestra di stampa
+      setTimeout(() => {
+        document.getElementById('printDipendentiArea').style.display = 'none';
+      }, 100);
     }
 
     function caricaReportContabile() {
@@ -834,14 +864,18 @@
       const dInizio = document.getElementById('repDataInizio').value;
       const dFine = document.getElementById('repDataFine').value;
 
-      document.getElementById('periodoTestoContabile').innerText = `Dal ${formattaData(dInizio)} al ${formattaData(dFine)}`;
+      const periodoStr = `Dal ${formattaData(dInizio)} al ${formattaData(dFine)}`;
+      document.getElementById('periodoTestoContabile').innerText = periodoStr;
+      document.getElementById('repPeriodoVideo').innerText = periodoStr;
 
       let totIncassato = 0;
       let totRimanente = 0;
       const categorieCounter = {};
 
-      const tbContabile = document.getElementById('tbReportContabile');
-      tbContabile.innerHTML = '';
+      const tbContabilePrint = document.getElementById('tbReportContabile');
+      const tbContabileVideo = document.getElementById('tbReportContabileVideo');
+      tbContabilePrint.innerHTML = '';
+      tbContabileVideo.innerHTML = '';
 
       const ordini = ottieniTuttiGliOrdini()
         .filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine)
@@ -863,20 +897,23 @@
           categorieCounter['Altro/Non specificato'].totale += parseFloat(d.prezzoTotale) || 0;
         }
 
-        const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni ? d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? 'Scritta: '+d.scritta : ''}`;
-        const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz' : ''}`;
+        const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni && d.pasticciniOpzioni.length ? d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? 'Scritta: '+d.scritta : ''}`.trim();
+        const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz' : ''}`.trim();
 
-        tbContabile.innerHTML += `
+        const rowHtml = `
           <tr>
             <td>${formattaData(d.dataEvento)}</td>
             <td>${d.cliente}</td>
             <td>${prodStr}</td>
-            <td>${qtaStr}</td>
-            <td>€ ${d.prezzoTotale}</td>
-            <td>€ ${d.acconto}</td>
-            <td>€ ${d.saldo}</td>
+            <td>${qtaStr || '-'}</td>
+            <td>€ ${parseFloat(d.prezzoTotale || 0).toFixed(2)}</td>
+            <td>€ ${parseFloat(d.acconto || 0).toFixed(2)}</td>
+            <td>€ ${parseFloat(d.saldo || 0).toFixed(2)}</td>
           </tr>
         `;
+
+        tbContabilePrint.innerHTML += rowHtml;
+        tbContabileVideo.innerHTML += rowHtml;
       });
 
       let catHtml = '';
@@ -889,13 +926,17 @@
           </tr>
         `;
       }
-      document.getElementById('tbRiepilogoCategorie').innerHTML = catHtml || '<tr><td colspan="3">Nessun dato</td></tr>';
+
+      document.getElementById('tbRiepilogoCategorieVideo').innerHTML = catHtml || '<tr><td colspan="3">Nessun dato</td></tr>';
       document.getElementById('tbRiepilogoCategoriePrint').innerHTML = catHtml || '<tr><td colspan="3">Nessun dato</td></tr>';
 
-      document.getElementById('stIncassato').innerText = '€ ' + totIncassato.toFixed(2);
-      document.getElementById('stRimanente').innerText = '€ ' + totRimanente.toFixed(2);
-      document.getElementById('stIncassatoPrint').innerText = '€ ' + totIncassato.toFixed(2);
-      document.getElementById('stRimanentePrint').innerText = '€ ' + totRimanente.toFixed(2);
+      const incassatoStr = '€ ' + totIncassato.toFixed(2);
+      const rimanenteStr = '€ ' + totRimanente.toFixed(2);
+
+      document.getElementById('stIncassatoVideo').innerText = incassatoStr;
+      document.getElementById('stRimanenteVideo').innerText = rimanenteStr;
+      document.getElementById('stIncassatoPrint').innerText = incassatoStr;
+      document.getElementById('stRimanentePrint').innerText = rimanenteStr;
     }
 
     function stampaReportContabile() {
@@ -903,7 +944,13 @@
       caricaReportContabile();
       document.getElementById('printContabileArea').style.display = 'block';
       document.getElementById('printDipendentiArea').style.display = 'none';
+      
       window.print();
+
+      // Pulizia immediata dopo la chiusura della finestra di stampa
+      setTimeout(() => {
+        document.getElementById('printContabileArea').style.display = 'none';
+      }, 100);
     }
 
     function cambiaStato(id, nuovoStato) {
