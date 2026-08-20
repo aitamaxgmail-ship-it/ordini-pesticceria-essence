@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Essence - Gestione Ordini & Prenotazioni</title>
+  <title>Essence Pasticceria - Gestione Ordini</title>
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
   
   <!-- Firebase SDK (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -14,80 +14,210 @@
 
   <style>
     :root {
-      --bg-color: #1e1e1e;
-      --card-bg: #2a2a2a;
-      --accent-color: #d8d8d8;
-      --text-color: #f1f1f1;
-      --input-bg: #383838;
-      --border-color: #444444;
-      --green-status: #2e7d32;
-      --red-status: #c62828;
+      --bg-color: #faf2f4;
+      --card-bg: #ffffff;
+      --primary-rose: #d8829d;
+      --primary-dark: #2b2325;
+      --accent-soft: #f4dce3;
+      --border-color: #e8c4cf;
+      --red-busy: #d32f2f;
+      --green-free: #f2e6ea;
+      --green-status: #388e3c;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-    body { background-color: var(--bg-color); color: var(--text-color); padding: 15px; }
+    body { background-color: var(--bg-color); color: var(--primary-dark); padding: 15px; }
 
-    /* Header e Logo */
-    header { text-align: center; margin-bottom: 25px; padding: 15px; border-bottom: 1px solid var(--border-color); }
-    header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; letter-spacing: 1px; color: #fff; }
-    header p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--accent-color); margin-top: 4px; }
+    /* Header e Stile Logo */
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 20px 15px;
+      background: linear-gradient(135deg, #fcedf2 0%, #f7d2de 100%);
+      border: 2px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(216, 130, 157, 0.15);
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.3rem;
+      font-style: italic;
+      color: var(--primary-dark);
+      letter-spacing: 1px;
+    }
+    header p.tagline {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: #7a4353;
+      margin-top: 2px;
+      margin-bottom: 6px;
+    }
+    header p.sub {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 700;
+      color: var(--primary-rose);
+    }
 
-    /* Navigazione Tab */
+    /* Tab Navigation */
     .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-    .tab-btn { background-color: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; }
-    .tab-btn.active { background-color: #ffffff; color: #000; border-color: #ffffff; }
+    .tab-btn {
+      background-color: var(--card-bg);
+      color: var(--primary-dark);
+      border: 2px solid var(--border-color);
+      padding: 12px 22px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background-color: var(--primary-rose);
+      color: #fff;
+      border-color: var(--primary-rose);
+      box-shadow: 0 3px 8px rgba(216, 130, 157, 0.4);
+    }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Forms e Container */
-    .container { max-width: 900px; margin: 0 auto; background-color: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
-    .section-title { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid var(--accent-color); color: #fff; display: flex; align-items: center; justify-content: space-between; }
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--primary-rose);
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-    @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width: 650px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
 
-    .form-group { margin-bottom: 15px; }
-    label { font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; display: block; color: var(--accent-color); }
-    input, select, textarea { width: 100%; padding: 10px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.95rem; }
-    input:focus, select:focus, textarea:focus { border-color: #fff; outline: none; }
+    .form-group { margin-bottom: 14px; }
+    label { font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; display: block; color: #4a363c; }
+    input, select, textarea {
+      width: 100%;
+      padding: 11px;
+      background-color: #fcf8f9;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--primary-dark);
+      font-size: 0.95rem;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary-rose); outline: none; background-color: #fff; }
 
-    .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-    .checkbox-item { display: flex; align-items: center; gap: 5px; font-size: 0.85rem; background: var(--input-bg); padding: 6px 12px; border-radius: 4px; }
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+    .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; background: var(--accent-soft); padding: 7px 12px; border-radius: 6px; font-weight: 600; }
     .checkbox-item input { width: auto; }
 
-    /* Sezione Allergeni Warning */
-    .allergeni-box { border: 1px solid #d32f2f; background-color: rgba(211, 47, 47, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    /* Allergeni Warning */
+    .allergeni-box { border: 1px solid #e57373; background-color: #fdf2f2; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
 
-    .btn-submit { width: 100%; background-color: #ffffff; color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
-    .btn-submit:hover { background-color: var(--accent-color); }
+    /* Blocco Password Contabilità */
+    .lock-box {
+      background: var(--accent-soft);
+      border: 2px dashed var(--primary-rose);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .lock-box input { max-width: 250px; text-align: center; margin: 10px auto; display: block; }
+    .btn-unlock { background-color: var(--primary-dark); color: white; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
-    /* Sezione Calendario / Ordini Giornalieri */
-    .date-picker-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; background: var(--input-bg); padding: 10px; border-radius: 8px; }
-    .order-card { background-color: var(--input-bg); border-left: 6px solid var(--red-status); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
-    .order-card.completato { border-left-color: var(--green-status); opacity: 0.8; }
-    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .order-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
-    .badge-consegna { background-color: #1976d2; color: white; }
-    .badge-ritiro { background-color: #f57c00; color: white; }
+    .btn-submit {
+      width: 100%;
+      background-color: var(--primary-rose);
+      color: #fff;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 10px rgba(216, 130, 157, 0.4);
+    }
+    .btn-submit:hover { background-color: #c46d87; }
 
-    .action-btns { display: flex; gap: 10px; margin-top: 10px; }
-    .btn-status { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
-    .btn-complete { background-color: var(--green-status); color: white; }
-    .btn-delete { background-color: var(--red-status); color: white; }
+    /* CALENDARIO */
+    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 20px; }
+    .cal-day-name { text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--primary-rose); padding: 5px 0; }
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.95rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--green-free);
+      color: var(--primary-dark);
+      position: relative;
+    }
+    .cal-day.empty { background: transparent; border: none; cursor: default; }
+    .cal-day.has-orders { background-color: var(--red-busy) !important; color: white !important; border-color: #b71c1c; }
+    .cal-day.selected { border: 3px solid var(--primary-dark); }
+    .cal-day .badge-count { font-size: 0.65rem; margin-top: 2px; background: rgba(0,0,0,0.2); padding: 1px 4px; border-radius: 4px; }
+
+    /* Ordini list */
+    .order-card {
+      background-color: #fff;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--red-busy);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .order-card.completato { border-left-color: var(--green-status); opacity: 0.85; }
+    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .order-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; color: white; }
+    .badge-consegna { background-color: #1976d2; }
+    .badge-ritiro { background-color: #e65100; }
+
+    .action-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .btn-status { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: white; }
+    .btn-complete { background-color: var(--green-status); }
+    .btn-delete { background-color: #c62828; }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Essence</h1>
-    <p>Pasticceria • Gelateria • Rosticceria</p>
+    <p class="tagline">Lasciati coccolare dal gusto</p>
+    <p class="sub">Pasticceria • Gelateria • Rosticceria</p>
   </header>
 
   <div class="nav-tabs">
     <button class="tab-btn active" onclick="switchTab('nuovo-ordine')">+ Nuovo Ordine</button>
-    <button class="tab-btn" onclick="switchTab('calendario')">📅 Ordini del Giorno</button>
+    <button class="tab-btn" onclick="switchTab('calendario')">📅 Calendario & Ordini</button>
   </div>
 
   <div class="container">
@@ -155,8 +285,10 @@
           <div class="form-group"><label>Inserti / Frutta</label><input type="text" id="inserti" placeholder="Es. Gocce di cioccolato, Fragole"></div>
         </div>
 
-        <div class="grid-3">
-          <div class="form-group"><label>Quantità (Kg)</label><input type="number" step="0.1" id="quantitaKg"></div>
+        <!-- CALCOLO PESO E PREZZO -->
+        <div class="grid-4">
+          <div class="form-group"><label>Quantità (Kg)</label><input type="number" step="0.01" id="quantitaKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
+          <div class="form-group"><label>Prezzo al Kg (€)</label><input type="number" step="0.01" id="prezzoAlKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
           <div class="form-group"><label>Persone / Porzioni</label><input type="number" id="porzioni"></div>
           <div class="form-group"><label>Pezzi</label><input type="number" id="pezzi"></div>
         </div>
@@ -198,54 +330,79 @@
           </div>
         </div>
 
-        <!-- 4. CONTABILITÀ -->
-        <div class="section-title">4. Contabilità e Conferma</div>
-        <div class="grid-3">
-          <div class="form-group">
-            <label>Prezzo Totale (€)</label>
-            <input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00">
-          </div>
-          <div class="form-group">
-            <label>Acconto Versato (€)</label>
-            <input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00">
-          </div>
-          <div class="form-group">
-            <label>Saldo Rimanente (€)</label>
-            <input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background-color: #222; font-weight: bold; color: #4caf50;">
-          </div>
+        <!-- 4. CONTABILITÀ E CONFERMA (PROTETTA) -->
+        <div class="section-title">🔒 4. Contabilità e Conferma Ordine</div>
+        
+        <div id="lockBoxContabilita" class="lock-box">
+          <p><strong>Area Riservata Contabilità</strong></p>
+          <p style="font-size:0.8rem; color:#666;">Inserisci la Password Master per visualizzare e inserire i prezzi</p>
+          <input type="password" id="passMaster" placeholder="Password Master">
+          <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca</button>
         </div>
 
-        <div class="form-group">
-          <label>Metodo Pagamento</label>
-          <select id="metodoPagamento">
-            <option value="Contanti">Contanti</option>
-            <option value="POS / Carta">POS / Carta</option>
-            <option value="Satispay / Bonifico">Satispay / Bonifico</option>
-          </select>
+        <div id="sezioneContabilita" style="display: none;">
+          <div class="grid-3">
+            <div class="form-group">
+              <label>Prezzo Totale (€)</label>
+              <input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label>Acconto Versato (€)</label>
+              <input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label>Saldo Rimanente (€)</label>
+              <input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background-color: #e8f5e9; font-weight: bold; color: #2e7d32;">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Metodo Pagamento</label>
+            <select id="metodoPagamento">
+              <option value="Contanti">Contanti</option>
+              <option value="POS / Carta">POS / Carta</option>
+              <option value="Satispay / Bonifico">Satispay / Bonifico</option>
+            </select>
+          </div>
         </div>
 
         <button type="submit" class="btn-submit">Salva Ordine su Cloud</button>
       </form>
     </div>
 
-    <!-- TAB 2: CALENDARIO E GIORNO -->
+    <!-- TAB 2: CALENDARIO E LISTA GIORNALIERA -->
     <div id="calendario" class="tab-content">
-      <div class="section-title">Ordini per Data</div>
-      <div class="date-picker-bar">
-        <label style="margin:0;">Seleziona Giorno:</label>
-        <input type="date" id="searchDate" onchange="caricaOrdiniDelGiorno()">
+      <div class="section-title">Calendario Prenotazioni</div>
+      
+      <div class="cal-header">
+        <button class="tab-btn" style="padding: 5px 12px;" onclick="cambiaMese(-1)">❮ Precedente</button>
+        <h3 id="calMeseAnno" style="font-size: 1.1rem; text-transform: uppercase;">Agosto 2026</h3>
+        <button class="tab-btn" style="padding: 5px 12px;" onclick="cambiaMese(1)">Successivo ❯</button>
       </div>
 
-      <div id="listaOrdiniGiorno">
-        <!-- Gli ordini verranno inseriti qui da JS -->
+      <div class="cal-grid">
+        <div class="cal-day-name">Lun</div>
+        <div class="cal-day-name">Mar</div>
+        <div class="cal-day-name">Mer</div>
+        <div class="cal-day-name">Gio</div>
+        <div class="cal-day-name">Ven</div>
+        <div class="cal-day-name">Sab</div>
+        <div class="cal-day-name">Dom</div>
       </div>
+      <div id="gridGiorni" class="cal-grid"></div>
+
+      <div class="section-title" style="margin-top: 25px;">
+        <span>Ordini per il <span id="dataSelezionataTesto">--/--/----</span></span>
+        <button class="btn-unlock" style="font-size:0.75rem;" onclick="sbloccaContabilita()">Sblocca Prezzi 🔒</button>
+      </div>
+
+      <div id="listaOrdiniGiorno"></div>
     </div>
 
   </div>
 
   <script>
     // --- CONFIGURAZIONE FIREBASE ---
-    // Incolla qui le tue chiavi del progetto Firebase
     const firebaseConfig = {
       apiKey: "INSERISCI_LA_TUA_API_KEY",
       authDomain: "INSERISCI_IL_TUO_PROJECT_ID.firebaseapp.com",
@@ -258,35 +415,64 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Imposta la data di oggi come default negli input
-    const todayStr = new Date().toISOString().split('T')[0];
-    document.getElementById('dataEvento').value = todayStr;
-    document.getElementById('searchDate').value = todayStr;
+    let isUnlocked = false;
+    let currentDateObj = new Date();
+    let selectedDateStr = new Date().toISOString().split('T')[0];
+    let allOrdersMonth = {};
 
-    // Cambia Tab
+    document.getElementById('dataEvento').value = selectedDateStr;
+
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       event.target.classList.add('active');
 
-      if(tabId === 'calendario') caricaOrdiniDelGiorno();
+      if(tabId === 'calendario') {
+        renderCalendario();
+      }
     }
 
-    // Mostra/Nascondi Indirizzo
     function toggleIndirizzo() {
       const modalita = document.getElementById('modalita').value;
       document.getElementById('groupIndirizzo').style.display = (modalita === 'Consegna') ? 'block' : 'none';
     }
 
-    // Calcolo Automatico Saldo
+    // Sblocco Password Master mariat93
+    function sbloccaContabilita() {
+      if(isUnlocked) return;
+      const pass = document.getElementById('passMaster').value || prompt('Inserisci Password Master:');
+      if (pass === 'mariat93') {
+        isUnlocked = true;
+        document.getElementById('lockBoxContabilita').style.display = 'none';
+        document.getElementById('sezioneContabilita').style.display = 'block';
+        if(document.getElementById('calendario').classList.contains('active')) {
+          caricaOrdiniDelGiorno();
+        }
+      } else {
+        alert('Password Errata!');
+      }
+    }
+
+    // Calcoli Automatici (Prezzo al Kg & Saldo)
+    function calcolaAutomatico() {
+      const kg = parseFloat(document.getElementById('quantitaKg').value) || 0;
+      const prezzoKg = parseFloat(document.getElementById('prezzoAlKg').value) || 0;
+      
+      if (kg > 0 && prezzoKg > 0) {
+        const totale = kg * prezzoKg;
+        document.getElementById('prezzoTotale').value = totale.toFixed(2);
+      }
+      calcolaSaldo();
+    }
+
     function calcolaSaldo() {
       const totale = parseFloat(document.getElementById('prezzoTotale').value) || 0;
       const acconto = parseFloat(document.getElementById('acconto').value) || 0;
       document.getElementById('saldo').value = (totale - acconto).toFixed(2);
     }
 
-    // Salvataggio Ordine su Firebase
+    // Salvataggio Ordine
     document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -306,6 +492,7 @@
         bagnatura: document.getElementById('bagnatura').value,
         inserti: document.getElementById('inserti').value,
         quantitaKg: document.getElementById('quantitaKg').value,
+        prezzoAlKg: document.getElementById('prezzoAlKg').value,
         porzioni: document.getElementById('porzioni').value,
         pezzi: document.getElementById('pezzi').value,
         forma: document.getElementById('formaTorta').value,
@@ -313,35 +500,108 @@
         decorazioni: document.getElementById('decorazioni').value,
         allergeni: allergeniSelezionati,
         noteAllergeni: document.getElementById('noteAllergeni').value,
-        prezzoTotale: document.getElementById('prezzoTotale').value,
-        acconto: document.getElementById('acconto').value,
-        saldo: document.getElementById('saldo').value,
+        prezzoTotale: document.getElementById('prezzoTotale').value || "0.00",
+        acconto: document.getElementById('acconto').value || "0.00",
+        saldo: document.getElementById('saldo').value || "0.00",
         metodoPagamento: document.getElementById('metodoPagamento').value,
-        stato: 'Da Preparare', // 'Da Preparare' (Rosso) o 'Pronto/Consegnato' (Verde)
+        stato: 'Da Preparare',
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
       try {
         await db.collection('ordini_essence').add(ordine);
-        alert('Ordine registrato con successo!');
+        alert('Ordine Essence registrato!');
         document.getElementById('orderForm').reset();
-        document.getElementById('dataEvento').value = todayStr;
+        document.getElementById('dataEvento').value = selectedDateStr;
       } catch (err) {
-        alert('Errore nel salvataggio: ' + err.message);
+        alert('Errore: ' + err.message);
       }
     });
 
-    // Caricamento Ordini in Tempo Reale
+    // CALENDARIO MENSELE
+    function cambiaMese(delta) {
+      currentDateObj.setMonth(currentDateObj.getMonth() + delta);
+      renderCalendario();
+    }
+
+    function renderCalendario() {
+      const year = currentDateObj.getFullYear();
+      const month = currentDateObj.getMonth();
+      const mesi = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+      
+      document.getElementById('calMeseAnno').innerText = `${mesi[month]} ${year}`;
+
+      // Carica tutti gli ordini del mese corrente da Firestore
+      const startMonth = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+      const endMonth = `${year}-${String(month + 1).padStart(2, '0')}-31`;
+
+      db.collection('ordini_essence')
+        .where('dataEvento', '>=', startMonth)
+        .where('dataEvento', '<=', endMonth)
+        .onSnapshot(snapshot => {
+          allOrdersMonth = {};
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            allOrdersMonth[data.dataEvento] = (allOrdersMonth[data.dataEvento] || 0) + 1;
+          });
+          disegnaGrigliaCalendario(year, month);
+        });
+    }
+
+    function disegnaGrigliaCalendario(year, month) {
+      const grid = document.getElementById('gridGiorni');
+      grid.innerHTML = '';
+
+      const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7; // Lunedì = 0
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'cal-day empty';
+        grid.appendChild(emptyDiv);
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'cal-day';
+        dayDiv.innerText = day;
+
+        const numOrdini = allOrdersMonth[dayStr] || 0;
+        if (numOrdini > 0) {
+          dayDiv.classList.add('has-orders');
+          const badge = document.createElement('span');
+          badge.className = 'badge-count';
+          badge.innerText = `${numOrdini} ord.`;
+          dayDiv.appendChild(badge);
+        }
+
+        if (dayStr === selectedDateStr) {
+          dayDiv.classList.add('selected');
+        }
+
+        dayDiv.onclick = () => {
+          selectedDateStr = dayStr;
+          renderCalendario();
+          caricaOrdiniDelGiorno();
+        };
+
+        grid.appendChild(dayDiv);
+      }
+      caricaOrdiniDelGiorno();
+    }
+
+    // Caricamento Ordini per la data selezionata
     function caricaOrdiniDelGiorno() {
-      const dataScelta = document.getElementById('searchDate').value;
+      document.getElementById('dataSelezionataTesto').innerText = selectedDateStr.split('-').reverse().join('/');
       const container = document.getElementById('listaOrdiniGiorno');
 
       db.collection('ordini_essence')
-        .where('dataEvento', '==', dataScelta)
+        .where('dataEvento', '==', selectedDateStr)
         .onSnapshot(snapshot => {
           container.innerHTML = '';
           if (snapshot.empty) {
-            container.innerHTML = '<p style="text-align:center; padding: 20px; color:#888;">Nessun ordine presente per questa data.</p>';
+            container.innerHTML = '<p style="text-align:center; padding: 15px; color:#888;">Nessun ordine per questo giorno.</p>';
             return;
           }
 
@@ -357,15 +617,19 @@
                 <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong>
                 <span class="order-badge ${data.modalita === 'Consegna' ? 'badge-consegna' : 'badge-ritiro'}">${data.modalita}</span>
               </div>
-              <p><strong>Prodotto:</strong> ${data.tipologia.join(', ')} - ${data.forma}</p>
+              <p><strong>Prodotto:</strong> ${data.tipologia.join(', ')} - Forma: ${data.forma}</p>
               ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
               <p><strong>Dettagli:</strong> Base: ${data.base || '-'} | Crema: ${data.crema || '-'}</p>
-              ${data.allergeni.length > 0 ? `<p style="color:#ff6262;"><strong>⚠️ ALLERGENI:</strong> ${data.allergeni.join(', ')} ${data.noteAllergeni}</p>` : ''}
-              <p><strong>Saldo da Incassare:</strong> € ${data.saldo} (${data.metodoPagamento})</p>
+              ${data.quantitaKg ? `<p><strong>Peso:</strong> ${data.quantitaKg} Kg ${data.prezzoAlKg ? '(@ €'+data.prezzoAlKg+'/kg)' : ''}</p>` : ''}
+              ${data.allergeni.length > 0 ? `<p style="color:#d32f2f;"><strong>⚠️ ALLERGENI:</strong> ${data.allergeni.join(', ')} ${data.noteAllergeni}</p>` : ''}
               
+              <p style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
+                <strong>Saldo:</strong> ${isUnlocked ? '€ ' + data.saldo + ' (' + data.metodoPagamento + ')' : '🔒 *** [Riservato]'}
+              </p>
+
               <div class="action-btns">
                 <button class="btn-status btn-complete" onclick="toggleStato('${id}', '${data.stato}')">
-                  ${isCompletato ? 'Segna come Da Preparare (Rosso)' : 'Segna come Pronto/Consegnato (Verde)'}
+                  ${isCompletato ? 'Segna Da Preparare' : 'Segna Pronto / Consegnato'}
                 </button>
                 <button class="btn-status btn-delete" onclick="eliminaOrdine('${id}')">Elimina</button>
               </div>
@@ -375,13 +639,11 @@
         });
     }
 
-    // Cambia stato ordine (Rosso/Verde)
     async function toggleStato(id, statoAttuale) {
       const nuovoStato = (statoAttuale === 'Da Preparare') ? 'Pronto/Consegnato' : 'Da Preparare';
       await db.collection('ordini_essence').doc(id).update({ stato: nuovoStato });
     }
 
-    // Elimina ordine
     async function eliminaOrdine(id) {
       if (confirm('Sei sicuro di voler eliminare questo ordine?')) {
         await db.collection('ordini_essence').doc(id).delete();
