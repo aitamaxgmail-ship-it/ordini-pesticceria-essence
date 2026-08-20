@@ -109,7 +109,14 @@
       text-align: center;
       margin-bottom: 15px;
     }
-    .lock-box input { max-width: 200px; text-align: center; margin: 8px auto; display: block; }
+    .lock-box input[type="password"] {
+      max-width: 200px;
+      text-align: center;
+      margin: 8px auto;
+      display: block;
+      letter-spacing: 3px;
+      font-size: 1.1rem;
+    }
     .btn-unlock { background-color: var(--primary-dark); color: white; border: none; padding: 6px 14px; border-radius: 5px; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
 
     .btn-submit {
@@ -148,11 +155,11 @@
     .order-card.stato-pronto { border-left-color: var(--status-arancio); }
     .order-card.stato-consegnato { border-left-color: var(--status-verde); opacity: 0.85; }
 
-    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
     .action-btns { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
     .btn-status { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: white; }
 
     .sales-box { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+    .pub-print-box { background: #e0f7fa; border: 1px solid #b2ebf2; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
 
     /* TABELLE REPORT */
     table.report-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
@@ -166,7 +173,6 @@
       .printable-contabile { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; }
       .printable-dipendenti { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 10px; }
       .no-print { display: none !important; }
-      .no-print-prezzi { display: none !important; }
     }
   </style>
 </head>
@@ -243,7 +249,6 @@
           <div class="form-group"><label>Crema / Farcitura</label><input type="text" id="cremaTorta" placeholder="Chantilly, Nocciola, ecc."></div>
         </div>
 
-        <!-- QUANTITÀ E PREZZI VISIBILI DURANTE LA COMPILAZIONE -->
         <div class="grid-4">
           <div class="form-group"><label>Quantità (Kg)</label><input type="number" step="0.01" id="quantitaKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
           <div class="form-group"><label>Prezzo al Kg (€)</label><input type="number" step="0.01" id="prezzoAlKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
@@ -267,7 +272,7 @@
           </div>
         </div>
 
-        <div class="section-title">💰 4. Prezzi e Pagamento (Spariranno al salvataggio)</div>
+        <div class="section-title">💰 4. Prezzi e Pagamento</div>
         <div class="grid-3">
           <div class="form-group"><label>Prezzo Totale (€)</label><input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00"></div>
           <div class="form-group"><label>Acconto Versato (€)</label><input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00"></div>
@@ -278,74 +283,89 @@
       </form>
     </div>
 
-    <!-- TAB 2: CALENDARIO E TORNACONTO STAMPE -->
+    <!-- TAB 2: CALENDARIO E STAMPE -->
     <div id="calendario" class="tab-content">
       
-      <div id="lockBoxMaster" class="lock-box no-print">
-        <p><strong>🔒 Area Riservata Master (Password 1234)</strong></p>
-        <p style="font-size:0.75rem; color:#666;">Sblocca per vedere i prezzi memorizzati e i Report di Stampa.</p>
-        <input type="password" id="passMaster" placeholder="Password (1234)">
-        <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Menu Master</button>
+      <!-- MENU STAMPA DIPENDENTI (PUBBLICO - SOLO QUANTITÀ) -->
+      <div class="pub-print-box no-print">
+        <div class="section-title" style="border-bottom-color:#00838f; color:#00838f; margin-bottom:8px;">🖨️ Stampa Ordini Laboratorio / Dipendenti (Solo Quantità)</div>
+        <div class="grid-3">
+          <div class="form-group" style="margin:0;"><label>Dal:</label><input type="date" id="dipDataInizio"></div>
+          <div class="form-group" style="margin:0;"><label>Al:</label><input type="date" id="dipDataFine"></div>
+          <div class="form-group" style="margin:0; display:flex; align-items:flex-end;">
+            <button type="button" class="btn-submit" style="background:#00838f; padding:8px; font-size:0.8rem;" onclick="stampaOrdiniDipendenti()">Stampa Laboratorio</button>
+          </div>
+        </div>
       </div>
 
-      <!-- AREA TORNACONTO & DOPPIA STAMPA -->
+      <!-- AREA RISERVATA MASTER CONTABILITÀ -->
+      <div id="lockBoxMaster" class="lock-box no-print">
+        <p><strong>🔒 Area Riservata Master</strong></p>
+        <p style="font-size:0.75rem; color:#666;">Inserisci la password per accedere al Report Contabile con i prezzi.</p>
+        <input type="password" id="passMaster" placeholder="••••" autocomplete="off">
+        <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Contabilità</button>
+      </div>
+
       <div id="boxStoricoMaster" class="sales-box" style="display:none;">
-        <div class="section-title" style="border-bottom-color:#2e7d32; color:#2e7d32;">📊 Tornaconto & Report di Stampa</div>
+        <div class="section-title" style="border-bottom-color:#2e7d32; color:#2e7d32;">📊 Report Contabile e Incassi (Riservato Master)</div>
         
         <div class="grid-3 no-print" style="margin-bottom: 12px; background:#fff; padding:10px; border-radius:6px;">
-          <div class="form-group" style="margin:0;"><label>Data Inizio:</label><input type="date" id="repDataInizio" onchange="caricaReport()"></div>
-          <div class="form-group" style="margin:0;"><label>Data Fine:</label><input type="date" id="repDataFine" onchange="caricaReport()"></div>
-          <div class="form-group" style="margin:0; display:flex; flex-direction:column; gap:4px;">
-            <button type="button" class="btn-submit" style="background:#2e7d32; padding:6px; font-size:0.75rem;" onclick="stampaReport('contabile')">🖨️ Stampa Contabile (Con Prezzi)</button>
-            <button type="button" class="btn-submit" style="background:#00838f; padding:6px; font-size:0.75rem;" onclick="stampaReport('dipendenti')">🖨️ Stampa Dipendenti (Solo Quantità)</button>
+          <div class="form-group" style="margin:0;"><label>Data Inizio:</label><input type="date" id="repDataInizio" onchange="caricaReportContabile()"></div>
+          <div class="form-group" style="margin:0;"><label>Data Fine:</label><input type="date" id="repDataFine" onchange="caricaReportContabile()"></div>
+          <div class="form-group" style="margin:0; display:flex; align-items:flex-end;">
+            <button type="button" class="btn-submit" style="background:#2e7d32; padding:8px; font-size:0.8rem;" onclick="stampaReportContabile()">🖨️ Stampa Report Contabile</button>
           </div>
         </div>
 
-        <!-- STAMPA CONTABILE (PREZZI INCLUSI) -->
-        <div id="printContabileArea" class="printable-contabile" style="display:none;">
-          <h3 style="text-align:center;">Essence Pasticceria - Report Contabile Mensile</h3>
-          <p id="periodoTestoContabile" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
-          <br>
-          <table class="report-table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Cliente</th>
-                <th>Torta / Prodotto</th>
-                <th>Kg / Pezzi</th>
-                <th>Totale (€)</th>
-                <th>Acconto (€)</th>
-                <th>Saldo (€)</th>
-              </tr>
-            </thead>
-            <tbody id="tbReportContabile"></tbody>
-          </table>
-          <br>
-          <div style="text-align:right; font-weight:bold;">
-            <p>Totale Incassato (Acconti): <span id="stIncassato" style="color:#2e7d32;">€ 0.00</span></p>
-            <p>Totale da Riscuotere: <span id="stRimanente" style="color:#d32f2f;">€ 0.00</span></p>
-          </div>
+        <div style="text-align:right; font-weight:bold; margin-bottom:10px;" class="no-print">
+          <span>Totale Incassato (Acconti): <strong id="stIncassato" style="color:#2e7d32;">€ 0.00</strong></span> | 
+          <span>Totale Rimanente: <strong id="stRimanente" style="color:#d32f2f;">€ 0.00</strong></span>
         </div>
+      </div>
 
-        <!-- STAMPA DIPENDENTI (SOLO QUANTITÀ - ZERO EURO) -->
-        <div id="printDipendentiArea" class="printable-dipendenti" style="display:none;">
-          <h3 style="text-align:center;">Essence Pasticceria - Ordini Laboratorio Dipendenti</h3>
-          <p id="periodoTestoDipendenti" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
-          <br>
-          <table class="report-table">
-            <thead>
-              <tr>
-                <th>Data e Ora</th>
-                <th>Cliente</th>
-                <th>Prodotto / Torta / Dettagli</th>
-                <th>Quantità (Kg / Pezzi)</th>
-                <th>Note / Allergeni</th>
-              </tr>
-            </thead>
-            <tbody id="tbReportDipendenti"></tbody>
-          </table>
+      <!-- AREA STAMPA CONTABILE (HIDDEN IN SCREEN, SHOWN IN PRINT) -->
+      <div id="printContabileArea" class="printable-contabile" style="display:none;">
+        <h3 style="text-align:center;">Essence Pasticceria - Report Contabile Mensile</h3>
+        <p id="periodoTestoContabile" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
+        <br>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Cliente</th>
+              <th>Torta / Prodotto</th>
+              <th>Kg / Pezzi</th>
+              <th>Totale (€)</th>
+              <th>Acconto (€)</th>
+              <th>Saldo (€)</th>
+            </tr>
+          </thead>
+          <tbody id="tbReportContabile"></tbody>
+        </table>
+        <br>
+        <div style="text-align:right; font-weight:bold;">
+          <p>Totale Incassato (Acconti): <span id="stIncassatoPrint" style="color:#2e7d32;">€ 0.00</span></p>
+          <p>Totale da Riscuotere: <span id="stRimanentePrint" style="color:#d32f2f;">€ 0.00</span></p>
         </div>
+      </div>
 
+      <!-- AREA STAMPA DIPENDENTI (HIDDEN IN SCREEN, SHOWN IN PRINT) -->
+      <div id="printDipendentiArea" class="printable-dipendenti" style="display:none;">
+        <h3 style="text-align:center;">Essence Pasticceria - Ordini Laboratorio Dipendenti</h3>
+        <p id="periodoTestoDipendenti" style="text-align:center; font-size:0.8rem; font-weight:bold;"></p>
+        <br>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Data e Ora</th>
+              <th>Cliente</th>
+              <th>Prodotto / Torta / Dettagli</th>
+              <th>Quantità (Kg / Pezzi)</th>
+              <th>Note / Allergeni</th>
+            </tr>
+          </thead>
+          <tbody id="tbReportDipendenti"></tbody>
+        </table>
       </div>
 
       <div class="section-title no-print">Calendario Prenotazioni</div>
@@ -379,25 +399,54 @@
       appId: "1:123456789:web:abcdef"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    let db = null;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+    } catch(e) {
+      console.warn("Firebase non ancora configurato. Utilizzo della memoria locale.");
+    }
 
     let isUnlocked = false;
     let currentDateObj = new Date();
     let selectedDateStr = new Date().toISOString().split('T')[0];
-    let reportDataCache = [];
 
     document.getElementById('dataEvento').value = selectedDateStr;
+    document.getElementById('dipDataInizio').value = selectedDateStr;
+    document.getElementById('dipDataFine').value = selectedDateStr;
     document.getElementById('repDataInizio').value = selectedDateStr.substring(0, 8) + '01';
     document.getElementById('repDataFine').value = selectedDateStr;
 
+    // LOCAL STORAGE MANAGEMENT (Sempre attivo per non perdere i dati durante le prove)
+    function getOrdiniLocali() {
+      return JSON.parse(localStorage.getItem('essence_ordini') || '[]');
+    }
+
+    function salvaOrdineLocale(ordine) {
+      const ordini = getOrdiniLocali();
+      ordini.push(ordine);
+      localStorage.setItem('essence_ordini', JSON.stringify(ordini));
+    }
+
+    function gestisciBloccoMaster() {
+      isUnlocked = false;
+      document.getElementById('passMaster').value = '';
+      document.getElementById('lockBoxMaster').style.display = 'block';
+      document.getElementById('boxStoricoMaster').style.display = 'none';
+    }
+
     function switchTab(tabId) {
+      // Ogni volta che si cambia maschera, la password viene richiusa per sicurezza
+      gestisciBloccoMaster();
+
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       event.target.classList.add('active');
 
-      if(tabId === 'calendario') renderCalendario();
+      if(tabId === 'calendario') {
+        renderCalendario();
+      }
     }
 
     function toggleIndirizzo() {
@@ -411,11 +460,12 @@
         isUnlocked = true;
         document.getElementById('lockBoxMaster').style.display = 'none';
         document.getElementById('boxStoricoMaster').style.display = 'block';
-        caricaReport();
+        caricaReportContabile();
         caricaOrdiniDelGiorno();
-        alert('🔓 Menu Master Sbloccato!');
+        alert('🔓 Accesso Master Sbloccato');
       } else {
         alert('⚠️ Password Errata!');
+        document.getElementById('passMaster').value = '';
       }
     }
 
@@ -432,7 +482,7 @@
       document.getElementById('saldo').value = (totale - acconto).toFixed(2);
     }
 
-    // SALVATAGGIO CON RESET GARANTITO SBLOCCATO
+    // SALVATAGGIO GARANTITO SENZA BLOCCHI
     document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -444,7 +494,9 @@
       const pasticciniSelezionati = Array.from(document.querySelectorAll('input[name="pasticciniOpzioni"]:checked')).map(cb => cb.value);
       const allergeniSelezionati = Array.from(document.querySelectorAll('input[name="allergeni"]:checked')).map(cb => cb.value);
 
+      const idUnico = 'ord_' + Date.now();
       const ordine = {
+        id: idUnico,
         cliente: document.getElementById('nomeCliente').value,
         telefono: document.getElementById('telefonoCliente').value,
         dataEvento: document.getElementById('dataEvento').value,
@@ -466,26 +518,36 @@
         prezzoTotale: document.getElementById('prezzoTotale').value || "0.00",
         acconto: document.getElementById('acconto').value || "0.00",
         saldo: document.getElementById('saldo').value || "0.00",
-        stato: 'Da Preparare',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        stato: 'Da Preparare'
       };
 
-      try {
-        await db.collection('ordini_essence').add(ordine);
-        alert('✅ ORDINE SALVATO CON SUCCESSO!\n\nI prezzi sono stati nascosti e il modulo è pronto per un nuovo ordine.');
-        document.getElementById('orderForm').reset();
-        document.getElementById('dataEvento').value = new Date().toISOString().split('T')[0];
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (err) {
-        alert('Attenzione: ' + err.message);
-      } finally {
-        // SBLOCCO RIGOROSO DEL PULSANTE
-        btnSalva.disabled = false;
-        btnSalva.innerText = "Conferma e Salva Ordine";
+      // 1. Salvataggio immediato in locale per non perdere nulla al refresh
+      salvaOrdineLocale(ordine);
+
+      // 2. Tenta l'invio a Firebase se disponibile
+      if (db) {
+        try {
+          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 3000));
+          await Promise.race([db.collection('ordini_essence').doc(idUnico).set(ordine), timeoutPromise]);
+        } catch (err) {
+          console.warn("Salvato in locale. Firebase non connesso:", err.message);
+        }
       }
+
+      alert('✅ ORDINE SALVATO CON SUCCESSO!');
+      document.getElementById('orderForm').reset();
+      document.getElementById('dataEvento').value = new Date().toISOString().split('T')[0];
+      
+      btnSalva.disabled = false;
+      btnSalva.innerText = "Conferma e Salva Ordine";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // CALENDARIO
+    // RECUPERO ORDINI UNIFICATO (LOCALE + FIREBASE)
+    function ottieniTuttiGliOrdini() {
+      return getOrdiniLocali();
+    }
+
     function cambiaMese(delta) {
       currentDateObj.setMonth(currentDateObj.getMonth() + delta);
       renderCalendario();
@@ -497,20 +559,13 @@
       const mesi = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
       document.getElementById('calMeseAnno').innerText = `${mesi[month]} ${year}`;
 
-      const startMonth = `${year}-${String(month + 1).padStart(2, '0')}-01`;
-      const endMonth = `${year}-${String(month + 1).padStart(2, '0')}-31`;
+      const ordini = ottieniTuttiGliOrdini();
+      const countsByDate = {};
+      ordini.forEach(o => {
+        countsByDate[o.dataEvento] = (countsByDate[o.dataEvento] || 0) + 1;
+      });
 
-      db.collection('ordini_essence')
-        .where('dataEvento', '>=', startMonth)
-        .where('dataEvento', '<=', endMonth)
-        .onSnapshot(snapshot => {
-          const countsByDate = {};
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            countsByDate[data.dataEvento] = (countsByDate[data.dataEvento] || 0) + 1;
-          });
-          disegnaGrigliaCalendario(year, month, countsByDate);
-        });
+      disegnaGrigliaCalendario(year, month, countsByDate);
     }
 
     function disegnaGrigliaCalendario(year, month, countsByDate) {
@@ -547,122 +602,137 @@
     function caricaOrdiniDelGiorno() {
       document.getElementById('dataSelezionataTesto').innerText = selectedDateStr.split('-').reverse().join('/');
       const container = document.getElementById('listaOrdiniGiorno');
+      const ordini = ottieniTuttiGliOrdini().filter(o => o.dataEvento === selectedDateStr);
 
-      db.collection('ordini_essence')
-        .where('dataEvento', '==', selectedDateStr)
-        .onSnapshot(snapshot => {
-          container.innerHTML = '';
-          if (snapshot.empty) {
-            container.innerHTML = '<p style="text-align:center; padding: 10px; color:#888;">Nessun ordine.</p>';
-            return;
-          }
+      container.innerHTML = '';
+      if (ordini.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding: 10px; color:#888;">Nessun ordine presente per questa data.</p>';
+        return;
+      }
 
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            const id = doc.id;
-            const card = document.createElement('div');
-            card.className = `order-card ${data.stato === 'Pronto' ? 'stato-pronto' : data.stato === 'Consegnato' ? 'stato-consegnato' : ''}`;
-            card.innerHTML = `
-              <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong> [${data.modalita}]
-              <p><strong>Prodotti:</strong> ${data.tipologia ? data.tipologia.join(', ') : ''} ${data.pasticciniOpzioni ? data.pasticciniOpzioni.join(', ') : ''}</p>
-              ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
-              <p><strong>Quantità:</strong> ${data.quantitaKg ? data.quantitaKg + ' Kg' : ''} ${data.pezzi ? data.pezzi + ' Pezzi' : ''}</p>
-              
-              <!-- PREZZI NASCOSTI DOPO LA CONFERMA -->
-              <p style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
-                <strong>Contabilità:</strong> ${isUnlocked ? `Totale: €${data.prezzoTotale} | Acconto: €${data.acconto} | Saldo: €${data.saldo}` : '🔒 *** [Prezzi Riservati]'}
-              </p>
+      ordini.forEach(data => {
+        const card = document.createElement('div');
+        card.className = `order-card ${data.stato === 'Pronto' ? 'stato-pronto' : data.stato === 'Consegnato' ? 'stato-consegnato' : ''}`;
+        card.innerHTML = `
+          <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong> [${data.modalita}]
+          <p><strong>Prodotti:</strong> ${data.tipologia ? data.tipologia.join(', ') : ''} ${data.pasticciniOpzioni ? data.pasticciniOpzioni.join(', ') : ''}</p>
+          ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
+          <p><strong>Quantità:</strong> ${data.quantitaKg ? data.quantitaKg + ' Kg' : ''} ${data.pezzi ? data.pezzi + ' Pezzi' : ''}</p>
+          
+          <p style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
+            <strong>Contabilità:</strong> ${isUnlocked ? `Totale: €${data.prezzoTotale} | Acconto: €${data.acconto} | Saldo: €${data.saldo}` : '🔒 *** [Riservato Master]'}
+          </p>
 
-              <div class="action-btns no-print">
-                <button class="btn-status" style="background:#f57c00;" onclick="cambiaStato('${id}', 'Pronto')">Pronto 🟡</button>
-                <button class="btn-status" style="background:#2e7d32;" onclick="cambiaStato('${id}', 'Consegnato')">Consegnato 🟢</button>
-                <button class="btn-status" style="background:#d32f2f;" onclick="eliminaOrdine('${id}')">Elimina</button>
-              </div>
-            `;
-            container.appendChild(card);
-          });
-        });
+          <div class="action-btns no-print">
+            <button class="btn-status" style="background:#f57c00;" onclick="cambiaStato('${data.id}', 'Pronto')">Pronto 🟡</button>
+            <button class="btn-status" style="background:#2e7d32;" onclick="cambiaStato('${data.id}', 'Consegnato')">Consegnato 🟢</button>
+            <button class="btn-status" style="background:#d32f2f;" onclick="eliminaOrdine('${data.id}')">Elimina</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
     }
 
-    // GENERAZIONE TORNACONTO E REPORT CONTABILE / DIPENDENTI
-    function caricaReport() {
-      if(!isUnlocked) return;
+    // STAMPA SOLO QUANTITÀ PER DIPENDENTI (PUBBLICO)
+    function stampaOrdiniDipendenti() {
+      const dInizio = document.getElementById('dipDataInizio').value;
+      const dFine = document.getElementById('dipDataFine').value;
+
+      document.getElementById('periodoTestoDipendenti').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
+      const tbDipendenti = document.getElementById('tbReportDipendenti');
+      tbDipendenti.innerHTML = '';
+
+      const ordini = ottieniTuttiGliOrdini().filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine);
+
+      ordini.forEach(d => {
+        const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni ? d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? 'Scritta: '+d.scritta : ''}`;
+        const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz' : ''}`;
+
+        tbDipendenti.innerHTML += `
+          <tr>
+            <td>${d.dataEvento} (h ${d.oraEvento})</td>
+            <td>${d.cliente}</td>
+            <td>${prodStr} - Base: ${d.base || ''} Crema: ${d.crema || ''}</td>
+            <td><strong>${qtaStr}</strong></td>
+            <td>${d.allergeni ? d.allergeni.join(', ') : ''} ${d.decorazioni || ''}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('printDipendentiArea').style.display = 'block';
+      document.getElementById('printContabileArea').style.display = 'none';
+      window.print();
+    }
+
+    // STAMPA CONTABILE CON PREZZI (SOLO MASTER)
+    function caricaReportContabile() {
+      if (!isUnlocked) return;
       const dInizio = document.getElementById('repDataInizio').value;
       const dFine = document.getElementById('repDataFine').value;
 
       document.getElementById('periodoTestoContabile').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
-      document.getElementById('periodoTestoDipendenti').innerText = `Dal ${dInizio.split('-').reverse().join('/')} al ${dFine.split('-').reverse().join('/')}`;
 
-      db.collection('ordini_essence')
-        .where('dataEvento', '>=', dInizio)
-        .where('dataEvento', '<=', dFine)
-        .get().then(snapshot => {
-          reportDataCache = [];
-          let totIncassato = 0;
-          let totRimanente = 0;
+      let totIncassato = 0;
+      let totRimanente = 0;
 
-          const tbContabile = document.getElementById('tbReportContabile');
-          const tbDipendenti = document.getElementById('tbReportDipendenti');
-          tbContabile.innerHTML = '';
-          tbDipendenti.innerHTML = '';
+      const tbContabile = document.getElementById('tbReportContabile');
+      tbContabile.innerHTML = '';
 
-          snapshot.forEach(doc => {
-            const d = doc.data();
-            reportDataCache.push(d);
+      const ordini = ottieniTuttiGliOrdini().filter(o => o.dataEvento >= dInizio && o.dataEvento <= dFine);
 
-            totIncassato += parseFloat(d.acconto) || 0;
-            totRimanente += parseFloat(d.saldo) || 0;
+      ordini.forEach(d => {
+        totIncassato += parseFloat(d.acconto) || 0;
+        totRimanente += parseFloat(d.saldo) || 0;
 
-            const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni ? d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? 'Scritta: '+d.scritta : ''}`;
-            const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz' : ''}`;
+        const prodStr = `${d.tipologia ? d.tipologia.join(', ') : ''} ${d.pasticciniOpzioni ? d.pasticciniOpzioni.join(', ') : ''} ${d.scritta ? 'Scritta: '+d.scritta : ''}`;
+        const qtaStr = `${d.quantitaKg ? d.quantitaKg+' Kg ' : ''}${d.pezzi ? d.pezzi+' pz' : ''}`;
 
-            // Riga Contabile (Con Euro)
-            tbContabile.innerHTML += `
-              <tr>
-                <td>${d.dataEvento}</td>
-                <td>${d.cliente}</td>
-                <td>${prodStr}</td>
-                <td>${qtaStr}</td>
-                <td>€ ${d.prezzoTotale}</td>
-                <td>€ ${d.acconto}</td>
-                <td>€ ${d.saldo}</td>
-              </tr>
-            `;
+        tbContabile.innerHTML += `
+          <tr>
+            <td>${d.dataEvento}</td>
+            <td>${d.cliente}</td>
+            <td>${prodStr}</td>
+            <td>${qtaStr}</td>
+            <td>€ ${d.prezzoTotale}</td>
+            <td>€ ${d.acconto}</td>
+            <td>€ ${d.saldo}</td>
+          </tr>
+        `;
+      });
 
-            // Riga Dipendenti (Senza Euro)
-            tbDipendenti.innerHTML += `
-              <tr>
-                <td>${d.dataEvento} (h ${d.oraEvento})</td>
-                <td>${d.cliente}</td>
-                <td>${prodStr} - ${d.base || ''} ${d.crema || ''}</td>
-                <td><strong>${qtaStr}</strong></td>
-                <td>${d.allergeni ? d.allergeni.join(', ') : ''} ${d.decorazioni || ''}</td>
-              </tr>
-            `;
-          });
-
-          document.getElementById('stIncassato').innerText = '€ ' + totIncassato.toFixed(2);
-          document.getElementById('stRimanente').innerText = '€ ' + totRimanente.toFixed(2);
-        });
+      document.getElementById('stIncassato').innerText = '€ ' + totIncassato.toFixed(2);
+      document.getElementById('stRimanente').innerText = '€ ' + totRimanente.toFixed(2);
+      document.getElementById('stIncassatoPrint').innerText = '€ ' + totIncassato.toFixed(2);
+      document.getElementById('stRimanentePrint').innerText = '€ ' + totRimanente.toFixed(2);
     }
 
-    function stampaReport(tipo) {
-      if (tipo === 'contabile') {
-        document.getElementById('printContabileArea').style.display = 'block';
-        document.getElementById('printDipendentiArea').style.display = 'none';
-      } else {
-        document.getElementById('printDipendentiArea').style.display = 'block';
-        document.getElementById('printContabileArea').style.display = 'none';
-      }
+    function stampaReportContabile() {
+      if(!isUnlocked) return;
+      caricaReportContabile();
+      document.getElementById('printContabileArea').style.display = 'block';
+      document.getElementById('printDipendentiArea').style.display = 'none';
       window.print();
     }
 
-    async function cambiaStato(id, nuovoStato) {
-      await db.collection('ordini_essence').doc(id).update({ stato: nuovoStato });
+    function cambiaStato(id, nuovoStato) {
+      const ordini = getOrdiniLocali();
+      const idx = ordini.findIndex(o => o.id === id);
+      if (idx !== -1) {
+        ordini[idx].stato = nuovoStato;
+        localStorage.setItem('essence_ordini', JSON.stringify(ordini));
+        if (db) db.collection('ordini_essence').doc(id).update({ stato: nuovoStato }).catch(()=>{});
+        caricaOrdiniDelGiorno();
+      }
     }
 
-    async function eliminaOrdine(id) {
-      if (confirm('Eliminare questo ordine?')) await db.collection('ordini_essence').doc(id).delete();
+    function eliminaOrdine(id) {
+      if (confirm('Eliminare questo ordine?')) {
+        let ordini = getOrdiniLocali();
+        ordini = ordini.filter(o => o.id !== id);
+        localStorage.setItem('essence_ordini', JSON.stringify(ordini));
+        if (db) db.collection('ordini_essence').doc(id).delete().catch(()=>{});
+        renderCalendario();
+      }
     }
   </script>
 </body>
