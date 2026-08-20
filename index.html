@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Essence - Gestione Ordini & Prenotazioni</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    :root {
+      --bg-color: #1e1e1e;
+      --card-bg: #2a2a2a;
+      --accent-color: #d8d8d8;
+      --text-color: #f1f1f1;
+      --input-bg: #383838;
+      --border-color: #444444;
+      --green-status: #2e7d32;
+      --red-status: #c62828;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); padding: 15px; }
+
+    /* Header e Logo */
+    header { text-align: center; margin-bottom: 25px; padding: 15px; border-bottom: 1px solid var(--border-color); }
+    header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; letter-spacing: 1px; color: #fff; }
+    header p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--accent-color); margin-top: 4px; }
+
+    /* Navigazione Tab */
+    .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+    .tab-btn { background-color: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; }
+    .tab-btn.active { background-color: #ffffff; color: #000; border-color: #ffffff; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Forms e Container */
+    .container { max-width: 900px; margin: 0 auto; background-color: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
+    .section-title { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid var(--accent-color); color: #fff; display: flex; align-items: center; justify-content: space-between; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+    @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 15px; }
+    label { font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; display: block; color: var(--accent-color); }
+    input, select, textarea { width: 100%; padding: 10px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 0.95rem; }
+    input:focus, select:focus, textarea:focus { border-color: #fff; outline: none; }
+
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+    .checkbox-item { display: flex; align-items: center; gap: 5px; font-size: 0.85rem; background: var(--input-bg); padding: 6px 12px; border-radius: 4px; }
+    .checkbox-item input { width: auto; }
+
+    /* Sezione Allergeni Warning */
+    .allergeni-box { border: 1px solid #d32f2f; background-color: rgba(211, 47, 47, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+
+    .btn-submit { width: 100%; background-color: #ffffff; color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+    .btn-submit:hover { background-color: var(--accent-color); }
+
+    /* Sezione Calendario / Ordini Giornalieri */
+    .date-picker-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; background: var(--input-bg); padding: 10px; border-radius: 8px; }
+    .order-card { background-color: var(--input-bg); border-left: 6px solid var(--red-status); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+    .order-card.completato { border-left-color: var(--green-status); opacity: 0.8; }
+    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .order-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+    .badge-consegna { background-color: #1976d2; color: white; }
+    .badge-ritiro { background-color: #f57c00; color: white; }
+
+    .action-btns { display: flex; gap: 10px; margin-top: 10px; }
+    .btn-status { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+    .btn-complete { background-color: var(--green-status); color: white; }
+    .btn-delete { background-color: var(--red-status); color: white; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Essence</h1>
+    <p>Pasticceria • Gelateria • Rosticceria</p>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('nuovo-ordine')">+ Nuovo Ordine</button>
+    <button class="tab-btn" onclick="switchTab('calendario')">📅 Ordini del Giorno</button>
+  </div>
+
+  <div class="container">
+    
+    <!-- TAB 1: MODULO NUOVO ORDINE -->
+    <div id="nuovo-ordine" class="tab-content active">
+      <form id="orderForm">
+        
+        <!-- 1. DATI CLIENTE E CONSEGNA -->
+        <div class="section-title">1. Dati Cliente e Consegna / Ritiro</div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Nome e Cognome *</label>
+            <input type="text" id="nomeCliente" required placeholder="Es. Mario Rossi">
+          </div>
+          <div class="form-group">
+            <label>Telefono / WhatsApp *</label>
+            <input type="tel" id="telefonoCliente" required placeholder="Es. 3331234567">
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label>Data Ritiro/Consegna *</label>
+            <input type="date" id="dataEvento" required>
+          </div>
+          <div class="form-group">
+            <label>Ora Ritiro/Consegna *</label>
+            <input type="time" id="oraEvento" required>
+          </div>
+          <div class="form-group">
+            <label>Modalità *</label>
+            <select id="modalita" onchange="toggleIndirizzo()">
+              <option value="Ritiro in Pasticceria">Ritiro in Pasticceria</option>
+              <option value="Consegna">Consegna a Domicilio</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="groupIndirizzo" style="display: none;">
+          <label>Indirizzo Consegna</label>
+          <input type="text" id="indirizzoConsegna" placeholder="Via, Civico, Città">
+        </div>
+
+        <!-- 2. SPECIFICHE PRODOTTO ED ESTETICA -->
+        <div class="section-title" style="margin-top: 20px;">2. Specifiche Prodotto ed Estetica</div>
+        <div class="form-group">
+          <label>Tipologia Prodotto</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Torta Personalizzata"> Torta Personalizzata</label>
+            <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Torta Classica"> Torta Classica</label>
+            <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Mignon / Pasticcini"> Mignon / Pasticcini</label>
+            <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Monoporzioni"> Monoporzioni</label>
+            <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Salato / Buffet"> Salato / Buffet</label>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group"><label>Pan di Spagna / Base</label><input type="text" id="baseTorta" placeholder="Es. Classico, Cioccolato"></div>
+          <div class="form-group"><label>Crema / Farcitura</label><input type="text" id="cremaTorta" placeholder="Es. Chantilly, Nocciola"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group"><label>Bagnatura</label><input type="text" id="bagnatura" placeholder="Es. Analcolica, Rum"></div>
+          <div class="form-group"><label>Inserti / Frutta</label><input type="text" id="inserti" placeholder="Es. Gocce di cioccolato, Fragole"></div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group"><label>Quantità (Kg)</label><input type="number" step="0.1" id="quantitaKg"></div>
+          <div class="form-group"><label>Persone / Porzioni</label><input type="number" id="porzioni"></div>
+          <div class="form-group"><label>Pezzi</label><input type="number" id="pezzi"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Forma Torta</label>
+            <select id="formaTorta">
+              <option value="Non Specificata">Non Specificata</option>
+              <option value="Tonda">Tonda</option>
+              <option value="Quadrata">Quadrata</option>
+              <option value="Rettangolare">Rettangolare</option>
+              <option value="Più Piani">Più Piani</option>
+              <option value="Sagomata">Sagomata</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Scritta sulla Torta</label>
+            <input type="text" id="scrittaTorta" placeholder="Es. Buon Compleanno Marco!">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Decorazioni / Tema / Dettagli</label>
+          <textarea id="decorazioni" rows="2" placeholder="Dettagli estetici, colori, personaggi..."></textarea>
+        </div>
+
+        <!-- 3. ALLERGENI E INTOLLERANZE -->
+        <div class="section-title" style="margin-top: 20px;">⚠️ 3. Allergeni e Intolleranze</div>
+        <div class="allergeni-box">
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Glutine"> Senza Glutine</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Lattosio"> Senza Lattosio</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Frutta a Guscio"> Senza Frutta a Guscio</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Uova"> Senza Uova</label>
+          </div>
+          <div class="form-group" style="margin-top: 10px; margin-bottom: 0;">
+            <input type="text" id="noteAllergeni" placeholder="Note specifiche allergie o intolleranze...">
+          </div>
+        </div>
+
+        <!-- 4. CONTABILITÀ -->
+        <div class="section-title">4. Contabilità e Conferma</div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label>Prezzo Totale (€)</label>
+            <input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label>Acconto Versato (€)</label>
+            <input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label>Saldo Rimanente (€)</label>
+            <input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background-color: #222; font-weight: bold; color: #4caf50;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Metodo Pagamento</label>
+          <select id="metodoPagamento">
+            <option value="Contanti">Contanti</option>
+            <option value="POS / Carta">POS / Carta</option>
+            <option value="Satispay / Bonifico">Satispay / Bonifico</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-submit">Salva Ordine su Cloud</button>
+      </form>
+    </div>
+
+    <!-- TAB 2: CALENDARIO E GIORNO -->
+    <div id="calendario" class="tab-content">
+      <div class="section-title">Ordini per Data</div>
+      <div class="date-picker-bar">
+        <label style="margin:0;">Seleziona Giorno:</label>
+        <input type="date" id="searchDate" onchange="caricaOrdiniDelGiorno()">
+      </div>
+
+      <div id="listaOrdiniGiorno">
+        <!-- Gli ordini verranno inseriti qui da JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- CONFIGURAZIONE FIREBASE ---
+    // Incolla qui le tue chiavi del progetto Firebase
+    const firebaseConfig = {
+      apiKey: "INSERISCI_LA_TUA_API_KEY",
+      authDomain: "INSERISCI_IL_TUO_PROJECT_ID.firebaseapp.com",
+      projectId: "INSERISCI_IL_TUO_PROJECT_ID",
+      storageBucket: "INSERISCI_IL_TUO_PROJECT_ID.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Imposta la data di oggi come default negli input
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('dataEvento').value = todayStr;
+    document.getElementById('searchDate').value = todayStr;
+
+    // Cambia Tab
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+
+      if(tabId === 'calendario') caricaOrdiniDelGiorno();
+    }
+
+    // Mostra/Nascondi Indirizzo
+    function toggleIndirizzo() {
+      const modalita = document.getElementById('modalita').value;
+      document.getElementById('groupIndirizzo').style.display = (modalita === 'Consegna') ? 'block' : 'none';
+    }
+
+    // Calcolo Automatico Saldo
+    function calcolaSaldo() {
+      const totale = parseFloat(document.getElementById('prezzoTotale').value) || 0;
+      const acconto = parseFloat(document.getElementById('acconto').value) || 0;
+      document.getElementById('saldo').value = (totale - acconto).toFixed(2);
+    }
+
+    // Salvataggio Ordine su Firebase
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const tipiSelezionati = Array.from(document.querySelectorAll('input[name="tipoProdotto"]:checked')).map(cb => cb.value);
+      const allergeniSelezionati = Array.from(document.querySelectorAll('input[name="allergeni"]:checked')).map(cb => cb.value);
+
+      const ordine = {
+        cliente: document.getElementById('nomeCliente').value,
+        telefono: document.getElementById('telefonoCliente').value,
+        dataEvento: document.getElementById('dataEvento').value,
+        oraEvento: document.getElementById('oraEvento').value,
+        modalita: document.getElementById('modalita').value,
+        indirizzoConsegna: document.getElementById('indirizzoConsegna').value,
+        tipologia: tipiSelezionati,
+        base: document.getElementById('baseTorta').value,
+        crema: document.getElementById('cremaTorta').value,
+        bagnatura: document.getElementById('bagnatura').value,
+        inserti: document.getElementById('inserti').value,
+        quantitaKg: document.getElementById('quantitaKg').value,
+        porzioni: document.getElementById('porzioni').value,
+        pezzi: document.getElementById('pezzi').value,
+        forma: document.getElementById('formaTorta').value,
+        scritta: document.getElementById('scrittaTorta').value,
+        decorazioni: document.getElementById('decorazioni').value,
+        allergeni: allergeniSelezionati,
+        noteAllergeni: document.getElementById('noteAllergeni').value,
+        prezzoTotale: document.getElementById('prezzoTotale').value,
+        acconto: document.getElementById('acconto').value,
+        saldo: document.getElementById('saldo').value,
+        metodoPagamento: document.getElementById('metodoPagamento').value,
+        stato: 'Da Preparare', // 'Da Preparare' (Rosso) o 'Pronto/Consegnato' (Verde)
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        await db.collection('ordini_essence').add(ordine);
+        alert('Ordine registrato con successo!');
+        document.getElementById('orderForm').reset();
+        document.getElementById('dataEvento').value = todayStr;
+      } catch (err) {
+        alert('Errore nel salvataggio: ' + err.message);
+      }
+    });
+
+    // Caricamento Ordini in Tempo Reale
+    function caricaOrdiniDelGiorno() {
+      const dataScelta = document.getElementById('searchDate').value;
+      const container = document.getElementById('listaOrdiniGiorno');
+
+      db.collection('ordini_essence')
+        .where('dataEvento', '==', dataScelta)
+        .onSnapshot(snapshot => {
+          container.innerHTML = '';
+          if (snapshot.empty) {
+            container.innerHTML = '<p style="text-align:center; padding: 20px; color:#888;">Nessun ordine presente per questa data.</p>';
+            return;
+          }
+
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const id = doc.id;
+            const isCompletato = data.stato === 'Pronto/Consegnato';
+
+            const card = document.createElement('div');
+            card.className = `order-card ${isCompletato ? 'completato' : ''}`;
+            card.innerHTML = `
+              <div class="order-header">
+                <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong>
+                <span class="order-badge ${data.modalita === 'Consegna' ? 'badge-consegna' : 'badge-ritiro'}">${data.modalita}</span>
+              </div>
+              <p><strong>Prodotto:</strong> ${data.tipologia.join(', ')} - ${data.forma}</p>
+              ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
+              <p><strong>Dettagli:</strong> Base: ${data.base || '-'} | Crema: ${data.crema || '-'}</p>
+              ${data.allergeni.length > 0 ? `<p style="color:#ff6262;"><strong>⚠️ ALLERGENI:</strong> ${data.allergeni.join(', ')} ${data.noteAllergeni}</p>` : ''}
+              <p><strong>Saldo da Incassare:</strong> € ${data.saldo} (${data.metodoPagamento})</p>
+              
+              <div class="action-btns">
+                <button class="btn-status btn-complete" onclick="toggleStato('${id}', '${data.stato}')">
+                  ${isCompletato ? 'Segna come Da Preparare (Rosso)' : 'Segna come Pronto/Consegnato (Verde)'}
+                </button>
+                <button class="btn-status btn-delete" onclick="eliminaOrdine('${id}')">Elimina</button>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        });
+    }
+
+    // Cambia stato ordine (Rosso/Verde)
+    async function toggleStato(id, statoAttuale) {
+      const nuovoStato = (statoAttuale === 'Da Preparare') ? 'Pronto/Consegnato' : 'Da Preparare';
+      await db.collection('ordini_essence').doc(id).update({ stato: nuovoStato });
+    }
+
+    // Elimina ordine
+    async function eliminaOrdine(id) {
+      if (confirm('Sei sicuro di voler eliminare questo ordine?')) {
+        await db.collection('ordini_essence').doc(id).delete();
+      }
+    }
+  </script>
+</body>
+</html>
