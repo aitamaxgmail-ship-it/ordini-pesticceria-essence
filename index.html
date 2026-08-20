@@ -28,7 +28,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
     body { background-color: var(--bg-color); color: var(--primary-dark); padding: 10px; }
 
-    /* Header e Stile Logo */
     header {
       text-align: center;
       margin-bottom: 15px;
@@ -36,19 +35,11 @@
       background: linear-gradient(135deg, #fcedf2 0%, #f7d2de 100%);
       border: 2px solid var(--border-color);
       border-radius: 12px;
-      transition: background-color 0.5s ease;
     }
-    header.saved-flash {
-      background: #2e7d32 !important;
-      color: #ffffff !important;
-    }
-    header.saved-flash h1, header.saved-flash p { color: #ffffff !important; }
-
     header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--primary-dark); }
     header p.tagline { font-size: 0.8rem; font-style: italic; color: #7a4353; margin-top: 2px; }
     header p.sub { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: var(--primary-rose); }
 
-    /* Tab Navigation */
     .nav-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
     .tab-btn {
       background-color: var(--card-bg);
@@ -69,7 +60,6 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Container */
     .container {
       max-width: 800px;
       margin: 0 auto;
@@ -141,8 +131,9 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+    .btn-submit:disabled { background-color: #ccc; cursor: not-allowed; }
 
-    /* CALENDARIO COMPATTO PER SMARTPHONE */
+    /* CALENDARIO COMPATTO */
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 15px; }
     .cal-day-name { text-align: center; font-weight: 700; font-size: 0.7rem; color: var(--primary-rose); padding: 2px 0; }
@@ -198,12 +189,22 @@
     .action-btns { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
     .btn-status { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: white; }
 
-    /* STAMPA */
+    /* BOX STORICO VENDITE */
+    .sales-box {
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    /* GESTIONE STAMPA DIFFERENZIATA */
     @media print {
       body * { visibility: hidden; }
-      .printable-area, .printable-area * { visibility: visible; }
-      .printable-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; }
+      .printable-active, .printable-active * { visibility: visible; }
+      .printable-active { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; }
       .no-print { display: none !important; }
+      .hide-on-laboratorio-print { display: none !important; }
     }
   </style>
 </head>
@@ -274,7 +275,7 @@
           </div>
         </div>
 
-        <!-- DETTAGLIO PASTICCINI & MIGNON -->
+        <!-- PASTICCINI & MIGNON -->
         <div class="form-group" style="background:#fcf0f4; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
           <label style="color:var(--primary-rose); font-size:0.85rem;">🧁 Assortimento Pasticcini & Paste Specifiche:</label>
           <div class="checkbox-group">
@@ -343,29 +344,39 @@
           </div>
         </div>
 
-        <!-- 4. CONTABILITÀ PROTEZIONE -->
-        <div class="section-title">🔒 4. Contabilità e Conferma Ordine</div>
+        <!-- 4. CONTABILITÀ PROTEZIONE (MASTER PASS 1234) -->
+        <div class="section-title">🔒 4. Contabilità e Stato Pagamento</div>
         
         <div id="lockBoxContabilita" class="lock-box">
           <p><strong>Area Riservata Contabilità</strong></p>
-          <input type="password" id="passMaster" placeholder="Password Master">
+          <input type="password" id="passMaster" placeholder="Password Master (1234)">
           <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Prezzi</button>
         </div>
 
         <div id="sezioneContabilita" style="display: none;">
+          <div class="grid-2" style="margin-bottom:10px;">
+            <div class="form-group">
+              <label>Stato Pagamento *</label>
+              <select id="statoPagamento" onchange="aggiornaStatoPagamento()">
+                <option value="Solo Acconto">Solo Acconto Versato</option>
+                <option value="Interamente Pagato">Interamente Pagato</option>
+                <option value="Non Pagato">Da Pagare al Ritiro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Metodo Pagamento</label>
+              <select id="metodoPagamento">
+                <option value="Contanti">Contanti</option>
+                <option value="POS / Carta">POS / Carta</option>
+                <option value="Satispay / Bonifico">Satispay / Bonifico</option>
+              </select>
+            </div>
+          </div>
+
           <div class="grid-3">
             <div class="form-group"><label>Prezzo Totale (€)</label><input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00"></div>
             <div class="form-group"><label>Acconto Versato (€)</label><input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00"></div>
             <div class="form-group"><label>Saldo Rimanente (€)</label><input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background:#e8f5e9; font-weight:bold; color:#2e7d32;"></div>
-          </div>
-
-          <div class="form-group">
-            <label>Metodo Pagamento</label>
-            <select id="metodoPagamento">
-              <option value="Contanti">Contanti</option>
-              <option value="POS / Carta">POS / Carta</option>
-              <option value="Satispay / Bonifico">Satispay / Bonifico</option>
-            </select>
           </div>
         </div>
 
@@ -373,8 +384,19 @@
       </form>
     </div>
 
-    <!-- TAB 2: CALENDARIO COMPATTO -->
+    <!-- TAB 2: CALENDARIO E STORICO -->
     <div id="calendario" class="tab-content">
+      
+      <!-- STORICO INCASSI (SOLO MASTER) -->
+      <div id="boxStoricoMaster" class="sales-box" style="display:none;">
+        <div class="section-title" style="margin-bottom:8px; border-bottom-color:#2e7d32; color:#2e7d32;">📊 Storico Vendite & Incassi del Mese</div>
+        <div class="grid-3">
+          <div>Totale Ordini: <strong id="stTotaleOrdini">0</strong></div>
+          <div>Incassato (Acconti/Tot): <strong id="stTotaleIncassato" style="color:#2e7d32;">€ 0.00</strong></div>
+          <div>Saldi da Riscuotere: <strong id="stTotaleRimanente" style="color:#d32f2f;">€ 0.00</strong></div>
+        </div>
+      </div>
+
       <div class="section-title no-print">Calendario Prenotazioni</div>
       
       <div class="cal-header no-print">
@@ -394,9 +416,9 @@
       </div>
       <div id="gridGiorni" class="cal-grid no-print"></div>
 
-      <div class="section-title style="margin-top:20px;">
+      <div class="section-title" style="margin-top:20px;">
         <span>Ordini del <span id="dataSelezionataTesto">--/--/----</span></span>
-        <button class="btn-unlock no-print" onclick="sbloccaContabilita()">Menu Riservato 🔒</button>
+        <button class="btn-unlock no-print" onclick="sbloccaContabilita()">Sblocca Prezzi / Master (1234) 🔒</button>
       </div>
 
       <div id="listaOrdiniGiorno"></div>
@@ -421,15 +443,15 @@
     let isUnlocked = false;
     let currentDateObj = new Date();
     let selectedDateStr = new Date().toISOString().split('T')[0];
-    let allOrdersMonth = {};
+    let allOrdersMonth = [];
 
     document.getElementById('dataEvento').value = selectedDateStr;
 
-    // BLOCO E RESET AUTOMATICO PASSWORD SU OGNI CAMBIO TAB
     function switchTab(tabId) {
-      isUnlocked = false; // Richiede la password ogni volta che si esce/rientra
+      isUnlocked = false;
       document.getElementById('lockBoxContabilita').style.display = 'block';
       document.getElementById('sezioneContabilita').style.display = 'none';
+      document.getElementById('boxStoricoMaster').style.display = 'none';
 
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -446,14 +468,16 @@
       document.getElementById('groupIndirizzo').style.display = (modalita === 'Consegna') ? 'block' : 'none';
     }
 
+    // PASSWORD MASTER "1234"
     function sbloccaContabilita() {
       if(isUnlocked) return;
-      const pass = document.getElementById('passMaster').value || prompt('Inserisci Password Master mariat93:');
-      if (pass === 'mariat93') {
+      const pass = document.getElementById('passMaster').value || prompt('Inserisci Password Master (1234):');
+      if (pass === '1234') {
         isUnlocked = true;
         document.getElementById('lockBoxContabilita').style.display = 'none';
         document.getElementById('sezioneContabilita').style.display = 'block';
         if(document.getElementById('calendario').classList.contains('active')) {
+          document.getElementById('boxStoricoMaster').style.display = 'block';
           caricaOrdiniDelGiorno();
         }
       } else {
@@ -470,15 +494,30 @@
       calcolaSaldo();
     }
 
+    function aggiornaStatoPagamento() {
+      const st = document.getElementById('statoPagamento').value;
+      const totale = parseFloat(document.getElementById('prezzoTotale').value) || 0;
+      if (st === 'Interamente Pagato') {
+        document.getElementById('acconto').value = totale.toFixed(2);
+      } else if (st === 'Non Pagato') {
+        document.getElementById('acconto').value = "0.00";
+      }
+      calcolaSaldo();
+    }
+
     function calcolaSaldo() {
       const totale = parseFloat(document.getElementById('prezzoTotale').value) || 0;
       const acconto = parseFloat(document.getElementById('acconto').value) || 0;
       document.getElementById('saldo').value = (totale - acconto).toFixed(2);
     }
 
-    // SALVATAGGIO CON CAMBIO COLORE DI CONFERMA VISIVA
+    // SALVATAGGIO CON RESET RIGOROSO E BLOCCO MULTI-CLICK
     document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const btnSalva = document.getElementById('btnSalva');
+      btnSalva.disabled = true;
+      btnSalva.innerText = "Salvataggio in corso...";
 
       const tipiSelezionati = Array.from(document.querySelectorAll('input[name="tipoProdotto"]:checked')).map(cb => cb.value);
       const pasticciniSelezionati = Array.from(document.querySelectorAll('input[name="pasticciniOpzioni"]:checked')).map(cb => cb.value);
@@ -506,42 +545,39 @@
         decorazioni: document.getElementById('decorazioni').value,
         allergeni: allergeniSelezionati,
         noteAllergeni: document.getElementById('noteAllergeni').value,
+        statoPagamento: document.getElementById('statoPagamento').value,
         prezzoTotale: document.getElementById('prezzoTotale').value || "0.00",
         acconto: document.getElementById('acconto').value || "0.00",
         saldo: document.getElementById('saldo').value || "0.00",
         metodoPagamento: document.getElementById('metodoPagamento').value,
-        stato: 'Da Preparare', // States: 'Da Preparare', 'Pronto', 'Consegnato'
+        stato: 'Da Preparare',
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
       try {
         await db.collection('ordini_essence').add(ordine);
-        
-        // VISUAL FEEDBACK: CAMBIO COLORE IN VERDE ACCESO
-        const header = document.getElementById('headerBar');
-        const headerTitle = document.getElementById('headerTitle');
-        const origText = headerTitle.innerText;
 
-        header.classList.add('saved-flash');
-        headerTitle.innerText = "✓ ORDINE SALVATO CON SUCCESSO!";
+        alert('✅ ORDINE SALVATO CON SUCCESSO!\n\nIl modulo è stato azzerato per un nuovo ordine.');
 
-        setTimeout(() => {
-          header.classList.remove('saved-flash');
-          headerTitle.innerText = origText;
-        }, 3000);
-
+        // RESET TOTALE DEL FORM PER EVITARE ORDINI DOPPI
         document.getElementById('orderForm').reset();
         document.getElementById('dataEvento').value = selectedDateStr;
+        
         isUnlocked = false;
         document.getElementById('lockBoxContabilita').style.display = 'block';
         document.getElementById('sezioneContabilita').style.display = 'none';
 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
       } catch (err) {
-        alert('Errore: ' + err.message);
+        alert('Errore nel salvataggio: ' + err.message);
+      } finally {
+        btnSalva.disabled = false;
+        btnSalva.innerText = "Salva Ordine Pasticceria";
       }
     });
 
-    // CALENDARIO COMPATTO
+    // CALENDARIO E STORICO VENDITE
     function cambiaMese(delta) {
       currentDateObj.setMonth(currentDateObj.getMonth() + delta);
       renderCalendario();
@@ -561,16 +597,31 @@
         .where('dataEvento', '>=', startMonth)
         .where('dataEvento', '<=', endMonth)
         .onSnapshot(snapshot => {
-          allOrdersMonth = {};
+          allOrdersMonth = [];
+          const countsByDate = {};
+
+          let totIncassato = 0;
+          let totRimanente = 0;
+
           snapshot.forEach(doc => {
             const data = doc.data();
-            allOrdersMonth[data.dataEvento] = (allOrdersMonth[data.dataEvento] || 0) + 1;
+            allOrdersMonth.push(data);
+            countsByDate[data.dataEvento] = (countsByDate[data.dataEvento] || 0) + 1;
+
+            totIncassato += parseFloat(data.acconto) || 0;
+            totRimanente += parseFloat(data.saldo) || 0;
           });
-          disegnaGrigliaCalendario(year, month);
+
+          // Aggiorna Storico Master
+          document.getElementById('stTotaleOrdini').innerText = allOrdersMonth.length;
+          document.getElementById('stTotaleIncassato').innerText = '€ ' + totIncassato.toFixed(2);
+          document.getElementById('stTotaleRimanente').innerText = '€ ' + totRimanente.toFixed(2);
+
+          disegnaGrigliaCalendario(year, month, countsByDate);
         });
     }
 
-    function disegnaGrigliaCalendario(year, month) {
+    function disegnaGrigliaCalendario(year, month, countsByDate) {
       const grid = document.getElementById('gridGiorni');
       grid.innerHTML = '';
 
@@ -589,7 +640,7 @@
         dayDiv.className = 'cal-day';
         dayDiv.innerText = day;
 
-        const numOrdini = allOrdersMonth[dayStr] || 0;
+        const numOrdini = countsByDate[dayStr] || 0;
         if (numOrdini > 0) {
           dayDiv.classList.add('has-orders');
           const badge = document.createElement('span');
@@ -613,7 +664,7 @@
       caricaOrdiniDelGiorno();
     }
 
-    // CARICAMENTO ED EVIDENZIAZIONE STATO A 3 COLORI
+    // CARICAMENTO ED EVIDENZIAZIONE SCHEDE
     function caricaOrdiniDelGiorno() {
       document.getElementById('dataSelezionataTesto').innerText = selectedDateStr.split('-').reverse().join('/');
       const container = document.getElementById('listaOrdiniGiorno');
@@ -660,13 +711,14 @@
                 ${data.tipologia ? `<p><strong>Tipologia:</strong> ${data.tipologia.join(', ')}</p>` : ''}
                 ${data.pasticciniOpzioni && data.pasticciniOpzioni.length > 0 ? `<p style="color:#d8829d;"><strong>🧁 Assortimento Mignon:</strong> ${data.pasticciniOpzioni.join(', ')}</p>` : ''}
                 ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
-                <p><strong>Dettagli Torta:</strong> Base: ${data.base || '-'} | Crema: ${data.crema || '-'}</p>
-                ${data.quantitaKg ? `<p><strong>Peso:</strong> ${data.quantitaKg} Kg ${isUnlocked && data.prezzoAlKg ? '(@ €'+data.prezzoAlKg+'/kg)' : ''}</p>` : ''}
+                <p><strong>Dettagli:</strong> Base: ${data.base || '-'} | Crema: ${data.crema || '-'}</p>
+                ${data.quantitaKg ? `<p><strong>Peso:</strong> ${data.quantitaKg} Kg</p>` : ''}
                 ${data.pezzi ? `<p><strong>Pezzi:</strong> ${data.pezzi}</p>` : ''}
                 ${data.allergeni && data.allergeni.length > 0 ? `<p style="color:#d32f2f;"><strong>⚠️ ALLERGENI:</strong> ${data.allergeni.join(', ')} ${data.noteAllergeni}</p>` : ''}
                 
-                <p style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
-                  <strong>Saldo:</strong> ${isUnlocked ? '€ ' + data.saldo + ' (' + data.metodoPagamento + ')' : '🔒 *** [Riservato]'}
+                <!-- SEZIONE PREZZI NASCOSTA O MOSTRATA IN BASE A PASSWORD -->
+                <p class="hide-on-laboratorio-print" style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
+                  <strong>Pagamento:</strong> ${isUnlocked ? (data.statoPagamento || 'Solo Acconto') + ' | Totale: €' + data.prezzoTotale + ' | Saldo: €' + data.saldo : '🔒 *** [Prezzi Riservati]'}
                 </p>
               </div>
 
@@ -674,7 +726,13 @@
                 <button class="btn-status" style="background:#f57c00;" onclick="cambiaStato('${id}', 'Pronto')">Segna Pronto 🟡</button>
                 <button class="btn-status" style="background:#2e7d32;" onclick="cambiaStato('${id}', 'Consegnato')">Segna Consegnato 🟢</button>
                 <button class="btn-status" style="background:#d32f2f;" onclick="cambiaStato('${id}', 'Da Preparare')">Da Preparare 🔴</button>
-                ${isUnlocked ? `<button class="btn-status" style="background:#222;" onclick="stampaOrdine('${id}')">🖨️ Stampa Scheda</button>` : ''}
+                
+                <!-- STAMPA DIPENDENTI / LABORATORIO (SENZA PREZZI) -->
+                <button class="btn-status" style="background:#00838f;" onclick="stampaLaboratorio('${id}')">🖨️ Stampa Lab (Senza Prezzi)</button>
+                
+                <!-- STAMPA CON PREZZI (SOLO SE SBLOCCATO) -->
+                ${isUnlocked ? `<button class="btn-status" style="background:#222;" onclick="stampaCompleta('${id}')">🖨️ Stampa Fiscale (Con Prezzi)</button>` : ''}
+                
                 <button class="btn-status btn-delete" onclick="eliminaOrdine('${id}')">Elimina</button>
               </div>
             `;
@@ -693,8 +751,19 @@
       }
     }
 
-    function stampaOrdine(id) {
+    // FUNZIONI STAMPA DIFFERENZIATA
+    function stampaLaboratorio(id) {
+      const card = document.getElementById(`card-${id}`);
+      card.classList.add('printable-active', 'hide-on-laboratorio-print');
       window.print();
+      card.classList.remove('printable-active', 'hide-on-laboratorio-print');
+    }
+
+    function stampaCompleta(id) {
+      const card = document.getElementById(`card-${id}`);
+      card.classList.add('printable-active');
+      window.print();
+      card.classList.remove('printable-active');
     }
   </script>
 </body>
