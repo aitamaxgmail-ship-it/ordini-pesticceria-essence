@@ -20,64 +20,50 @@
       --primary-dark: #2b2325;
       --accent-soft: #f4dce3;
       --border-color: #e8c4cf;
-      --red-busy: #d32f2f;
-      --green-free: #f2e6ea;
-      --green-status: #388e3c;
+      --status-rosso: #d32f2f;
+      --status-arancio: #f57c00;
+      --status-verde: #2e7d32;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-    body { background-color: var(--bg-color); color: var(--primary-dark); padding: 15px; }
+    body { background-color: var(--bg-color); color: var(--primary-dark); padding: 10px; }
 
     /* Header e Stile Logo */
     header {
       text-align: center;
-      margin-bottom: 20px;
-      padding: 20px 15px;
+      margin-bottom: 15px;
+      padding: 15px 10px;
       background: linear-gradient(135deg, #fcedf2 0%, #f7d2de 100%);
       border: 2px solid var(--border-color);
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(216, 130, 157, 0.15);
+      border-radius: 12px;
+      transition: background-color 0.5s ease;
     }
-    header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.3rem;
-      font-style: italic;
-      color: var(--primary-dark);
-      letter-spacing: 1px;
+    header.saved-flash {
+      background: #2e7d32 !important;
+      color: #ffffff !important;
     }
-    header p.tagline {
-      font-size: 0.85rem;
-      font-style: italic;
-      color: #7a4353;
-      margin-top: 2px;
-      margin-bottom: 6px;
-    }
-    header p.sub {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-weight: 700;
-      color: var(--primary-rose);
-    }
+    header.saved-flash h1, header.saved-flash p { color: #ffffff !important; }
+
+    header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--primary-dark); }
+    header p.tagline { font-size: 0.8rem; font-style: italic; color: #7a4353; margin-top: 2px; }
+    header p.sub { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: var(--primary-rose); }
 
     /* Tab Navigation */
-    .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+    .nav-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
     .tab-btn {
       background-color: var(--card-bg);
       color: var(--primary-dark);
       border: 2px solid var(--border-color);
-      padding: 12px 22px;
-      border-radius: 25px;
+      padding: 10px 16px;
+      border-radius: 20px;
       cursor: pointer;
       font-weight: 700;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
+      font-size: 0.85rem;
     }
     .tab-btn.active {
       background-color: var(--primary-rose);
       color: #fff;
       border-color: var(--primary-rose);
-      box-shadow: 0 3px 8px rgba(216, 130, 157, 0.4);
     }
 
     .tab-content { display: none; }
@@ -85,22 +71,21 @@
 
     /* Container */
     .container {
-      max-width: 900px;
+      max-width: 800px;
       margin: 0 auto;
       background-color: var(--card-bg);
-      padding: 22px;
-      border-radius: 16px;
+      padding: 15px;
+      border-radius: 12px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
 
     .section-title {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       font-weight: 700;
-      margin-bottom: 15px;
-      padding-bottom: 6px;
+      margin-bottom: 12px;
+      padding-bottom: 4px;
       border-bottom: 2px solid var(--primary-rose);
       color: var(--primary-dark);
       display: flex;
@@ -108,114 +93,129 @@
       justify-content: space-between;
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
-    @media (max-width: 650px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+    @media (max-width: 600px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
 
-    .form-group { margin-bottom: 14px; }
-    label { font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; display: block; color: #4a363c; }
+    .form-group { margin-bottom: 12px; }
+    label { font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; display: block; color: #4a363c; }
     input, select, textarea {
       width: 100%;
-      padding: 11px;
+      padding: 9px;
       background-color: #fcf8f9;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: 6px;
       color: var(--primary-dark);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
-    input:focus, select:focus, textarea:focus { border-color: var(--primary-rose); outline: none; background-color: #fff; }
 
-    .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
-    .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; background: var(--accent-soft); padding: 7px 12px; border-radius: 6px; font-weight: 600; }
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .checkbox-item { display: flex; align-items: center; gap: 4px; font-size: 0.8rem; background: var(--accent-soft); padding: 5px 9px; border-radius: 5px; font-weight: 600; }
     .checkbox-item input { width: auto; }
 
-    /* Allergeni Warning */
-    .allergeni-box { border: 1px solid #e57373; background-color: #fdf2f2; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+    .allergeni-box { border: 1px solid #e57373; background-color: #fdf2f2; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
 
-    /* Blocco Password Contabilità */
+    /* Blocco Password e Menu Riservato */
     .lock-box {
       background: var(--accent-soft);
       border: 2px dashed var(--primary-rose);
-      padding: 20px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 8px;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
-    .lock-box input { max-width: 250px; text-align: center; margin: 10px auto; display: block; }
-    .btn-unlock { background-color: var(--primary-dark); color: white; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .lock-box input { max-width: 200px; text-align: center; margin: 8px auto; display: block; }
+    .btn-unlock { background-color: var(--primary-dark); color: white; border: none; padding: 6px 14px; border-radius: 5px; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
 
     .btn-submit {
       width: 100%;
       background-color: var(--primary-rose);
       color: #fff;
       border: none;
-      padding: 15px;
-      border-radius: 10px;
+      padding: 14px;
+      border-radius: 8px;
       font-weight: 700;
       font-size: 1rem;
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 1px;
-      box-shadow: 0 4px 10px rgba(216, 130, 157, 0.4);
     }
-    .btn-submit:hover { background-color: #c46d87; }
 
-    /* CALENDARIO */
-    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 20px; }
-    .cal-day-name { text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--primary-rose); padding: 5px 0; }
+    /* CALENDARIO COMPATTO PER SMARTPHONE */
+    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 15px; }
+    .cal-day-name { text-align: center; font-weight: 700; font-size: 0.7rem; color: var(--primary-rose); padding: 2px 0; }
     .cal-day {
-      aspect-ratio: 1;
+      min-height: 38px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
+      border-radius: 6px;
       font-weight: 700;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.8rem;
       border: 1px solid var(--border-color);
-      background-color: var(--green-free);
+      background-color: #f9f0f3;
       color: var(--primary-dark);
-      position: relative;
     }
     .cal-day.empty { background: transparent; border: none; cursor: default; }
-    .cal-day.has-orders { background-color: var(--red-busy) !important; color: white !important; border-color: #b71c1c; }
-    .cal-day.selected { border: 3px solid var(--primary-dark); }
-    .cal-day .badge-count { font-size: 0.65rem; margin-top: 2px; background: rgba(0,0,0,0.2); padding: 1px 4px; border-radius: 4px; }
+    .cal-day.has-orders { background-color: var(--status-rosso) !important; color: white !important; border-color: #b71c1c; }
+    .cal-day.selected { border: 2px solid var(--primary-dark); font-weight: 900; }
+    .cal-day .badge-count { font-size: 0.6rem; margin-top: 1px; background: rgba(0,0,0,0.25); padding: 1px 3px; border-radius: 3px; }
 
-    /* Ordini list */
+    /* SCHEDE ORDINI E STATI COLORE */
     .order-card {
       background-color: #fff;
       border: 1px solid var(--border-color);
-      border-left: 6px solid var(--red-busy);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      border-left: 8px solid var(--status-rosso);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
     }
-    .order-card.completato { border-left-color: var(--green-status); opacity: 0.85; }
-    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .order-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; color: white; }
+    .order-card.stato-pronto { border-left-color: var(--status-arancio); }
+    .order-card.stato-consegnato { border-left-color: var(--status-verde); opacity: 0.85; }
+
+    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .order-badge { padding: 3px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: white; }
     .badge-consegna { background-color: #1976d2; }
     .badge-ritiro { background-color: #e65100; }
 
-    .action-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .btn-status { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: white; }
-    .btn-complete { background-color: var(--green-status); }
-    .btn-delete { background-color: #c62828; }
+    .badge-status-text {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .bg-rosso { background-color: var(--status-rosso); }
+    .bg-arancio { background-color: var(--status-arancio); }
+    .bg-verde { background-color: var(--status-verde); }
+
+    .action-btns { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .btn-status { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: white; }
+
+    /* STAMPA */
+    @media print {
+      body * { visibility: hidden; }
+      .printable-area, .printable-area * { visibility: visible; }
+      .printable-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; }
+      .no-print { display: none !important; }
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Essence</h1>
+  <header id="headerBar">
+    <h1 id="headerTitle">Essence</h1>
     <p class="tagline">Lasciati coccolare dal gusto</p>
     <p class="sub">Pasticceria • Gelateria • Rosticceria</p>
   </header>
 
-  <div class="nav-tabs">
+  <div class="nav-tabs no-print">
     <button class="tab-btn active" onclick="switchTab('nuovo-ordine')">+ Nuovo Ordine</button>
     <button class="tab-btn" onclick="switchTab('calendario')">📅 Calendario & Ordini</button>
   </div>
@@ -223,10 +223,9 @@
   <div class="container">
     
     <!-- TAB 1: MODULO NUOVO ORDINE -->
-    <div id="nuovo-ordine" class="tab-content active">
+    <div id="nuovo-ordine" class="tab-content active no-print">
       <form id="orderForm">
         
-        <!-- 1. DATI CLIENTE E CONSEGNA -->
         <div class="section-title">1. Dati Cliente e Consegna / Ritiro</div>
         <div class="grid-2">
           <div class="form-group">
@@ -262,10 +261,10 @@
           <input type="text" id="indirizzoConsegna" placeholder="Via, Civico, Città">
         </div>
 
-        <!-- 2. SPECIFICHE PRODOTTO ED ESTETICA -->
-        <div class="section-title" style="margin-top: 20px;">2. Specifiche Prodotto ed Estetica</div>
+        <!-- 2. SPECIFICHE PRODOTTI -->
+        <div class="section-title" style="margin-top: 15px;">2. Specifiche Prodotti</div>
         <div class="form-group">
-          <label>Tipologia Prodotto</label>
+          <label>Tipologia Generale</label>
           <div class="checkbox-group">
             <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Torta Personalizzata"> Torta Personalizzata</label>
             <label class="checkbox-item"><input type="checkbox" name="tipoProdotto" value="Torta Classica"> Torta Classica</label>
@@ -275,6 +274,20 @@
           </div>
         </div>
 
+        <!-- DETTAGLIO PASTICCINI & MIGNON -->
+        <div class="form-group" style="background:#fcf0f4; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+          <label style="color:var(--primary-rose); font-size:0.85rem;">🧁 Assortimento Pasticcini & Paste Specifiche:</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Paste di Mandorla"> Paste di Mandorla</label>
+            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Bignè Pasta Choux"> Bignè Pasta Choux</label>
+            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Tartellette Frolla (Frutta/Crema)"> Tartellette Frolla</label>
+            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Cannolini di Sfoglia"> Cannolini Sfoglia</label>
+            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Pasticcini Pan di Spagna"> Pasticcini Pan di Spagna</label>
+            <label class="checkbox-item"><input type="checkbox" name="pasticciniOpzioni" value="Paste Regionali (Babà, Baci di Dama)"> Paste Regionali (Babà/Baci)</label>
+          </div>
+        </div>
+
+        <!-- DETTAGLI TORTE -->
         <div class="grid-2">
           <div class="form-group"><label>Pan di Spagna / Base</label><input type="text" id="baseTorta" placeholder="Es. Classico, Cioccolato"></div>
           <div class="form-group"><label>Crema / Farcitura</label><input type="text" id="cremaTorta" placeholder="Es. Chantilly, Nocciola"></div>
@@ -282,15 +295,15 @@
 
         <div class="grid-2">
           <div class="form-group"><label>Bagnatura</label><input type="text" id="bagnatura" placeholder="Es. Analcolica, Rum"></div>
-          <div class="form-group"><label>Inserti / Frutta</label><input type="text" id="inserti" placeholder="Es. Gocce di cioccolato, Fragole"></div>
+          <div class="form-group"><label>Inserti / Frutta</label><input type="text" id="inserti" placeholder="Es. Fragole, Gocce Choco"></div>
         </div>
 
-        <!-- CALCOLO PESO E PREZZO -->
+        <!-- PESO E PREZZI -->
         <div class="grid-4">
           <div class="form-group"><label>Quantità (Kg)</label><input type="number" step="0.01" id="quantitaKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
           <div class="form-group"><label>Prezzo al Kg (€)</label><input type="number" step="0.01" id="prezzoAlKg" oninput="calcolaAutomatico()" placeholder="0.00"></div>
           <div class="form-group"><label>Persone / Porzioni</label><input type="number" id="porzioni"></div>
-          <div class="form-group"><label>Pezzi</label><input type="number" id="pezzi"></div>
+          <div class="form-group"><label>Pezzi Totali</label><input type="number" id="pezzi"></div>
         </div>
 
         <div class="grid-2">
@@ -313,11 +326,11 @@
 
         <div class="form-group">
           <label>Decorazioni / Tema / Dettagli</label>
-          <textarea id="decorazioni" rows="2" placeholder="Dettagli estetici, colori, personaggi..."></textarea>
+          <textarea id="decorazioni" rows="2" placeholder="Dettagli estetici, colori, personalizzazioni..."></textarea>
         </div>
 
-        <!-- 3. ALLERGENI E INTOLLERANZE -->
-        <div class="section-title" style="margin-top: 20px;">⚠️ 3. Allergeni e Intolleranze</div>
+        <!-- 3. ALLERGENI -->
+        <div class="section-title" style="margin-top: 15px;">⚠️ 3. Allergeni e Intolleranze</div>
         <div class="allergeni-box">
           <div class="checkbox-group">
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Glutine"> Senza Glutine</label>
@@ -325,35 +338,25 @@
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Frutta a Guscio"> Senza Frutta a Guscio</label>
             <label class="checkbox-item"><input type="checkbox" name="allergeni" value="Senza Uova"> Senza Uova</label>
           </div>
-          <div class="form-group" style="margin-top: 10px; margin-bottom: 0;">
-            <input type="text" id="noteAllergeni" placeholder="Note specifiche allergie o intolleranze...">
+          <div class="form-group" style="margin-top: 8px; margin-bottom: 0;">
+            <input type="text" id="noteAllergeni" placeholder="Note specifiche allergie...">
           </div>
         </div>
 
-        <!-- 4. CONTABILITÀ E CONFERMA (PROTETTA) -->
+        <!-- 4. CONTABILITÀ PROTEZIONE -->
         <div class="section-title">🔒 4. Contabilità e Conferma Ordine</div>
         
         <div id="lockBoxContabilita" class="lock-box">
           <p><strong>Area Riservata Contabilità</strong></p>
-          <p style="font-size:0.8rem; color:#666;">Inserisci la Password Master per visualizzare e inserire i prezzi</p>
           <input type="password" id="passMaster" placeholder="Password Master">
-          <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca</button>
+          <button type="button" class="btn-unlock" onclick="sbloccaContabilita()">Sblocca Prezzi</button>
         </div>
 
         <div id="sezioneContabilita" style="display: none;">
           <div class="grid-3">
-            <div class="form-group">
-              <label>Prezzo Totale (€)</label>
-              <input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00">
-            </div>
-            <div class="form-group">
-              <label>Acconto Versato (€)</label>
-              <input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00">
-            </div>
-            <div class="form-group">
-              <label>Saldo Rimanente (€)</label>
-              <input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background-color: #e8f5e9; font-weight: bold; color: #2e7d32;">
-            </div>
+            <div class="form-group"><label>Prezzo Totale (€)</label><input type="number" step="0.01" id="prezzoTotale" oninput="calcolaSaldo()" placeholder="0.00"></div>
+            <div class="form-group"><label>Acconto Versato (€)</label><input type="number" step="0.01" id="acconto" oninput="calcolaSaldo()" placeholder="0.00"></div>
+            <div class="form-group"><label>Saldo Rimanente (€)</label><input type="number" step="0.01" id="saldo" readonly placeholder="0.00" style="background:#e8f5e9; font-weight:bold; color:#2e7d32;"></div>
           </div>
 
           <div class="form-group">
@@ -366,21 +369,21 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-submit">Salva Ordine su Cloud</button>
+        <button type="submit" class="btn-submit" id="btnSalva">Salva Ordine Pasticceria</button>
       </form>
     </div>
 
-    <!-- TAB 2: CALENDARIO E LISTA GIORNALIERA -->
+    <!-- TAB 2: CALENDARIO COMPATTO -->
     <div id="calendario" class="tab-content">
-      <div class="section-title">Calendario Prenotazioni</div>
+      <div class="section-title no-print">Calendario Prenotazioni</div>
       
-      <div class="cal-header">
-        <button class="tab-btn" style="padding: 5px 12px;" onclick="cambiaMese(-1)">❮ Precedente</button>
-        <h3 id="calMeseAnno" style="font-size: 1.1rem; text-transform: uppercase;">Agosto 2026</h3>
-        <button class="tab-btn" style="padding: 5px 12px;" onclick="cambiaMese(1)">Successivo ❯</button>
+      <div class="cal-header no-print">
+        <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(-1)">❮ Prev</button>
+        <h3 id="calMeseAnno" style="font-size:1rem; text-transform:uppercase;">Agosto 2026</h3>
+        <button class="tab-btn" style="padding:4px 10px;" onclick="cambiaMese(1)">Next ❯</button>
       </div>
 
-      <div class="cal-grid">
+      <div class="cal-grid no-print">
         <div class="cal-day-name">Lun</div>
         <div class="cal-day-name">Mar</div>
         <div class="cal-day-name">Mer</div>
@@ -389,11 +392,11 @@
         <div class="cal-day-name">Sab</div>
         <div class="cal-day-name">Dom</div>
       </div>
-      <div id="gridGiorni" class="cal-grid"></div>
+      <div id="gridGiorni" class="cal-grid no-print"></div>
 
-      <div class="section-title" style="margin-top: 25px;">
-        <span>Ordini per il <span id="dataSelezionataTesto">--/--/----</span></span>
-        <button class="btn-unlock" style="font-size:0.75rem;" onclick="sbloccaContabilita()">Sblocca Prezzi 🔒</button>
+      <div class="section-title style="margin-top:20px;">
+        <span>Ordini del <span id="dataSelezionataTesto">--/--/----</span></span>
+        <button class="btn-unlock no-print" onclick="sbloccaContabilita()">Menu Riservato 🔒</button>
       </div>
 
       <div id="listaOrdiniGiorno"></div>
@@ -422,7 +425,12 @@
 
     document.getElementById('dataEvento').value = selectedDateStr;
 
+    // BLOCO E RESET AUTOMATICO PASSWORD SU OGNI CAMBIO TAB
     function switchTab(tabId) {
+      isUnlocked = false; // Richiede la password ogni volta che si esce/rientra
+      document.getElementById('lockBoxContabilita').style.display = 'block';
+      document.getElementById('sezioneContabilita').style.display = 'none';
+
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
@@ -438,10 +446,9 @@
       document.getElementById('groupIndirizzo').style.display = (modalita === 'Consegna') ? 'block' : 'none';
     }
 
-    // Sblocco Password Master mariat93
     function sbloccaContabilita() {
       if(isUnlocked) return;
-      const pass = document.getElementById('passMaster').value || prompt('Inserisci Password Master:');
+      const pass = document.getElementById('passMaster').value || prompt('Inserisci Password Master mariat93:');
       if (pass === 'mariat93') {
         isUnlocked = true;
         document.getElementById('lockBoxContabilita').style.display = 'none';
@@ -454,14 +461,11 @@
       }
     }
 
-    // Calcoli Automatici (Prezzo al Kg & Saldo)
     function calcolaAutomatico() {
       const kg = parseFloat(document.getElementById('quantitaKg').value) || 0;
       const prezzoKg = parseFloat(document.getElementById('prezzoAlKg').value) || 0;
-      
       if (kg > 0 && prezzoKg > 0) {
-        const totale = kg * prezzoKg;
-        document.getElementById('prezzoTotale').value = totale.toFixed(2);
+        document.getElementById('prezzoTotale').value = (kg * prezzoKg).toFixed(2);
       }
       calcolaSaldo();
     }
@@ -472,11 +476,12 @@
       document.getElementById('saldo').value = (totale - acconto).toFixed(2);
     }
 
-    // Salvataggio Ordine
+    // SALVATAGGIO CON CAMBIO COLORE DI CONFERMA VISIVA
     document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const tipiSelezionati = Array.from(document.querySelectorAll('input[name="tipoProdotto"]:checked')).map(cb => cb.value);
+      const pasticciniSelezionati = Array.from(document.querySelectorAll('input[name="pasticciniOpzioni"]:checked')).map(cb => cb.value);
       const allergeniSelezionati = Array.from(document.querySelectorAll('input[name="allergeni"]:checked')).map(cb => cb.value);
 
       const ordine = {
@@ -487,6 +492,7 @@
         modalita: document.getElementById('modalita').value,
         indirizzoConsegna: document.getElementById('indirizzoConsegna').value,
         tipologia: tipiSelezionati,
+        pasticciniOpzioni: pasticciniSelezionati,
         base: document.getElementById('baseTorta').value,
         crema: document.getElementById('cremaTorta').value,
         bagnatura: document.getElementById('bagnatura').value,
@@ -504,21 +510,38 @@
         acconto: document.getElementById('acconto').value || "0.00",
         saldo: document.getElementById('saldo').value || "0.00",
         metodoPagamento: document.getElementById('metodoPagamento').value,
-        stato: 'Da Preparare',
+        stato: 'Da Preparare', // States: 'Da Preparare', 'Pronto', 'Consegnato'
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
       try {
         await db.collection('ordini_essence').add(ordine);
-        alert('Ordine Essence registrato!');
+        
+        // VISUAL FEEDBACK: CAMBIO COLORE IN VERDE ACCESO
+        const header = document.getElementById('headerBar');
+        const headerTitle = document.getElementById('headerTitle');
+        const origText = headerTitle.innerText;
+
+        header.classList.add('saved-flash');
+        headerTitle.innerText = "✓ ORDINE SALVATO CON SUCCESSO!";
+
+        setTimeout(() => {
+          header.classList.remove('saved-flash');
+          headerTitle.innerText = origText;
+        }, 3000);
+
         document.getElementById('orderForm').reset();
         document.getElementById('dataEvento').value = selectedDateStr;
+        isUnlocked = false;
+        document.getElementById('lockBoxContabilita').style.display = 'block';
+        document.getElementById('sezioneContabilita').style.display = 'none';
+
       } catch (err) {
         alert('Errore: ' + err.message);
       }
     });
 
-    // CALENDARIO MENSELE
+    // CALENDARIO COMPATTO
     function cambiaMese(delta) {
       currentDateObj.setMonth(currentDateObj.getMonth() + delta);
       renderCalendario();
@@ -531,7 +554,6 @@
       
       document.getElementById('calMeseAnno').innerText = `${mesi[month]} ${year}`;
 
-      // Carica tutti gli ordini del mese corrente da Firestore
       const startMonth = `${year}-${String(month + 1).padStart(2, '0')}-01`;
       const endMonth = `${year}-${String(month + 1).padStart(2, '0')}-31`;
 
@@ -552,7 +574,7 @@
       const grid = document.getElementById('gridGiorni');
       grid.innerHTML = '';
 
-      const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7; // Lunedì = 0
+      const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7;
       const totalDays = new Date(year, month + 1, 0).getDate();
 
       for (let i = 0; i < firstDayIndex; i++) {
@@ -591,7 +613,7 @@
       caricaOrdiniDelGiorno();
     }
 
-    // Caricamento Ordini per la data selezionata
+    // CARICAMENTO ED EVIDENZIAZIONE STATO A 3 COLORI
     function caricaOrdiniDelGiorno() {
       document.getElementById('dataSelezionataTesto').innerText = selectedDateStr.split('-').reverse().join('/');
       const container = document.getElementById('listaOrdiniGiorno');
@@ -608,29 +630,51 @@
           snapshot.forEach(doc => {
             const data = doc.data();
             const id = doc.id;
-            const isCompletato = data.stato === 'Pronto/Consegnato';
+            
+            let cardClass = '';
+            let badgeClass = 'bg-rosso';
+            let statoLabel = '🔴 DA PREPARARE';
+
+            if (data.stato === 'Pronto') {
+              cardClass = 'stato-pronto';
+              badgeClass = 'bg-arancio';
+              statoLabel = '🟡 PRONTO IN LABORATORIO';
+            } else if (data.stato === 'Consegnato') {
+              cardClass = 'stato-consegnato';
+              badgeClass = 'bg-verde';
+              statoLabel = '🟢 CONSEGNATO / RITIRATO';
+            }
 
             const card = document.createElement('div');
-            card.className = `order-card ${isCompletato ? 'completato' : ''}`;
+            card.className = `order-card ${cardClass}`;
+            card.id = `card-${id}`;
             card.innerHTML = `
-              <div class="order-header">
-                <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong>
-                <span class="order-badge ${data.modalita === 'Consegna' ? 'badge-consegna' : 'badge-ritiro'}">${data.modalita}</span>
-              </div>
-              <p><strong>Prodotto:</strong> ${data.tipologia.join(', ')} - Forma: ${data.forma}</p>
-              ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
-              <p><strong>Dettagli:</strong> Base: ${data.base || '-'} | Crema: ${data.crema || '-'}</p>
-              ${data.quantitaKg ? `<p><strong>Peso:</strong> ${data.quantitaKg} Kg ${data.prezzoAlKg ? '(@ €'+data.prezzoAlKg+'/kg)' : ''}</p>` : ''}
-              ${data.allergeni.length > 0 ? `<p style="color:#d32f2f;"><strong>⚠️ ALLERGENI:</strong> ${data.allergeni.join(', ')} ${data.noteAllergeni}</p>` : ''}
-              
-              <p style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
-                <strong>Saldo:</strong> ${isUnlocked ? '€ ' + data.saldo + ' (' + data.metodoPagamento + ')' : '🔒 *** [Riservato]'}
-              </p>
+              <div class="printable-area">
+                <div class="order-header">
+                  <strong>⏰ h ${data.oraEvento} - ${data.cliente} (${data.telefono})</strong>
+                  <span class="order-badge ${data.modalita === 'Consegna' ? 'badge-consegna' : 'badge-ritiro'}">${data.modalita}</span>
+                </div>
+                
+                <span class="badge-status-text ${badgeClass}">${statoLabel}</span>
 
-              <div class="action-btns">
-                <button class="btn-status btn-complete" onclick="toggleStato('${id}', '${data.stato}')">
-                  ${isCompletato ? 'Segna Da Preparare' : 'Segna Pronto / Consegnato'}
-                </button>
+                ${data.tipologia ? `<p><strong>Tipologia:</strong> ${data.tipologia.join(', ')}</p>` : ''}
+                ${data.pasticciniOpzioni && data.pasticciniOpzioni.length > 0 ? `<p style="color:#d8829d;"><strong>🧁 Assortimento Mignon:</strong> ${data.pasticciniOpzioni.join(', ')}</p>` : ''}
+                ${data.scritta ? `<p><strong>Scritta:</strong> "${data.scritta}"</p>` : ''}
+                <p><strong>Dettagli Torta:</strong> Base: ${data.base || '-'} | Crema: ${data.crema || '-'}</p>
+                ${data.quantitaKg ? `<p><strong>Peso:</strong> ${data.quantitaKg} Kg ${isUnlocked && data.prezzoAlKg ? '(@ €'+data.prezzoAlKg+'/kg)' : ''}</p>` : ''}
+                ${data.pezzi ? `<p><strong>Pezzi:</strong> ${data.pezzi}</p>` : ''}
+                ${data.allergeni && data.allergeni.length > 0 ? `<p style="color:#d32f2f;"><strong>⚠️ ALLERGENI:</strong> ${data.allergeni.join(', ')} ${data.noteAllergeni}</p>` : ''}
+                
+                <p style="margin-top:5px; padding-top:5px; border-top:1px dashed #ccc;">
+                  <strong>Saldo:</strong> ${isUnlocked ? '€ ' + data.saldo + ' (' + data.metodoPagamento + ')' : '🔒 *** [Riservato]'}
+                </p>
+              </div>
+
+              <div class="action-btns no-print">
+                <button class="btn-status" style="background:#f57c00;" onclick="cambiaStato('${id}', 'Pronto')">Segna Pronto 🟡</button>
+                <button class="btn-status" style="background:#2e7d32;" onclick="cambiaStato('${id}', 'Consegnato')">Segna Consegnato 🟢</button>
+                <button class="btn-status" style="background:#d32f2f;" onclick="cambiaStato('${id}', 'Da Preparare')">Da Preparare 🔴</button>
+                ${isUnlocked ? `<button class="btn-status" style="background:#222;" onclick="stampaOrdine('${id}')">🖨️ Stampa Scheda</button>` : ''}
                 <button class="btn-status btn-delete" onclick="eliminaOrdine('${id}')">Elimina</button>
               </div>
             `;
@@ -639,8 +683,7 @@
         });
     }
 
-    async function toggleStato(id, statoAttuale) {
-      const nuovoStato = (statoAttuale === 'Da Preparare') ? 'Pronto/Consegnato' : 'Da Preparare';
+    async function cambiaStato(id, nuovoStato) {
       await db.collection('ordini_essence').doc(id).update({ stato: nuovoStato });
     }
 
@@ -648,6 +691,10 @@
       if (confirm('Sei sicuro di voler eliminare questo ordine?')) {
         await db.collection('ordini_essence').doc(id).delete();
       }
+    }
+
+    function stampaOrdine(id) {
+      window.print();
     }
   </script>
 </body>
